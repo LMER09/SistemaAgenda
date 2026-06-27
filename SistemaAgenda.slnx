@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Sistema_de_AgendaCitas.Datos/SistemaAgenda.Datos.csproj" />
+  <Project Path="Sistema_de_AgendaCitas.Negocios/SistemaAgenda.Negocios.csproj" />
+  <Project Path="Sistema_de_AgendayCitas/SistemaAgenda.UI.csproj" />
+</Solution>
