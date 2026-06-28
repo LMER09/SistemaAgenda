@@ -12,30 +12,4 @@ public class Citas
     public string Estado { get; set; } = string.Empty;
     public decimal Deposito { get; set; }
 
-    public Citas()
-    {
-        Deposito = 0;
-    }
-    public Citas(Clientes c, Servicios s, DateTime hora)
-    {
-        Id_Clientes = c.Id;
-        Id_Servicios = s.Id;
-        Fecha = hora;
-    }
-
-    public void AgendarCita()
-    {
-        Estado = "Agendada";
-    }
-
-    public void CancelarCita()
-    {
-        Estado = "Cancelada";
-    }
-
-    public void ReprogramarCita(DateTime nuevaFecha)
-    {
-        Fecha = nuevaFecha;
-        Estado = "Reprogamada";
-    }
 }

@@ -4,89 +4,94 @@ namespace SistemaAgenda.Datos
 {
     public class ServiciosDAL
     {
-        
         public bool Insertar(Servicios s)
         {
-            using (var con = ConexionDB.ObtenerConexion())
-            using (var cmd = new SqlCommand(@"
-                INSERT INTO Servicios (Tipo_DeServicio, Precio, DuracionMinutos)
-                VALUES (@Tipo, @Precio, @Duracion)", con))
+            try
             {
-                cmd.Parameters.AddWithValue("@Tipo", s.Tipo_DeServicio);
-                cmd.Parameters.AddWithValue("@Precio", s.Precio);
-                cmd.Parameters.AddWithValue("@Duracion", s.DuracionMinutos);
-
-                int filas = cmd.ExecuteNonQuery();
-                return filas > 0;
+                using (var con = ConexionDB.ObtenerConexion())
+                using (var cmd = new SqlCommand(@"
+                    INSERT INTO Servicios (Tipo_DeServicio, Precio, DuracionMinutos)
+                    VALUES (@Tipo, @Precio, @Duracion)", con))
+                {
+                    cmd.Parameters.AddWithValue("@Tipo", s.Tipo_DeServicio);
+                    cmd.Parameters.AddWithValue("@Precio", s.Precio);
+                    cmd.Parameters.AddWithValue("@Duracion", s.DuracionMinutos);
+                    return cmd.ExecuteNonQuery() > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al insertar servicio: " + ex.Message);
             }
         }
 
-        
         public List<Servicios> ObtenerTodos()
         {
             var lista = new List<Servicios>();
-
-            using (var con = ConexionDB.ObtenerConexion())
-            using (var cmd = new SqlCommand(
-                "SELECT id, Tipo_DeServicio, Precio, DuracionMinutos FROM Servicios", con))
-            using (var reader = cmd.ExecuteReader())
+            try
             {
-                while (reader.Read())
+                using (var con = ConexionDB.ObtenerConexion())
+                using (var cmd = new SqlCommand(
+                    "SELECT id, Tipo_DeServicio, Precio, DuracionMinutos FROM Servicios", con))
+                using (var reader = cmd.ExecuteReader())
                 {
-                    Servicios servicio;
-                    string tipo = reader.GetString(1);
-
-                    switch (tipo)
+                    while (reader.Read())
                     {
-                        case "Cabello": servicio = new ServicioCabello();
-                            break;
-                        case "Uñas": servicio = new ServicioUñas();
-                            break;
-                        case "Spa": servicio = new ServicioSpa();
-                            break;
-                        default: throw new Exception("Tipo de servicio no valido");
-                         
+                        lista.Add(new Servicios
+                        {
+                            Id = reader.GetInt32(0),
+                            Tipo_DeServicio = reader.GetString(1),
+                            Precio = reader.GetDecimal(2),
+                            DuracionMinutos = reader.GetInt32(3)
+                        });
                     }
-
-                    servicio.Id = reader.GetInt32(0);
-                    servicio.Tipo_DeServicio = tipo;
-                    servicio.Precio = reader.GetDecimal(2);
-                    servicio.DuracionMinutos = reader.GetInt32(3);
-
-                    lista.Add(servicio);
                 }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener servicios: " + ex.Message);
             }
             return lista;
         }
 
-        
         public bool Actualizar(Servicios s)
         {
-            using (var con = ConexionDB.ObtenerConexion())
-            using (var cmd = new SqlCommand(@"
-                UPDATE Servicios SET Tipo_DeServicio=@Tipo,
-                Precio=@Precio, DuracionMinutos=@Duracion
-                WHERE id=@Id", con))
+            try
             {
-                cmd.Parameters.AddWithValue("@Tipo", s.Tipo_DeServicio);
-                cmd.Parameters.AddWithValue("@Precio", s.Precio);
-                cmd.Parameters.AddWithValue("@Duracion", s.DuracionMinutos);
-                cmd.Parameters.AddWithValue("@Id", s.Id);
-
-                int filas = cmd.ExecuteNonQuery();
-                return filas > 0;
+                using (var con = ConexionDB.ObtenerConexion())
+                using (var cmd = new SqlCommand(@"
+                    UPDATE Servicios SET Tipo_DeServicio=@Tipo,
+                    Precio=@Precio, DuracionMinutos=@Duracion
+                    WHERE id=@Id", con))
+                {
+                    cmd.Parameters.AddWithValue("@Tipo", s.Tipo_DeServicio);
+                    cmd.Parameters.AddWithValue("@Precio", s.Precio);
+                    cmd.Parameters.AddWithValue("@Duracion", s.DuracionMinutos);
+                    cmd.Parameters.AddWithValue("@Id", s.Id);
+                    return cmd.ExecuteNonQuery() > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al actualizar servicio: " + ex.Message);
             }
         }
 
         public bool Eliminar(int id)
         {
-            using (var con = ConexionDB.ObtenerConexion())
-            using (var cmd = new SqlCommand(
-                "DELETE FROM Servicios WHERE id=@Id", con))
+            try
             {
-                cmd.Parameters.AddWithValue("@Id", id);
-                int filas = cmd.ExecuteNonQuery();
-                return filas > 0;
+                using (var con = ConexionDB.ObtenerConexion())
+                using (var cmd = new SqlCommand(
+                    "DELETE FROM Servicios WHERE id=@Id", con))
+                {
+                    cmd.Parameters.AddWithValue("@Id", id);
+                    return cmd.ExecuteNonQuery() > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al eliminar servicio: " + ex.Message);
             }
         }
     }
