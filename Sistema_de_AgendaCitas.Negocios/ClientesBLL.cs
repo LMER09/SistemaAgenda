@@ -1,5 +1,4 @@
 ﻿using SistemaAgenda.Datos;
-using SistemaAgenda.Datos;
 
 namespace SistemaAgenda.Negocios
 {
