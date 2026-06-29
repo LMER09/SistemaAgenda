@@ -1,4 +1,5 @@
 ﻿using SistemaAgenda.Datos;
+using SistemaAgenda.Datos;
 
 namespace SistemaAgenda.Negocios
 {
@@ -47,4 +48,35 @@ namespace SistemaAgenda.Negocios
             try
             {
                 if (string.IsNullOrWhiteSpace(c.Nombre) ||
-                    string.IsNullOrWhiteSpace(c.Apellido)
+                    string.IsNullOrWhiteSpace(c.Apellido) ||
+                    string.IsNullOrWhiteSpace(c.Telefono) ||
+                    string.IsNullOrWhiteSpace(c.Correo))
+                    return "ERROR: Todos los campos son obligatorios.";
+
+                bool ok = _dal.Actualizar(c);
+                return ok
+                    ? "OK: Cliente actualizado exitosamente."
+                    : "ERROR: No se pudo actualizar en la base de datos.";
+            }
+            catch (Exception ex)
+            {
+                return "ERROR: " + ex.Message;
+            }
+        }
+
+        public string Eliminar(int id)
+        {
+            try
+            {
+                bool ok = _dal.Eliminar(id);
+                return ok
+                    ? "OK: Cliente eliminado exitosamente."
+                    : "ERROR: No se pudo eliminar.";
+            }
+            catch (Exception ex)
+            {
+                return "ERROR: " + ex.Message;
+            }
+        }
+    }
+}
