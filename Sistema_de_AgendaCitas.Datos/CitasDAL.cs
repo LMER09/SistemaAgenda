@@ -4,12 +4,8 @@ namespace SistemaAgenda.Datos
 {
     public class CitasDAL
     {
-       
         public bool Insertar(Citas c)
         {
-
-
-
             try
             {
                 using (var con = ConexionDB.ObtenerConexion())
@@ -32,7 +28,6 @@ namespace SistemaAgenda.Datos
             {
                 throw new Exception("Error al insertar cita: " + ex.Message);
             }
-
 
         }
 
@@ -71,8 +66,6 @@ namespace SistemaAgenda.Datos
 
         public bool Actualizar(Citas c)
         {
-
-
             try
             {
                 using (var con = ConexionDB.ObtenerConexion())

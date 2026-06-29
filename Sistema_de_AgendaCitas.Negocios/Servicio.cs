@@ -4,50 +4,69 @@ using SistemaAgenda.Datos;
 
 namespace SistemaAgenda.Negocios
 {
-    public abstract class ServicioBase
+    //Clase abstracta con metodos abtractos y metodos virtuales
+    public abstract class Servicio
     {
         protected Servicios _servicio;
 
-        public ServicioBase()
+        public Servicio()
         {
             _servicio = new Servicios();
         }
-        public ServicioBase(Servicios servicio)
+        public Servicio(Servicios servicio)
         {
             _servicio = servicio;
         }
+
+        //Metodos abstractos
+        public abstract decimal ServicioCabello();
+        public abstract decimal ServicioUnas();
+        public abstract decimal ServicioSpa();
+
+        //Metodos virtuales
         public virtual decimal CalcularPrecio()=> _servicio.Precio;
         public virtual int CalcularDuracion() => _servicio.DuracionMinutos;
-        public abstract string ObtenerTipo();
+        
     }
-    public class ServicioCabello : ServicioBase
+
+    //Clase nueva creada para implementar los metodos abstractos y la sobreescritura en los metodos virtuales
+    public class GestorServicios : Servicio
     {
-        public ServicioCabello() { }
-        public ServicioCabello(Servicios s) : base(s) { }
-        public override decimal CalcularPrecio() => _servicio.Precio * 1.10m;
-        public override int CalcularDuracion() => _servicio.DuracionMinutos;
-        public override string ObtenerTipo() => "Cabello";
-    }
-    public class ServicioSpa : ServicioBase
-    {
+        public GestorServicios() { }
+        public GestorServicios(Servicios s) : base(s) { }
 
-        public ServicioSpa() { }
-        public ServicioSpa(Servicios s) : base(s) { }
+        // Implementación de los métodos abstractos
+        public override decimal ServicioCabello() => _servicio.Precio * 1.10m;
+        public override decimal ServicioUnas() => _servicio.Precio;
+        public override decimal ServicioSpa()=> _servicio.Precio * 1.15m;
 
-        public override decimal CalcularPrecio() => _servicio.Precio * 1.15m;
-        public override int CalcularDuracion() => _servicio.DuracionMinutos < 60 ? 60 : _servicio.DuracionMinutos;
-        public override string ObtenerTipo() => "Spa";
+        // Sobrescritura de los métodos virtual
+        public override decimal CalcularPrecio()
+        {
+            switch (_servicio.Tipo_DeServicio)
+            {
+                case "Cabello": return ServicioCabello();
 
-    }
-    public class ServicioUnas : ServicioBase
-    {
-        public ServicioUnas() { }
-        public ServicioUnas(Servicios s) : base(s) { }
+                case "Uñas": return ServicioUnas();
 
-        public override decimal CalcularPrecio() => _servicio.Precio;
-        public override int CalcularDuracion() => _servicio.DuracionMinutos < 45 ? 45 : _servicio.DuracionMinutos;
+                case "Spa": return ServicioSpa();
 
-        public override string ObtenerTipo() => "Uñas";
+                default: return _servicio.Precio;
+            }
+        }
+        public override int CalcularDuracion()
+        {
+            switch (_servicio.Tipo_DeServicio)
+            {
+                case "Cabello": return _servicio.DuracionMinutos + 20;
+
+                case "Uñas": return _servicio.DuracionMinutos + 10;
+
+                case "Spa":return _servicio.DuracionMinutos + 30;
+
+                default: return _servicio.DuracionMinutos;
+            }
+        }
 
     }
 

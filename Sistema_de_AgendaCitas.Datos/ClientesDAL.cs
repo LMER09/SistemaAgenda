@@ -75,7 +75,6 @@ namespace SistemaAgenda.Datos
                 throw new Exception("Error al actualizar cliente: " + ex.Message);
             }
         }
-
         public bool Eliminar(int id)
         {
             try
