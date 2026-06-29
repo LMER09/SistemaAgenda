@@ -1,20 +1,26 @@
-﻿using SistemaAgenda.Datos;
-public class Citas
-{
-    public int Id { get; set; } 
-    public int Id_Clientes { get; set; } 
-    public int Id_Servicios { get; set; }
-    public int Id_Estilista { get; set; }
-    public DateTime Fecha { get; set; }
-    public string Estado { get; set; } = string.Empty;
+﻿using System;
 
-    public Citas() {}
-    public Citas(Clientes c, Servicios s, DateTime hora)
+namespace SistemaAgenda.Datos
+{
+    public class Citas
     {
-        Id_Clientes= c.Id;
-        Id_Servicios= s.Id;
-        Fecha= hora;
-        Estado = "Pendiente";
+        public int Id { get; set; }
+        public int Id_Clientes { get; set; }
+        public int Id_Servicios { get; set; }
+        public int Id_Estilista { get; set; }
+        public DateTime Fecha { get; set; }
+        public string Estado { get; set; } = string.Empty;
+
+        public Citas() { }
+        public Citas(Clientes c, Servicios s, DateTime hora)
+        {
+            Id_Clientes = c.Id;
+            Id_Servicios = s.Id;
+            Fecha = hora;
+            Estado = "Pendiente";
+        }
+
     }
 
 }
+
