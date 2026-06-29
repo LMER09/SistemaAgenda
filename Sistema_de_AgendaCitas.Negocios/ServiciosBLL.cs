@@ -60,3 +60,25 @@ namespace SistemaAgenda.Negocios
                     ? "OK: Servicio actualizado exitosamente."
                     : "ERROR: No se pudo actualizar en la base de datos.";
             }
+            catch (Exception ex)
+            {
+                return "ERROR: " + ex.Message;
+            }
+        }
+
+        public string Eliminar(int id)
+        {
+            try
+            {
+                bool ok = _dal.Eliminar(id);
+                return ok
+                    ? "OK: Servicio eliminado exitosamente."
+                    : "ERROR: No se pudo eliminar.";
+            }
+            catch (Exception ex)
+            {
+                return "ERROR: " + ex.Message;
+            }
+        }
+    }
+}
