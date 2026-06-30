@@ -47,7 +47,7 @@
             lblApellido.AutoSize = true;
             lblApellido.Location = new Point(63, 90);
             lblApellido.Name = "lblApellido";
-            lblApellido.Size = new Size(66, 20);
+            lblApellido.Size = new Size(69, 20);
             lblApellido.TabIndex = 1;
             lblApellido.Text = "Apellido:";
             // 
@@ -74,7 +74,7 @@
             lblEspecialidad.AutoSize = true;
             lblEspecialidad.Location = new Point(63, 210);
             lblEspecialidad.Name = "lblEspecialidad";
-            lblEspecialidad.Size = new Size(100, 20);
+            lblEspecialidad.Size = new Size(96, 20);
             lblEspecialidad.TabIndex = 4;
             lblEspecialidad.Text = "Especialidad:";
             // 
@@ -82,6 +82,7 @@
             // 
             txtNombre.Location = new Point(180, 43);
             txtNombre.Name = "txtNombre";
+            txtNombre.PlaceholderText = "Ej: Maria";
             txtNombre.Size = new Size(353, 27);
             txtNombre.TabIndex = 5;
             // 
@@ -89,6 +90,7 @@
             // 
             txtApellido.Location = new Point(180, 83);
             txtApellido.Name = "txtApellido";
+            txtApellido.PlaceholderText = "Ej: Cedano";
             txtApellido.Size = new Size(353, 27);
             txtApellido.TabIndex = 6;
             // 
@@ -96,6 +98,7 @@
             // 
             txtTelefono.Location = new Point(180, 123);
             txtTelefono.Name = "txtTelefono";
+            txtTelefono.PlaceholderText = "809-248-3358";
             txtTelefono.Size = new Size(353, 27);
             txtTelefono.TabIndex = 7;
             // 
@@ -103,6 +106,7 @@
             // 
             txtCorreo.Location = new Point(180, 163);
             txtCorreo.Name = "txtCorreo";
+            txtCorreo.PlaceholderText = "Ej: Maria@gmail.com";
             txtCorreo.Size = new Size(353, 27);
             txtCorreo.TabIndex = 8;
             // 
@@ -110,6 +114,7 @@
             // 
             txtEspecialidad.Location = new Point(180, 203);
             txtEspecialidad.Name = "txtEspecialidad";
+            txtEspecialidad.PlaceholderText = "Ej: Cortes de pelo";
             txtEspecialidad.Size = new Size(353, 27);
             txtEspecialidad.TabIndex = 9;
             // 

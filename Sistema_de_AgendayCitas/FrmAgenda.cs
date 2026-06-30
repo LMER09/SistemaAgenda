@@ -9,6 +9,7 @@ namespace SistemaAgenda.UI
         private readonly ClientesBLL _clientesBLL = new ClientesBLL();
         private readonly ServiciosBLL _serviciosBLL = new ServiciosBLL();
         private readonly EstilistaBLL _estilistaBLL = new EstilistaBLL();
+        private readonly PagosBLL _pagosBLL = new PagosBLL();
 
         private List<Clientes>? _listaClientes;
         private List<Servicios>? _listaServicios;
@@ -136,6 +137,42 @@ namespace SistemaAgenda.UI
         private void btnActualizarLista_Click(object sender, EventArgs e)
         {
             CargarCitas();
+        }
+        // ── Botón Registrar Pago ───────────────────────────────────────
+        private void btnPagar_Click(object sender, EventArgs e)
+        {
+            if (dgvCitas.CurrentRow == null)
+            {
+                MessageBox.Show("Seleccione una cita de la lista.");
+                return;
+            }
+
+            if (cmbMetodoPago.SelectedIndex == -1)
+            {
+                MessageBox.Show("Seleccione un método de pago.");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtMonto.Text))
+            {
+                MessageBox.Show("Ingrese el monto.");
+                return;
+            }
+
+            Pagos pago = new Pagos();
+            pago.Id_Citas = (int)dgvCitas.CurrentRow.Cells["Id"].Value;
+            pago.Monto = Convert.ToDecimal(txtMonto.Text);
+            pago.Metodo_DePago = cmbMetodoPago.Text;
+
+            MessageBox.Show(_pagosBLL.Registrar(pago));
+
+            txtMonto.Clear();
+            cmbMetodoPago.SelectedIndex = -1;
+        }
+
+        private void lblServicios_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

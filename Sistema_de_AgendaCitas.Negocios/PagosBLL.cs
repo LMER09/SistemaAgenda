@@ -1,4 +1,5 @@
 ﻿using SistemaAgenda.Datos;
+using System.Linq;
 
 namespace SistemaAgenda.Negocios
 {
@@ -20,6 +21,22 @@ namespace SistemaAgenda.Negocios
                     return "ERROR: El método de pago es obligatorio.";
 
                 bool ok = _dal.Insertar(p);
+
+                if (ok)
+                {
+                    // Actualizar el estado de la cita a "Completada"
+                    CitasDAL citasDAL = new CitasDAL();
+                    var citas = citasDAL.ObtenerTodos();
+                    var cita = citas.FirstOrDefault(c => c.Id == p.Id_Citas);
+
+                    if (cita != null)
+                    {
+                        cita.Estado = "Completada";
+                        citasDAL.Actualizar(cita);
+                    }
+
+                    return "OK: Pago registrado y cita completada exitosamente.";
+                }
                 return ok
                     ? "OK: Pago registrado exitosamente."
                     : "ERROR: No se pudo guardar en la base de datos.";

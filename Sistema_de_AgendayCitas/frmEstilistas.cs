@@ -105,5 +105,7 @@ namespace SistemaAgenda.UI
                 txtEspecialidad.Text = dgvEstilistas.CurrentRow.Cells["Especialidad"].Value.ToString();
             }
         }
+
+        
     }
 }

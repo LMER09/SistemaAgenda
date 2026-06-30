@@ -28,19 +28,173 @@
         /// </summary>
         private void InitializeComponent()
         {
+            lblTipo = new Label();
+            lblPrecio = new Label();
+            lblDuracion = new Label();
+            lblResultado = new Label();
+            cmbTipo = new ComboBox();
+            txtPrecio = new TextBox();
+            txtDuracion = new TextBox();
+            btnAgregar = new Button();
+            btnEditar = new Button();
+            btnEliminar = new Button();
+            btnCalcular = new Button();
+            dgvServicios = new DataGridView();
+            ((System.ComponentModel.ISupportInitialize)dgvServicios).BeginInit();
             SuspendLayout();
             // 
-            // FrmServicios
+            // lblTipo
+            // 
+            lblTipo.AutoSize = true;
+            lblTipo.Location = new Point(63, 70);
+            lblTipo.Name = "lblTipo";
+            lblTipo.Size = new Size(119, 20);
+            lblTipo.TabIndex = 0;
+            lblTipo.Text = "Tipo de Servicio:";
+            // 
+            // lblPrecio
+            // 
+            lblPrecio.AutoSize = true;
+            lblPrecio.Location = new Point(63, 124);
+            lblPrecio.Name = "lblPrecio";
+            lblPrecio.Size = new Size(53, 20);
+            lblPrecio.TabIndex = 1;
+            lblPrecio.Text = "Precio:";
+            // 
+            // lblDuracion
+            // 
+            lblDuracion.AutoSize = true;
+            lblDuracion.Location = new Point(63, 176);
+            lblDuracion.Name = "lblDuracion";
+            lblDuracion.Size = new Size(111, 20);
+            lblDuracion.TabIndex = 2;
+            lblDuracion.Text = "Duración (min):";
+            // 
+            // lblResultado
+            // 
+            lblResultado.AutoSize = true;
+            lblResultado.Location = new Point(63, 243);
+            lblResultado.Name = "lblResultado";
+            lblResultado.Size = new Size(21, 20);
+            lblResultado.TabIndex = 3;
+            lblResultado.Text = "\"\"";
+            // 
+            // cmbTipo
+            // 
+            cmbTipo.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbTipo.FormattingEnabled = true;
+            cmbTipo.Items.AddRange(new object[] { "Cabello", "Uñas", "Spa" });
+            cmbTipo.Location = new Point(204, 62);
+            cmbTipo.Name = "cmbTipo";
+            cmbTipo.Size = new Size(159, 28);
+            cmbTipo.TabIndex = 4;
+            // 
+            // txtPrecio
+            // 
+            txtPrecio.Location = new Point(142, 117);
+            txtPrecio.Name = "txtPrecio";
+            txtPrecio.PlaceholderText = "Ej: 300";
+            txtPrecio.Size = new Size(125, 27);
+            txtPrecio.TabIndex = 5;
+            // 
+            // txtDuracion
+            // 
+            txtDuracion.Location = new Point(192, 169);
+            txtDuracion.Name = "txtDuracion";
+            txtDuracion.PlaceholderText = "Ej: 60";
+            txtDuracion.Size = new Size(125, 27);
+            txtDuracion.TabIndex = 6;
+            // 
+            // btnAgregar
+            // 
+            btnAgregar.Location = new Point(63, 299);
+            btnAgregar.Name = "btnAgregar";
+            btnAgregar.Size = new Size(94, 29);
+            btnAgregar.TabIndex = 7;
+            btnAgregar.Text = "Agregar";
+            btnAgregar.UseVisualStyleBackColor = true;
+            btnAgregar.Click += btnAgregar_Click;
+            // 
+            // btnEditar
+            // 
+            btnEditar.Location = new Point(192, 296);
+            btnEditar.Name = "btnEditar";
+            btnEditar.Size = new Size(94, 29);
+            btnEditar.TabIndex = 8;
+            btnEditar.Text = "Editar";
+            btnEditar.UseVisualStyleBackColor = true;
+            btnEditar.Click += btnEditar_Click;
+            // 
+            // btnEliminar
+            // 
+            btnEliminar.Location = new Point(331, 296);
+            btnEliminar.Name = "btnEliminar";
+            btnEliminar.Size = new Size(94, 29);
+            btnEliminar.TabIndex = 9;
+            btnEliminar.Text = "Eliminar";
+            btnEliminar.UseVisualStyleBackColor = true;
+            btnEliminar.Click += btnEliminar_Click;
+            // 
+            // btnCalcular
+            // 
+            btnCalcular.Location = new Point(468, 296);
+            btnCalcular.Name = "btnCalcular";
+            btnCalcular.Size = new Size(94, 29);
+            btnCalcular.TabIndex = 10;
+            btnCalcular.Text = "Calcular precio/duracion";
+            btnCalcular.UseVisualStyleBackColor = true;
+            btnCalcular.Click += btnCalcular_Click;
+            // 
+            // dgvServicios
+            // 
+            dgvServicios.AllowUserToAddRows = false;
+            dgvServicios.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvServicios.Location = new Point(63, 343);
+            dgvServicios.Name = "dgvServicios";
+            dgvServicios.ReadOnly = true;
+            dgvServicios.RowHeadersWidth = 51;
+            dgvServicios.Size = new Size(563, 95);
+            dgvServicios.TabIndex = 11;
+            dgvServicios.CellClick += dgvServicios_CellClick;
+            // 
+            // frmServicios
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Name = "FrmServicios";
-            Text = "Form1";
+            Controls.Add(dgvServicios);
+            Controls.Add(btnCalcular);
+            Controls.Add(btnEliminar);
+            Controls.Add(btnEditar);
+            Controls.Add(btnAgregar);
+            Controls.Add(txtDuracion);
+            Controls.Add(txtPrecio);
+            Controls.Add(cmbTipo);
+            Controls.Add(lblResultado);
+            Controls.Add(lblDuracion);
+            Controls.Add(lblPrecio);
+            Controls.Add(lblTipo);
+            Name = "frmServicios";
+            Text = "Servicios";
             Load += FrmServicios_Load;
+            ((System.ComponentModel.ISupportInitialize)dgvServicios).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
+
+        private Label lblTipo;
+        private Label lblPrecio;
+        private Label lblDuracion;
+        private Label lblResultado;
+        private ComboBox cmbTipo;
+        private TextBox txtPrecio;
+        private TextBox txtDuracion;
+        private Button btnAgregar;
+        private Button btnEditar;
+        private Button btnEliminar;
+        private Button btnCalcular;
+        private DataGridView dgvServicios;
     }
 }

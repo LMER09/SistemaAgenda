@@ -12,6 +12,11 @@ namespace SistemaAgenda.Negocios
         private decimal _totalIngresos;
 
         public CorteDia(decimal totalIngresos) => _totalIngresos = totalIngresos;
+        public void Cerrar()
+        {
+            File.AppendAllText("CorteDia.txt",
+                $"=== CORTE DEL DÍA ===\nFecha: {DateTime.Today:dd/MM/yyyy}\nTotal ingresos: RD${_totalIngresos:F2}\n\n");
+        }
 
         ~CorteDia()
         {

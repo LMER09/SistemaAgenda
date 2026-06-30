@@ -46,7 +46,7 @@
             // lblNombre
             // 
             lblNombre.AutoSize = true;
-            lblNombre.Location = new Point(63, 69);
+            lblNombre.Location = new Point(63, 118);
             lblNombre.Name = "lblNombre";
             lblNombre.Size = new Size(67, 20);
             lblNombre.TabIndex = 0;
@@ -55,7 +55,7 @@
             // lblApellido
             // 
             lblApellido.AutoSize = true;
-            lblApellido.Location = new Point(63, 119);
+            lblApellido.Location = new Point(63, 170);
             lblApellido.Name = "lblApellido";
             lblApellido.Size = new Size(66, 20);
             lblApellido.TabIndex = 1;
@@ -64,7 +64,7 @@
             // lblTelefono
             // 
             lblTelefono.AutoSize = true;
-            lblTelefono.Location = new Point(63, 168);
+            lblTelefono.Location = new Point(59, 222);
             lblTelefono.Name = "lblTelefono";
             lblTelefono.Size = new Size(70, 20);
             lblTelefono.TabIndex = 2;
@@ -73,7 +73,7 @@
             // lblCorreo
             // 
             lblCorreo.AutoSize = true;
-            lblCorreo.Location = new Point(63, 217);
+            lblCorreo.Location = new Point(72, 280);
             lblCorreo.Name = "lblCorreo";
             lblCorreo.Size = new Size(57, 20);
             lblCorreo.TabIndex = 3;
@@ -81,35 +81,39 @@
             // 
             // txtNombre
             // 
-            txtNombre.Location = new Point(144, 62);
+            txtNombre.Location = new Point(144, 118);
             txtNombre.Name = "txtNombre";
+            txtNombre.PlaceholderText = "Ej: Luzmairy";
             txtNombre.Size = new Size(353, 27);
             txtNombre.TabIndex = 4;
             // 
             // txtApellido
             // 
-            txtApellido.Location = new Point(144, 112);
+            txtApellido.Location = new Point(144, 170);
             txtApellido.Name = "txtApellido";
+            txtApellido.PlaceholderText = "Ej: Rodriguez";
             txtApellido.Size = new Size(353, 27);
             txtApellido.TabIndex = 5;
             // 
             // txtTelefono
             // 
-            txtTelefono.Location = new Point(144, 161);
+            txtTelefono.Location = new Point(144, 222);
             txtTelefono.Name = "txtTelefono";
+            txtTelefono.PlaceholderText = "Ej: 829-275-3580";
             txtTelefono.Size = new Size(353, 27);
             txtTelefono.TabIndex = 6;
             // 
             // txtCorreo
             // 
-            txtCorreo.Location = new Point(144, 210);
+            txtCorreo.Location = new Point(144, 280);
             txtCorreo.Name = "txtCorreo";
+            txtCorreo.PlaceholderText = "Ej: luz17@gmail.com";
             txtCorreo.Size = new Size(353, 27);
             txtCorreo.TabIndex = 7;
             // 
             // btnAgregar
             // 
-            btnAgregar.Location = new Point(63, 278);
+            btnAgregar.Location = new Point(554, 213);
             btnAgregar.Name = "btnAgregar";
             btnAgregar.Size = new Size(94, 29);
             btnAgregar.TabIndex = 8;
@@ -119,7 +123,7 @@
             // 
             // btnEditar
             // 
-            btnEditar.Location = new Point(220, 278);
+            btnEditar.Location = new Point(674, 213);
             btnEditar.Name = "btnEditar";
             btnEditar.Size = new Size(94, 29);
             btnEditar.TabIndex = 9;
@@ -129,7 +133,7 @@
             // 
             // btnEliminar
             // 
-            btnEliminar.Location = new Point(403, 278);
+            btnEliminar.Location = new Point(811, 213);
             btnEliminar.Name = "btnEliminar";
             btnEliminar.Size = new Size(94, 29);
             btnEliminar.TabIndex = 10;
@@ -140,10 +144,10 @@
             // dgvClientes
             // 
             dgvClientes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvClientes.Location = new Point(37, 336);
+            dgvClientes.Location = new Point(63, 369);
             dgvClientes.Name = "dgvClientes";
             dgvClientes.RowHeadersWidth = 51;
-            dgvClientes.Size = new Size(659, 152);
+            dgvClientes.Size = new Size(920, 247);
             dgvClientes.TabIndex = 11;
             dgvClientes.CellClick += dgvClientes_CellClick;
             // 
@@ -151,7 +155,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 514);
+            ClientSize = new Size(1111, 685);
             Controls.Add(dgvClientes);
             Controls.Add(btnEliminar);
             Controls.Add(btnEditar);
@@ -164,8 +168,9 @@
             Controls.Add(lblTelefono);
             Controls.Add(lblApellido);
             Controls.Add(lblNombre);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
             Name = "frmClientes";
-            Text = "FrmClientes";
+            Text = "Clientes";
             Load += FrmClientes_Load;
             ((System.ComponentModel.ISupportInitialize)dgvClientes).EndInit();
             ResumeLayout(false);
