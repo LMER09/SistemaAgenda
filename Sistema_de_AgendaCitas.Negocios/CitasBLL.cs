@@ -1,4 +1,8 @@
 ﻿using SistemaAgenda.Datos;
+using System;
+using System.Linq;
+using System.Collections.Generic;
+
 namespace SistemaAgenda.Negocios
 {
     public class CitasBLL
@@ -18,6 +22,8 @@ namespace SistemaAgenda.Negocios
         }
 
         //Métodos normales: agendarCita(), cancelarCita(), reprogramarCita()
+
+        // ── AGENDAR CITA ─────────────────────────────────────────────
         public string AgendarCita(Citas c)
         {
 
@@ -33,6 +39,31 @@ namespace SistemaAgenda.Negocios
             catch (Exception ex) { return "ERROR: " + ex.Message; }
 
         }
+
+        // ── CANCELAR CITA ─────────────────────────────────────────────
+        public string CancelarCita(int id)
+        {
+            try
+            {
+                var lista = _dal.ObtenerTodos();
+                var cita = lista.FirstOrDefault(c => c.Id == id);
+
+                if (cita == null)
+                    return "ERROR: Cita no encontrada.";
+
+                cita.Estado = "Cancelada";
+
+                bool ok = _dal.Actualizar(cita);
+                return ok
+                    ? "OK: Cita cancelada exitosamente."
+                    : "ERROR: No se pudo cancelar la cita.";
+            }
+            catch (Exception ex)
+            {
+                return "ERROR: " + ex.Message;
+            }
+        }
+        // ── REPROGRAMAR CITA ──────────────────────────────────────────
         public string ReprogramarCita(int id, DateTime nuevaFecha)
         {
             try
@@ -59,21 +90,6 @@ namespace SistemaAgenda.Negocios
                 return "ERROR: " + ex.Message;
             }
         }
-        public string Eliminar(int id)
-        {
-            try
-            {
-                bool ok = _dal.Eliminar(id);
-                return ok
-                    ? "OK: Cita eliminada exitosamente."
-                    : "ERROR: No se pudo eliminar.";
-            }
-            catch (Exception ex)
-            {
-                return "ERROR: " + ex.Message;
-            }
-        }
-
     }
 
 }

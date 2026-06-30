@@ -6,7 +6,7 @@ namespace SistemaAgenda.Datos
     {
         private static readonly string _cadena =
 
-           @"Server=localhost\SQLEXPRESS;Database=DB_Salon;" +
+           @"Server=(local);Database=DB_Salon;" +
             "Trusted_Connection=True;TrustServerCertificate=True;";
 
         public static SqlConnection ObtenerConexion()
