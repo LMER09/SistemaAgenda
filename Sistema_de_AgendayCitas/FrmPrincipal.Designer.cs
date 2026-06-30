@@ -28,12 +28,72 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Form1";
+            btnAgenda = new Button();
+            btnClientes = new Button();
+            btnReportes = new Button();
+            btnServicios = new Button();
+            SuspendLayout();
+            // 
+            // btnAgenda
+            // 
+            btnAgenda.Location = new Point(73, 97);
+            btnAgenda.Name = "btnAgenda";
+            btnAgenda.Size = new Size(94, 29);
+            btnAgenda.TabIndex = 1;
+            btnAgenda.Text = "Agenda";
+            btnAgenda.UseVisualStyleBackColor = true;
+            btnAgenda.Click += btnAgenda_Click;
+            // 
+            // btnClientes
+            // 
+            btnClientes.Location = new Point(73, 167);
+            btnClientes.Name = "btnClientes";
+            btnClientes.Size = new Size(94, 29);
+            btnClientes.TabIndex = 2;
+            btnClientes.Text = "Clientes";
+            btnClientes.UseVisualStyleBackColor = true;
+            btnClientes.Click += btnClientes_Click;
+            // 
+            // btnReportes
+            // 
+            btnReportes.Location = new Point(273, 167);
+            btnReportes.Name = "btnReportes";
+            btnReportes.Size = new Size(94, 29);
+            btnReportes.TabIndex = 3;
+            btnReportes.Text = "Reportes";
+            btnReportes.UseVisualStyleBackColor = true;
+            btnReportes.Click += btnReportes_Click;
+            // 
+            // btnServicios
+            // 
+            btnServicios.Location = new Point(273, 97);
+            btnServicios.Name = "btnServicios";
+            btnServicios.Size = new Size(94, 29);
+            btnServicios.TabIndex = 4;
+            btnServicios.Text = "Servicios";
+            btnServicios.UseVisualStyleBackColor = true;
+            btnServicios.Click += btnServicios_Click;
+            // 
+            // FrmPrincipal
+            // 
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(681, 334);
+            Controls.Add(btnServicios);
+            Controls.Add(btnReportes);
+            Controls.Add(btnClientes);
+            Controls.Add(btnAgenda);
+            Name = "FrmPrincipal";
+            Text = "Principal";
+            ResumeLayout(false);
         }
 
         #endregion
+
+
+        private Button btnAgenda;
+        private Button btnClientes;
+        private Button btnReportes;
+        private Button btnServicios;
     }
 }

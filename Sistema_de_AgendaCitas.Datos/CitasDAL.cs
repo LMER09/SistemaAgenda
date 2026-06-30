@@ -10,25 +10,24 @@ namespace SistemaAgenda.Datos
             {
                 using (var con = ConexionDB.ObtenerConexion())
                 using (var cmd = new SqlCommand(@"
-                INSERT INTO Citas (id_Clientes, id_Servicios, id_Estilista, Fecha, Estado)
-                VALUES (@IdCliente, @IdServicio, @IdEstilista, @Fecha, @Estado)", con))
+                INSERT INTO Citas (id_Clientes, id_Servicios, id_Estilista, Fecha, Estado, Deposito)
+                VALUES (@IdCliente, @IdServicio, @IdEstilista, @Fecha, @Estado, @Deposito)", con))
                 {
                     cmd.Parameters.AddWithValue("@IdCliente", c.Id_Clientes);
                     cmd.Parameters.AddWithValue("@IdServicio", c.Id_Servicios);
                     cmd.Parameters.AddWithValue("@IdEstilista", c.Id_Estilista);
                     cmd.Parameters.AddWithValue("@Fecha", c.Fecha);
                     cmd.Parameters.AddWithValue("@Estado", c.Estado);
+                    cmd.Parameters.AddWithValue("@Deposito", c.Deposito);
 
                     int filas = cmd.ExecuteNonQuery();
                     return filas > 0;
                 }
-
             }
             catch (Exception ex)
             {
                 throw new Exception("Error al insertar cita: " + ex.Message);
             }
-
         }
 
         public List<Citas> ObtenerTodos()
@@ -38,7 +37,7 @@ namespace SistemaAgenda.Datos
             {
                 using (var con = ConexionDB.ObtenerConexion())
                 using (var cmd = new SqlCommand(
-                    "SELECT id, id_Clientes, id_Servicios, id_Estilista, Fecha, Estado FROM Citas", con))
+                    "SELECT id, id_Clientes, id_Servicios, id_Estilista, Fecha, Estado, Deposito FROM Citas", con))
                 using (var reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
@@ -50,18 +49,17 @@ namespace SistemaAgenda.Datos
                             Id_Servicios = reader.GetInt32(2),
                             Id_Estilista = reader.GetInt32(3),
                             Fecha = reader.GetDateTime(4),
-                            Estado = reader.GetString(5)
+                            Estado = reader.GetString(5),
+                            Deposito = reader.GetDecimal(6)
                         });
                     }
                 }
-               
             }
             catch (Exception ex)
             {
                 throw new Exception("Error al obtener citas: " + ex.Message);
             }
             return lista;
-
         }
 
         public bool Actualizar(Citas c)
@@ -71,7 +69,7 @@ namespace SistemaAgenda.Datos
                 using (var con = ConexionDB.ObtenerConexion())
                 using (var cmd = new SqlCommand(@"
                 UPDATE Citas SET id_Clientes=@IdCliente, id_Servicios=@IdServicio,
-                id_Estilista=@IdEstilista, Fecha=@Fecha, Estado=@Estado
+                id_Estilista=@IdEstilista, Fecha=@Fecha, Estado=@Estado, Deposito=@Deposito
                 WHERE id=@Id", con))
                 {
                     cmd.Parameters.AddWithValue("@IdCliente", c.Id_Clientes);
@@ -79,6 +77,7 @@ namespace SistemaAgenda.Datos
                     cmd.Parameters.AddWithValue("@IdEstilista", c.Id_Estilista);
                     cmd.Parameters.AddWithValue("@Fecha", c.Fecha);
                     cmd.Parameters.AddWithValue("@Estado", c.Estado);
+                    cmd.Parameters.AddWithValue("@Deposito", c.Deposito);
                     cmd.Parameters.AddWithValue("@Id", c.Id);
 
                     int filas = cmd.ExecuteNonQuery();
@@ -108,7 +107,6 @@ namespace SistemaAgenda.Datos
             {
                 throw new Exception("Error al eliminar cita: " + ex.Message);
             }
-
         }
     }
 }

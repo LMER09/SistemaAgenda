@@ -16,5 +16,10 @@ namespace SistemaAgenda.UI
         {
             InitializeComponent();
         }
+
+        private void FrmServicios_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

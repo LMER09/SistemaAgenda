@@ -1,43 +1,12 @@
 ﻿using SistemaAgenda.Datos;
-
 namespace SistemaAgenda.Negocios
 {
     public class CitasBLL
     {
         private readonly CitasDAL _dal = new CitasDAL();
-
-        public string Registrar(Citas c)
-        {
-            try
-            {
-                if (c.Id_Clientes <= 0)
-                    return "ERROR: Debe seleccionar un cliente.";
-
-                if (c.Id_Servicios <= 0)
-                    return "ERROR: Debe seleccionar un servicio.";
-
-                if (c.Id_Estilista <= 0)
-                    return "ERROR: Debe seleccionar una estilista.";
-
-                if (c.Fecha < DateTime.Now)
-                    return "ERROR: La fecha no puede ser en el pasado.";
-
-                if (string.IsNullOrWhiteSpace(c.Estado))
-                    return "ERROR: El estado es obligatorio.";
-
-                bool ok = _dal.Insertar(c);
-                return ok
-                    ? "OK: Cita registrada exitosamente."
-                    : "ERROR: No se pudo guardar en la base de datos.";
-            }
-            catch (Exception ex)
-            {
-                return "ERROR: " + ex.Message;
-            }
-        }
-
         public List<Citas> ObtenerTodos()
         {
+
             try
             {
                 return _dal.ObtenerTodos();
@@ -48,27 +17,48 @@ namespace SistemaAgenda.Negocios
             }
         }
 
-        public string Actualizar(Citas c)
+        //Métodos normales: agendarCita(), cancelarCita(), reprogramarCita()
+        public string AgendarCita(Citas c)
+        {
+
+            try
+            {
+                if (c.Id_Clientes <= 0) { return "ERROR: Debe seleccionar un cliente."; }
+                if (c.Id_Servicios <= 0) { return "ERROR: Debe seleccionar un servicio."; }
+                if (c.Fecha < DateTime.Now) { return "ERROR: La fecha no puede ser en el pasado."; }
+                c.Estado = "Pendiente";
+                bool ok = _dal.Insertar(c);
+                return ok ? "OK: Cita agendada exitosamente." : "ERROR: No se pudo agendar la cita.";
+            }
+            catch (Exception ex) { return "ERROR: " + ex.Message; }
+
+        }
+        public string ReprogramarCita(int id, DateTime nuevaFecha)
         {
             try
             {
-                if (c.Id_Clientes <= 0 || c.Id_Servicios <= 0 || c.Id_Estilista <= 0)
-                    return "ERROR: Todos los campos son obligatorios.";
+                if (nuevaFecha < DateTime.Now)
+                    return "ERROR: La nueva fecha no puede ser en el pasado.";
 
-                if (string.IsNullOrWhiteSpace(c.Estado))
-                    return "ERROR: El estado es obligatorio.";
+                var lista = _dal.ObtenerTodos();
+                var cita = lista.FirstOrDefault(c => c.Id == id);
 
-                bool ok = _dal.Actualizar(c);
+                if (cita == null)
+                    return "ERROR: Cita no encontrada.";
+
+                cita.Fecha = nuevaFecha;
+                cita.Estado = "Reprogramada";
+
+                bool ok = _dal.Actualizar(cita);
                 return ok
-                    ? "OK: Cita actualizada exitosamente."
-                    : "ERROR: No se pudo actualizar en la base de datos.";
+                    ? "OK: Cita reprogramada exitosamente."
+                    : "ERROR: No se pudo reprogramar la cita.";
             }
             catch (Exception ex)
             {
                 return "ERROR: " + ex.Message;
             }
         }
-
         public string Eliminar(int id)
         {
             try
@@ -83,5 +73,7 @@ namespace SistemaAgenda.Negocios
                 return "ERROR: " + ex.Message;
             }
         }
+
     }
+
 }

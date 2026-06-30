@@ -1,3 +1,5 @@
+using SistemaAgenda.UI;
+
 namespace Sistema_de_AgendayCitas
 {
     internal static class Program
@@ -11,7 +13,7 @@ namespace Sistema_de_AgendayCitas
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new FrmAgenda());
+            Application.Run(new FrmPrincipal());
         }
     }
 }

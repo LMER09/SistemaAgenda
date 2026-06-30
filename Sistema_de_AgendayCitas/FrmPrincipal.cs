@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Sistema_de_AgendayCitas;
+using System;
 using System.Windows.Forms;
 
 namespace SistemaAgenda.UI
@@ -15,6 +9,29 @@ namespace SistemaAgenda.UI
         public FrmPrincipal()
         {
             InitializeComponent();
+        }
+        private void btnAgenda_Click(object sender, EventArgs e)
+        {
+            AbrirFormulario(new FrmAgenda());
+        }
+
+        private void btnClientes_Click(object sender, EventArgs e)
+        {
+            AbrirFormulario(new FrmClientes());
+        }
+
+        private void btnServicios_Click(object sender, EventArgs e)
+        {
+            AbrirFormulario(new FrmServicios());
+        }
+
+        private void btnReportes_Click(object sender, EventArgs e)
+        {
+            AbrirFormulario(new FrmReportes());
+        }
+        private void AbrirFormulario(Form formulario)
+        {
+            formulario.Show();
         }
     }
 }

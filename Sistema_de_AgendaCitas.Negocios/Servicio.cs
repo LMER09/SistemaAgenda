@@ -30,10 +30,10 @@ namespace SistemaAgenda.Negocios
     }
 
     //Clase nueva creada para implementar los metodos abstractos y la sobreescritura en los metodos virtuales
-    public class GestorServicios : Servicio
+    public class Gestion_DeServicios : Servicio
     {
-        public GestorServicios() { }
-        public GestorServicios(Servicios s) : base(s) { }
+        public Gestion_DeServicios() { }
+        public Gestion_DeServicios(Servicios s) : base(s) { }
 
         // Implementación de los métodos abstractos
         public override decimal ServicioCabello() => _servicio.Precio * 1.10m;
