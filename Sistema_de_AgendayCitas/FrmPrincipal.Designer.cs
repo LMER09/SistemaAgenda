@@ -1,6 +1,6 @@
 ﻿namespace SistemaAgenda.UI
 {
-    partial class FrmPrincipal
+    partial class frmPrincipal
     {
         /// <summary>
         /// Required designer variable.
@@ -83,7 +83,7 @@
             Controls.Add(btnReportes);
             Controls.Add(btnClientes);
             Controls.Add(btnAgenda);
-            Name = "FrmPrincipal";
+            Name = "frmPrincipal";
             Text = "Principal";
             ResumeLayout(false);
         }

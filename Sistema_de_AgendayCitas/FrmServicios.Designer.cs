@@ -1,6 +1,6 @@
 ﻿namespace SistemaAgenda.UI
 {
-    partial class FrmServicios
+    partial class frmServicios
     {
         /// <summary>
         /// Required designer variable.

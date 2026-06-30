@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace SistemaAgenda.UI
 {
-    public partial class FrmServicios : Form
+    public partial class frmServicios : Form
     {
-        public FrmServicios()
+        public frmServicios()
         {
             InitializeComponent();
         }

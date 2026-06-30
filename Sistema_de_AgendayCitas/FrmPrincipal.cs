@@ -4,30 +4,30 @@ using System.Windows.Forms;
 
 namespace SistemaAgenda.UI
 {
-    public partial class FrmPrincipal : Form
+    public partial class frmPrincipal : Form
     {
-        public FrmPrincipal()
+        public frmPrincipal()
         {
             InitializeComponent();
         }
         private void btnAgenda_Click(object sender, EventArgs e)
         {
-            AbrirFormulario(new FrmAgenda());
+            AbrirFormulario(new frmAgenda());
         }
 
         private void btnClientes_Click(object sender, EventArgs e)
         {
-            AbrirFormulario(new FrmClientes());
+            AbrirFormulario(new frmClientes());
         }
 
         private void btnServicios_Click(object sender, EventArgs e)
         {
-            AbrirFormulario(new FrmServicios());
+            AbrirFormulario(new frmServicios());
         }
 
         private void btnReportes_Click(object sender, EventArgs e)
         {
-            AbrirFormulario(new FrmReportes());
+            AbrirFormulario(new frmReportes());
         }
         private void AbrirFormulario(Form formulario)
         {

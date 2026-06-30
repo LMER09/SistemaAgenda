@@ -10,11 +10,16 @@ using System.Windows.Forms;
 
 namespace SistemaAgenda.UI
 {
-    public partial class FrmClientes : Form
+    public partial class frmClientes : Form
     {
-        public FrmClientes()
+        public frmClientes()
         {
             InitializeComponent();
+        }
+
+        private void FrmClientes_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

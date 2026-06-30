@@ -1,8 +1,8 @@
 namespace Sistema_de_AgendayCitas
 {
-    public partial class FrmAgenda : Form
+    public partial class frmAgenda : Form
     {
-        public FrmAgenda()
+        public frmAgenda()
         {
             InitializeComponent();
         }

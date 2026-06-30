@@ -10,11 +10,16 @@ using System.Windows.Forms;
 
 namespace SistemaAgenda.UI
 {
-    public partial class FrmReportes : Form
+    public partial class frmReportes : Form
     {
-        public FrmReportes()
+        public frmReportes()
         {
             InitializeComponent();
+        }
+
+        private void FrmReportes_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

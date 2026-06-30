@@ -1,6 +1,6 @@
 ﻿namespace Sistema_de_AgendayCitas
 {
-    partial class FrmAgenda
+    partial class frmAgenda
     {
         /// <summary>
         ///  Required designer variable.
