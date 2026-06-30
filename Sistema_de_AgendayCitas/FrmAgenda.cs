@@ -1,7 +1,7 @@
 using SistemaAgenda.Datos;
 using SistemaAgenda.Negocios;
 
-namespace Sistema_de_AgendayCitas
+namespace SistemaAgenda.UI
 {
     public partial class frmAgenda : Form
     {

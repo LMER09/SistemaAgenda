@@ -29,6 +29,10 @@ namespace SistemaAgenda.UI
         {
             AbrirFormulario(new frmReportes());
         }
+        private void btnEstilistas_Click(object sender, EventArgs e)
+        {
+            AbrirFormulario(new frmEstilistas());
+        }
         private void AbrirFormulario(Form formulario)
         {
             formulario.Show();

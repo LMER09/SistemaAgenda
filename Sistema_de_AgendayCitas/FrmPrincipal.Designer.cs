@@ -32,6 +32,7 @@
             btnClientes = new Button();
             btnReportes = new Button();
             btnServicios = new Button();
+            btnEstilistas = new Button();
             SuspendLayout();
             // 
             // btnAgenda
@@ -74,11 +75,22 @@
             btnServicios.UseVisualStyleBackColor = true;
             btnServicios.Click += btnServicios_Click;
             // 
-            // FrmPrincipal
+            // btnEstilistas
+            // 
+            btnEstilistas.Location = new Point(73, 240);
+            btnEstilistas.Name = "btnEstilistas";
+            btnEstilistas.Size = new Size(94, 29);
+            btnEstilistas.TabIndex = 5;
+            btnEstilistas.Text = "Estilistas";
+            btnEstilistas.UseVisualStyleBackColor = true;
+            btnEstilistas.Click += btnEstilistas_Click;
+            // 
+            // frmPrincipal
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(681, 334);
+            Controls.Add(btnEstilistas);
             Controls.Add(btnServicios);
             Controls.Add(btnReportes);
             Controls.Add(btnClientes);
@@ -95,5 +107,6 @@
         private Button btnClientes;
         private Button btnReportes;
         private Button btnServicios;
+        private Button btnEstilistas;
     }
 }

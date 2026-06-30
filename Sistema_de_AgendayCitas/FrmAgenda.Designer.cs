@@ -1,4 +1,4 @@
-﻿namespace Sistema_de_AgendayCitas
+﻿namespace SistemaAgenda.UI
 {
     partial class frmAgenda
     {
@@ -140,6 +140,7 @@
             btnCancelar.TabIndex = 10;
             btnCancelar.Text = "Cancelar";
             btnCancelar.UseVisualStyleBackColor = true;
+            btnCancelar.Click += btnCancelar_Click;
             // 
             // btnReprogramar
             // 
@@ -149,6 +150,7 @@
             btnReprogramar.TabIndex = 11;
             btnReprogramar.Text = "Reprogramar";
             btnReprogramar.UseVisualStyleBackColor = true;
+            btnReprogramar.Click += btnReprogramar_Click;
             // 
             // btnActualizarLista
             // 
@@ -158,6 +160,7 @@
             btnActualizarLista.TabIndex = 12;
             btnActualizarLista.Text = "Actualizar lista";
             btnActualizarLista.UseVisualStyleBackColor = true;
+            btnActualizarLista.Click += btnActualizarLista_Click;
             // 
             // lblFecha
             // 
@@ -198,7 +201,7 @@
             Controls.Add(cmbServicios);
             Controls.Add(cmbClientes);
             Name = "frmAgenda";
-            Text = "Form1";
+            Text = "Agenda";
             Load += Form1_Load;
             ((System.ComponentModel.ISupportInitialize)dgvCitas).EndInit();
             ResumeLayout(false);
