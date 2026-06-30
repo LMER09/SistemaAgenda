@@ -28,7 +28,7 @@
             lblTitulo.AutoSize = true;
             lblTitulo.Location = new Point(37, 30);
             lblTitulo.Name = "lblTitulo";
-            lblTitulo.Size = new Size(180, 20);
+            lblTitulo.Size = new Size(175, 20);
             lblTitulo.TabIndex = 0;
             lblTitulo.Text = "Total de ingresos del día:";
             // 
@@ -37,7 +37,7 @@
             lblTotal.AutoSize = true;
             lblTotal.Location = new Point(37, 60);
             lblTotal.Name = "lblTotal";
-            lblTotal.Size = new Size(0, 20);
+            lblTotal.Size = new Size(68, 20);
             lblTotal.TabIndex = 1;
             lblTotal.Text = "RD$ 0.00";
             // 
@@ -59,13 +59,14 @@
             dgvPagos.Name = "dgvPagos";
             dgvPagos.ReadOnly = true;
             dgvPagos.RowHeadersWidth = 51;
-            dgvPagos.Size = new Size(700, 250);
+            dgvPagos.Size = new Size(656, 250);
             dgvPagos.TabIndex = 3;
             // 
             // frmReportes
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.LavenderBlush;
             ClientSize = new Size(800, 450);
             Controls.Add(dgvPagos);
             Controls.Add(btnCorteDia);
@@ -79,7 +80,7 @@
             PerformLayout();
         }
 
-       
+
 
         private Label lblTitulo;
         private Label lblTotal;

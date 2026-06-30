@@ -98,7 +98,7 @@
             // 
             txtTelefono.Location = new Point(180, 123);
             txtTelefono.Name = "txtTelefono";
-            txtTelefono.PlaceholderText = "809-248-3358";
+            txtTelefono.PlaceholderText = "Ej: 000-000-0000";
             txtTelefono.Size = new Size(353, 27);
             txtTelefono.TabIndex = 7;
             // 
