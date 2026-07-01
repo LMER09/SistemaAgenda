@@ -58,11 +58,11 @@ namespace SistemaAgenda.Negocios
         {
             switch (_servicio.Tipo_DeServicio)
             {
-                case "Cabello": return _servicio.DuracionMinutos + 20;
+                case "Cabello": return _servicio.DuracionMinutos + 3;
 
-                case "Uñas": return _servicio.DuracionMinutos + 10;
+                case "Uñas": return _servicio.DuracionMinutos + 5;
 
-                case "Spa":return _servicio.DuracionMinutos + 30;
+                case "Spa":return _servicio.DuracionMinutos + 10;
 
                 default: return _servicio.DuracionMinutos;
             }

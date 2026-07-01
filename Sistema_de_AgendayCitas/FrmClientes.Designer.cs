@@ -69,6 +69,7 @@
             lblTelefono.Size = new Size(72, 20);
             lblTelefono.TabIndex = 2;
             lblTelefono.Text = "Teléfono:";
+            txtTelefono.KeyPress += txtTelefono_KeyPress;
             // 
             // lblCorreo
             // 

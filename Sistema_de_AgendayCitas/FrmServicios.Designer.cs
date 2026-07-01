@@ -60,6 +60,7 @@
             lblPrecio.Size = new Size(56, 20);
             lblPrecio.TabIndex = 1;
             lblPrecio.Text = "Precio:";
+            txtPrecio.KeyPress += txtPrecio_KeyPress;
             // 
             // lblDuracion
             // 
@@ -69,6 +70,7 @@
             lblDuracion.Size = new Size(116, 20);
             lblDuracion.TabIndex = 2;
             lblDuracion.Text = "Duración (min):";
+            txtDuracion.KeyPress += txtDuracion_KeyPress;
             // 
             // lblResultado
             // 

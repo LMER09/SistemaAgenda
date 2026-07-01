@@ -167,6 +167,7 @@
             Name = "frmPrincipal";
             Text = "Sistema de Agenda y Citas";
             TransparencyKey = Color.White;
+            Load += frmPrincipal_Load;
             ((System.ComponentModel.ISupportInitialize)picLogo).EndInit();
             ResumeLayout(false);
             PerformLayout();

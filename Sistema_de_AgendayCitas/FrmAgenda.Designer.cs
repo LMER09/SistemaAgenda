@@ -267,6 +267,7 @@
             txtMonto.PlaceholderText = "Ej: 200";
             txtMonto.Size = new Size(201, 27);
             txtMonto.TabIndex = 18;
+            txtMonto.Click += key;
             // 
             // lblMonto
             // 
@@ -276,6 +277,7 @@
             lblMonto.Size = new Size(59, 20);
             lblMonto.TabIndex = 16;
             lblMonto.Text = "Monto:";
+            txtMonto.KeyPress += txtMonto_KeyPress;
             // 
             // frmAgenda
             // 

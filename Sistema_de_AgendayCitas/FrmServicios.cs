@@ -108,7 +108,19 @@ namespace SistemaAgenda.UI
                 txtDuracion.Text = dgvServicios.CurrentRow.Cells["DuracionMinutos"].Value.ToString();
             }
         }
+        private void txtPrecio_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != '.' && e.KeyChar != (char)Keys.Back)
+                e.Handled = true;
 
-        
+            if (e.KeyChar == '.' && txtPrecio.Text.Contains('.'))
+                e.Handled = true;
+        }
+        private void txtDuracion_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back)
+                e.Handled = true;
+        }
+
     }
 }

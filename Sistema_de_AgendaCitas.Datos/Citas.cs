@@ -14,7 +14,7 @@ namespace SistemaAgenda.Datos
 
         public Citas()
         {
-            Deposito = 250m;
+            Deposito = 0;
         }
         public Citas(Clientes c, Servicios s, DateTime hora)
         {
@@ -22,7 +22,7 @@ namespace SistemaAgenda.Datos
             Id_Servicios = s.Id;
             Fecha = hora;
             Estado = "Pendiente";
-            Deposito = 250m;
+            Deposito = 0; // se asignará desde el formulario
         }
 
     }

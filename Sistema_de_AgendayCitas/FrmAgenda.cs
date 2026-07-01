@@ -10,6 +10,7 @@ namespace SistemaAgenda.UI
         private readonly ServiciosBLL _serviciosBLL = new ServiciosBLL();
         private readonly EstilistaBLL _estilistaBLL = new EstilistaBLL();
         private readonly PagosBLL _pagosBLL = new PagosBLL();
+        private readonly RecordatorioCitas _recordatorio = new RecordatorioCitas();
 
         private List<Clientes>? _listaClientes;
         private List<Servicios>? _listaServicios;
@@ -22,8 +23,16 @@ namespace SistemaAgenda.UI
 
         private void frmAgenda_Load(object sender, EventArgs e)
         {
+            // Suscribirse al evento del recordatorio
+            _recordatorio.RecordatorioDisparado += (mensaje) => MessageBox.Show(mensaje, "Recordatorio");
+
+            // Verificar citas próximas al cargar el formulario
+            var citas = _citasBLL.ObtenerTodos();
+            _recordatorio.RevisarCitasProximas(citas);
+
             CargarCombos();
             CargarCitas();
+
         }
 
         // ── Cargar los ComboBox con datos de la BD ────────────────────
@@ -187,5 +196,21 @@ namespace SistemaAgenda.UI
 
             lblDeposito.Text = "Depósito requerido: RD$" + deposito.ToString("F2");
         }
+        private void txtMonto_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != '.' && e.KeyChar != (char)Keys.Back)
+                e.Handled = true;
+
+            // Solo un punto decimal
+            if (e.KeyChar == '.' && txtMonto.Text.Contains('.'))
+                e.Handled = true;
+        }
+
+        private void key(object sender, EventArgs e)
+        {
+
+        }
     }
+
+
 }

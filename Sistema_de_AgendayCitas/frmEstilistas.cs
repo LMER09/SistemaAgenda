@@ -105,7 +105,11 @@ namespace SistemaAgenda.UI
                 txtEspecialidad.Text = dgvEstilistas.CurrentRow.Cells["Especialidad"].Value.ToString();
             }
         }
+        private void txtTelefono_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != '-' && e.KeyChar != (char)Keys.Back)
+                e.Handled = true;
+        }
 
-        
     }
 }

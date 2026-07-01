@@ -37,9 +37,8 @@ namespace SistemaAgenda.Negocios
 
                     return "OK: Pago registrado y cita completada exitosamente.";
                 }
-                return ok
-                    ? "OK: Pago registrado exitosamente."
-                    : "ERROR: No se pudo guardar en la base de datos.";
+                if (ok) { return "OK: Pago registrado y cita completada."; }
+                return "ERROR: No se pudo guardar en la base de datos.";
             }
             catch (Exception ex)
             {
