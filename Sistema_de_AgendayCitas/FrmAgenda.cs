@@ -20,7 +20,7 @@ namespace SistemaAgenda.UI
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void frmAgenda_Load(object sender, EventArgs e)
         {
             CargarCombos();
             CargarCitas();
@@ -31,18 +31,18 @@ namespace SistemaAgenda.UI
         {
             _listaClientes = _clientesBLL.ObtenerTodos();
             cmbClientes.Items.Clear();
-            foreach (var c in _listaClientes)
-                cmbClientes.Items.Add(c.Nombre + " " + c.Apellido);
+            for (int i = 0; i < _listaClientes.Count; i++)
+                cmbClientes.Items.Add(_listaClientes[i].Nombre + " " + _listaClientes[i].Apellido);
 
             _listaServicios = _serviciosBLL.ObtenerTodos();
             cmbServicios.Items.Clear();
-            foreach (var s in _listaServicios)
-                cmbServicios.Items.Add(s.Tipo_DeServicio);
+            for (int i = 0; i < _listaServicios.Count; i++)
+                cmbServicios.Items.Add(_listaServicios[i].Tipo_DeServicio);
 
             _listaEstilistas = _estilistaBLL.ObtenerTodos();
             cmbEstilistas.Items.Clear();
-            foreach (var es in _listaEstilistas)
-                cmbEstilistas.Items.Add(es.Nombre + " " + es.Apellido);
+            for (int i = 0; i < _listaEstilistas.Count; i++)
+                cmbEstilistas.Items.Add(_listaEstilistas[i].Nombre + " " + _listaEstilistas[i].Apellido);
         }
 
         // ── Cargar el DataGridView con las citas ──────────────────────
@@ -89,8 +89,12 @@ namespace SistemaAgenda.UI
             Servicios servicioSeleccionado = _listaServicios[cmbServicios.SelectedIndex];
             Estilista estilistaSeleccionada = _listaEstilistas[cmbEstilistas.SelectedIndex];
 
+            Gestion_DeServicios gestor = new Gestion_DeServicios(servicioSeleccionado);
+            decimal deposito = gestor.CalcularPrecio() * 0.20m;
+
             Citas nuevaCita = new Citas(clienteSeleccionado, servicioSeleccionado, ObtenerFechaHoraSeleccionada());
             nuevaCita.Id_Estilista = estilistaSeleccionada.Id;
+            nuevaCita.Deposito = deposito;
 
             string resultado = _citasBLL.AgendarCita(nuevaCita);
 
@@ -138,6 +142,7 @@ namespace SistemaAgenda.UI
         {
             CargarCitas();
         }
+
         // ── Botón Registrar Pago ───────────────────────────────────────
         private void btnPagar_Click(object sender, EventArgs e)
         {
@@ -170,9 +175,17 @@ namespace SistemaAgenda.UI
             cmbMetodoPago.SelectedIndex = -1;
         }
 
-        private void lblServicios_Click(object sender, EventArgs e)
+        private void cmbServicios_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (cmbServicios.SelectedIndex == -1) return;
 
+            Servicios servicioSeleccionado = _listaServicios[cmbServicios.SelectedIndex];
+            Gestion_DeServicios gestor = new Gestion_DeServicios(servicioSeleccionado);
+
+            decimal precioFinal = gestor.CalcularPrecio();
+            decimal deposito = precioFinal * 0.20m;
+
+            lblDeposito.Text = "Depósito requerido: RD$" + deposito.ToString("F2");
         }
     }
 }
