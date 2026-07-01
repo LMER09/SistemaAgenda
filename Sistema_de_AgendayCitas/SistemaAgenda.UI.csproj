@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="j3uudtqg.1pn~" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Sistema_de_AgendaCitas.Datos\SistemaAgenda.Datos.csproj" />
     <ProjectReference Include="..\Sistema_de_AgendaCitas.Negocios\SistemaAgenda.Negocios.csproj" />
   </ItemGroup>

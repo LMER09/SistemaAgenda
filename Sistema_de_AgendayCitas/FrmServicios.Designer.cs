@@ -40,13 +40,14 @@
             btnEliminar = new Button();
             btnCalcular = new Button();
             dgvServicios = new DataGridView();
+            lblElijaS = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvServicios).BeginInit();
             SuspendLayout();
             // 
             // lblTipo
             // 
             lblTipo.AutoSize = true;
-            lblTipo.Location = new Point(71, 114);
+            lblTipo.Location = new Point(40, 109);
             lblTipo.Name = "lblTipo";
             lblTipo.Size = new Size(123, 20);
             lblTipo.TabIndex = 0;
@@ -55,61 +56,65 @@
             // lblPrecio
             // 
             lblPrecio.AutoSize = true;
-            lblPrecio.Location = new Point(71, 154);
+            lblPrecio.Location = new Point(40, 142);
             lblPrecio.Name = "lblPrecio";
             lblPrecio.Size = new Size(56, 20);
             lblPrecio.TabIndex = 1;
             lblPrecio.Text = "Precio:";
-            txtPrecio.KeyPress += txtPrecio_KeyPress;
             // 
             // lblDuracion
             // 
             lblDuracion.AutoSize = true;
-            lblDuracion.Location = new Point(71, 190);
+            lblDuracion.Location = new Point(40, 175);
             lblDuracion.Name = "lblDuracion";
             lblDuracion.Size = new Size(116, 20);
             lblDuracion.TabIndex = 2;
             lblDuracion.Text = "Duración (min):";
-            txtDuracion.KeyPress += txtDuracion_KeyPress;
             // 
             // lblResultado
             // 
             lblResultado.AutoSize = true;
-            lblResultado.Location = new Point(412, 114);
+            lblResultado.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblResultado.ForeColor = Color.DeepPink;
+            lblResultado.Location = new Point(40, 233);
             lblResultado.Name = "lblResultado";
-            lblResultado.Size = new Size(23, 20);
+            lblResultado.Size = new Size(146, 20);
             lblResultado.TabIndex = 3;
-            lblResultado.Text = "\"\"";
+            lblResultado.Text = "Calculo del servicio:";
             // 
             // cmbTipo
             // 
             cmbTipo.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbTipo.FormattingEnabled = true;
             cmbTipo.Items.AddRange(new object[] { "Cabello", "Uñas", "Spa" });
-            cmbTipo.Location = new Point(216, 106);
+            cmbTipo.Location = new Point(179, 101);
             cmbTipo.Name = "cmbTipo";
             cmbTipo.Size = new Size(178, 28);
             cmbTipo.TabIndex = 4;
             // 
             // txtPrecio
             // 
-            txtPrecio.Location = new Point(216, 147);
+            txtPrecio.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtPrecio.Location = new Point(179, 135);
             txtPrecio.Name = "txtPrecio";
             txtPrecio.PlaceholderText = "Ej: 300";
-            txtPrecio.Size = new Size(140, 27);
+            txtPrecio.Size = new Size(178, 27);
             txtPrecio.TabIndex = 5;
+            txtPrecio.KeyPress += txtPrecio_KeyPress;
             // 
             // txtDuracion
             // 
-            txtDuracion.Location = new Point(216, 183);
+            txtDuracion.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtDuracion.Location = new Point(179, 168);
             txtDuracion.Name = "txtDuracion";
             txtDuracion.PlaceholderText = "Ej: 60";
-            txtDuracion.Size = new Size(140, 27);
+            txtDuracion.Size = new Size(178, 27);
             txtDuracion.TabIndex = 6;
+            txtDuracion.KeyPress += txtDuracion_KeyPress;
             // 
             // btnAgregar
             // 
-            btnAgregar.Location = new Point(71, 244);
+            btnAgregar.Location = new Point(40, 288);
             btnAgregar.Name = "btnAgregar";
             btnAgregar.Size = new Size(106, 29);
             btnAgregar.TabIndex = 7;
@@ -119,7 +124,7 @@
             // 
             // btnEditar
             // 
-            btnEditar.Location = new Point(251, 244);
+            btnEditar.Location = new Point(169, 288);
             btnEditar.Name = "btnEditar";
             btnEditar.Size = new Size(106, 29);
             btnEditar.TabIndex = 8;
@@ -129,7 +134,7 @@
             // 
             // btnEliminar
             // 
-            btnEliminar.Location = new Point(412, 244);
+            btnEliminar.Location = new Point(311, 288);
             btnEliminar.Name = "btnEliminar";
             btnEliminar.Size = new Size(106, 29);
             btnEliminar.TabIndex = 9;
@@ -139,7 +144,7 @@
             // 
             // btnCalcular
             // 
-            btnCalcular.Location = new Point(583, 244);
+            btnCalcular.Location = new Point(436, 288);
             btnCalcular.Name = "btnCalcular";
             btnCalcular.Size = new Size(112, 29);
             btnCalcular.TabIndex = 10;
@@ -151,20 +156,31 @@
             // 
             dgvServicios.AllowUserToAddRows = false;
             dgvServicios.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvServicios.Location = new Point(71, 292);
+            dgvServicios.Location = new Point(40, 345);
             dgvServicios.Name = "dgvServicios";
             dgvServicios.ReadOnly = true;
             dgvServicios.RowHeadersWidth = 51;
-            dgvServicios.Size = new Size(624, 127);
+            dgvServicios.Size = new Size(554, 127);
             dgvServicios.TabIndex = 11;
             dgvServicios.CellClick += dgvServicios_CellClick;
+            // 
+            // lblElijaS
+            // 
+            lblElijaS.AutoSize = true;
+            lblElijaS.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblElijaS.Location = new Point(40, 39);
+            lblElijaS.Name = "lblElijaS";
+            lblElijaS.Size = new Size(365, 23);
+            lblElijaS.TabIndex = 12;
+            lblElijaS.Text = "Elija un servicio, precio y duracion del servicio:";
             // 
             // frmServicios
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.LavenderBlush;
-            ClientSize = new Size(763, 450);
+            ClientSize = new Size(679, 497);
+            Controls.Add(lblElijaS);
             Controls.Add(dgvServicios);
             Controls.Add(btnCalcular);
             Controls.Add(btnEliminar);
@@ -200,5 +216,6 @@
         private Button btnEliminar;
         private Button btnCalcular;
         private DataGridView dgvServicios;
+        private Label lblElijaS;
     }
 }

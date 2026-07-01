@@ -1,5 +1,4 @@
-﻿using Sistema_de_AgendayCitas;
-using System;
+﻿using System;
 using System.Windows.Forms;
 
 namespace SistemaAgenda.UI
@@ -38,5 +37,9 @@ namespace SistemaAgenda.UI
             formulario.Show();
         }
 
+        private void frmPrincipal_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -20,7 +20,14 @@ namespace SistemaAgenda.UI
         {
             InitializeComponent();
         }
-
+        private void Limpiar()
+        {
+            cmbClientes.SelectedIndex = -1;
+            cmbServicios.SelectedIndex = -1;
+            cmbEstilistas.SelectedIndex = -1;
+            cmbMetodoPago.SelectedIndex = -1;
+            txtMonto.Clear();
+        }
         private void frmAgenda_Load(object sender, EventArgs e)
         {
             // Suscribirse al evento del recordatorio
@@ -31,6 +38,7 @@ namespace SistemaAgenda.UI
             _recordatorio.RevisarCitasProximas(citas);
 
             CargarCombos();
+            Limpiar();
             CargarCitas();
 
         }
@@ -111,6 +119,7 @@ namespace SistemaAgenda.UI
             if (resultado.StartsWith("OK"))
             {
                 CargarCitas();
+                Limpiar();
             }
         }
 
@@ -128,6 +137,7 @@ namespace SistemaAgenda.UI
 
             MessageBox.Show(resultado);
             CargarCitas();
+            Limpiar();
         }
 
         // ── Botón Reprogramar ──────────────────────────────────────────
@@ -144,6 +154,7 @@ namespace SistemaAgenda.UI
 
             MessageBox.Show(resultado);
             CargarCitas();
+            Limpiar();
         }
 
         // ── Botón Actualizar Lista ──────────────────────────────────────
@@ -182,11 +193,13 @@ namespace SistemaAgenda.UI
 
             txtMonto.Clear();
             cmbMetodoPago.SelectedIndex = -1;
+            Limpiar();
         }
 
         private void cmbServicios_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cmbServicios.SelectedIndex == -1) return;
+            if (cmbServicios.SelectedIndex == -1)
+                return;
 
             Servicios servicioSeleccionado = _listaServicios[cmbServicios.SelectedIndex];
             Gestion_DeServicios gestor = new Gestion_DeServicios(servicioSeleccionado);
@@ -194,7 +207,10 @@ namespace SistemaAgenda.UI
             decimal precioFinal = gestor.CalcularPrecio();
             decimal deposito = precioFinal * 0.20m;
 
-            lblDeposito.Text = "Depósito requerido: RD$" + deposito.ToString("F2");
+            lblPrecioServicio.Text = "Precio servicio: RD$ " + precioFinal.ToString("F2");
+            lblDeposito.Text = "Depósito requerido: RD$ " + deposito.ToString("F2");
+
+            txtMonto.Text = precioFinal.ToString("F2");
         }
         private void txtMonto_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -204,12 +220,9 @@ namespace SistemaAgenda.UI
             // Solo un punto decimal
             if (e.KeyChar == '.' && txtMonto.Text.Contains('.'))
                 e.Handled = true;
+            Limpiar();
         }
 
-        private void key(object sender, EventArgs e)
-        {
-
-        }
     }
 
 

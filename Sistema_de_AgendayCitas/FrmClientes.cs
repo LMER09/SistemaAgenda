@@ -99,6 +99,5 @@ namespace SistemaAgenda.UI
                 e.Handled = true;
         }
 
-
     }
 }

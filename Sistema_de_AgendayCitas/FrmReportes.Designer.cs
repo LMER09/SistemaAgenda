@@ -26,24 +26,26 @@
             // lblTitulo
             // 
             lblTitulo.AutoSize = true;
-            lblTitulo.Location = new Point(42, 93);
+            lblTitulo.Font = new Font("Segoe UI Semibold", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblTitulo.Location = new Point(42, 56);
             lblTitulo.Name = "lblTitulo";
-            lblTitulo.Size = new Size(178, 20);
+            lblTitulo.Size = new Size(219, 25);
             lblTitulo.TabIndex = 0;
             lblTitulo.Text = "Total de ingresos del día:";
             // 
             // lblTotal
             // 
             lblTotal.AutoSize = true;
-            lblTotal.Location = new Point(42, 134);
+            lblTotal.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblTotal.Location = new Point(42, 98);
             lblTotal.Name = "lblTotal";
-            lblTotal.Size = new Size(69, 20);
+            lblTotal.Size = new Size(78, 23);
             lblTotal.TabIndex = 1;
             lblTotal.Text = "RD$ 0.00";
             // 
             // btnCorteDia
             // 
-            btnCorteDia.Location = new Point(42, 168);
+            btnCorteDia.Location = new Point(42, 148);
             btnCorteDia.Name = "btnCorteDia";
             btnCorteDia.Size = new Size(180, 29);
             btnCorteDia.TabIndex = 2;
@@ -60,7 +62,7 @@
             dgvPagos.Name = "dgvPagos";
             dgvPagos.ReadOnly = true;
             dgvPagos.RowHeadersWidth = 51;
-            dgvPagos.Size = new Size(719, 196);
+            dgvPagos.Size = new Size(677, 196);
             dgvPagos.TabIndex = 3;
             // 
             // frmReportes
@@ -68,7 +70,7 @@
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.LavenderBlush;
-            ClientSize = new Size(856, 450);
+            ClientSize = new Size(763, 450);
             Controls.Add(dgvPagos);
             Controls.Add(btnCorteDia);
             Controls.Add(lblTotal);

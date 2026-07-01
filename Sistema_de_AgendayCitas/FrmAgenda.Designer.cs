@@ -23,7 +23,6 @@
             btnActualizarLista = new Button();
             btnCancelar = new Button();
             btnReprogramar = new Button();
-            lblDeposito = new Label();
             dtpHora = new DateTimePicker();
             lblHora = new Label();
             dtpFecha = new DateTimePicker();
@@ -34,6 +33,8 @@
             lblServicios = new Label();
             cmbClientes = new ComboBox();
             lblClientes = new Label();
+            lblPrecioServicio = new Label();
+            lblDeposito = new Label();
             groupBox2 = new GroupBox();
             btnPagar = new Button();
             cmbMetodoPago = new ComboBox();
@@ -58,7 +59,7 @@
             // 
             // btnAgendar
             // 
-            btnAgendar.Location = new Point(24, 322);
+            btnAgendar.Location = new Point(24, 311);
             btnAgendar.Name = "btnAgendar";
             btnAgendar.Size = new Size(164, 29);
             btnAgendar.TabIndex = 9;
@@ -103,7 +104,7 @@
             // 
             // btnCancelar
             // 
-            btnCancelar.Location = new Point(215, 322);
+            btnCancelar.Location = new Point(215, 311);
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size(164, 29);
             btnCancelar.TabIndex = 24;
@@ -120,17 +121,6 @@
             btnReprogramar.Text = "Reprogramar";
             btnReprogramar.UseVisualStyleBackColor = true;
             btnReprogramar.Click += btnReprogramar_Click;
-            // 
-            // lblDeposito
-            // 
-            lblDeposito.AutoSize = true;
-            lblDeposito.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblDeposito.ForeColor = Color.Crimson;
-            lblDeposito.Location = new Point(24, 275);
-            lblDeposito.Name = "lblDeposito";
-            lblDeposito.Size = new Size(213, 20);
-            lblDeposito.TabIndex = 22;
-            lblDeposito.Text = "Depósito requerido: RD$0.00";
             // 
             // dtpHora
             // 
@@ -218,11 +208,34 @@
             lblClientes.TabIndex = 4;
             lblClientes.Text = "Clientes";
             // 
+            // lblPrecioServicio
+            // 
+            lblPrecioServicio.AutoSize = true;
+            lblPrecioServicio.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblPrecioServicio.ForeColor = Color.DarkGreen;
+            lblPrecioServicio.Location = new Point(22, 199);
+            lblPrecioServicio.Name = "lblPrecioServicio";
+            lblPrecioServicio.Size = new Size(179, 20);
+            lblPrecioServicio.TabIndex = 21;
+            lblPrecioServicio.Text = "Precio servicio: RD$0.00";
+            // 
+            // lblDeposito
+            // 
+            lblDeposito.AutoSize = true;
+            lblDeposito.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblDeposito.ForeColor = Color.Crimson;
+            lblDeposito.Location = new Point(24, 274);
+            lblDeposito.Name = "lblDeposito";
+            lblDeposito.Size = new Size(213, 20);
+            lblDeposito.TabIndex = 22;
+            lblDeposito.Text = "Depósito requerido: RD$0.00";
+            // 
             // groupBox2
             // 
             groupBox2.Controls.Add(btnPagar);
             groupBox2.Controls.Add(cmbMetodoPago);
             groupBox2.Controls.Add(lblMetodoPago);
+            groupBox2.Controls.Add(lblPrecioServicio);
             groupBox2.Controls.Add(txtMonto);
             groupBox2.Controls.Add(lblMonto);
             groupBox2.Location = new Point(536, 28);
@@ -234,7 +247,7 @@
             // 
             // btnPagar
             // 
-            btnPagar.Location = new Point(119, 234);
+            btnPagar.Location = new Point(120, 322);
             btnPagar.Name = "btnPagar";
             btnPagar.Size = new Size(201, 29);
             btnPagar.TabIndex = 21;
@@ -267,7 +280,7 @@
             txtMonto.PlaceholderText = "Ej: 200";
             txtMonto.Size = new Size(201, 27);
             txtMonto.TabIndex = 18;
-            txtMonto.Click += key;
+            txtMonto.KeyPress += txtMonto_KeyPress;
             // 
             // lblMonto
             // 
@@ -277,7 +290,6 @@
             lblMonto.Size = new Size(59, 20);
             lblMonto.TabIndex = 16;
             lblMonto.Text = "Monto:";
-            txtMonto.KeyPress += txtMonto_KeyPress;
             // 
             // frmAgenda
             // 
@@ -326,5 +338,6 @@
         private TextBox txtMonto;
         private Label lblMonto;
         private Button btnPagar;
+        private Label lblPrecioServicio;
     }
 }

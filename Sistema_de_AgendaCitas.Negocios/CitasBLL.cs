@@ -45,11 +45,16 @@ namespace SistemaAgenda.Negocios
         {
             try
             {
+
                 var lista = _dal.ObtenerTodos();
                 var cita = lista.FirstOrDefault(c => c.Id == id);
 
                 if (cita == null)
                     return "ERROR: Cita no encontrada.";
+                if (cita.Estado == "Completada")
+                    return "ERROR: No se puede cancelar una cita que ya fue completada.";
+                if (cita.Estado == "Cancelada")
+                    return "ERROR: La cita ya está cancelada.";
 
                 cita.Estado = "Cancelada";
 
@@ -58,6 +63,7 @@ namespace SistemaAgenda.Negocios
                     ? "OK: Cita cancelada exitosamente."
                     : "ERROR: No se pudo cancelar la cita.";
             }
+
             catch (Exception ex)
             {
                 return "ERROR: " + ex.Message;
@@ -76,7 +82,10 @@ namespace SistemaAgenda.Negocios
 
                 if (cita == null)
                     return "ERROR: Cita no encontrada.";
-
+                if (cita.Estado == "Completada")
+                    return "ERROR: No se puede reprogramar una cita que ya fue completada.";
+                if (cita.Estado == "Cancelada")
+                    return "ERROR: No se puede reprogramar una cita cancelada.";
                 cita.Fecha = nuevaFecha;
                 cita.Estado = "Reprogramada";
 

@@ -40,6 +40,7 @@
             btnEditar = new Button();
             btnEliminar = new Button();
             dgvClientes = new DataGridView();
+            lblIngrese = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvClientes).BeginInit();
             SuspendLayout();
             // 
@@ -69,7 +70,6 @@
             lblTelefono.Size = new Size(72, 20);
             lblTelefono.TabIndex = 2;
             lblTelefono.Text = "Teléfono:";
-            txtTelefono.KeyPress += txtTelefono_KeyPress;
             // 
             // lblCorreo
             // 
@@ -82,7 +82,8 @@
             // 
             // txtNombre
             // 
-            txtNombre.Location = new Point(162, 114);
+            txtNombre.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtNombre.Location = new Point(162, 110);
             txtNombre.Name = "txtNombre";
             txtNombre.PlaceholderText = "Ej: Luzmairy";
             txtNombre.Size = new Size(357, 27);
@@ -90,7 +91,8 @@
             // 
             // txtApellido
             // 
-            txtApellido.Location = new Point(162, 147);
+            txtApellido.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtApellido.Location = new Point(162, 143);
             txtApellido.Name = "txtApellido";
             txtApellido.PlaceholderText = "Ej: Rodriguez";
             txtApellido.Size = new Size(357, 27);
@@ -98,15 +100,18 @@
             // 
             // txtTelefono
             // 
-            txtTelefono.Location = new Point(162, 180);
+            txtTelefono.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtTelefono.Location = new Point(162, 176);
             txtTelefono.Name = "txtTelefono";
-            txtTelefono.PlaceholderText = "Ej: 829-275-3580";
+            txtTelefono.PlaceholderText = "Ej: 000-000-0000";
             txtTelefono.Size = new Size(357, 27);
             txtTelefono.TabIndex = 6;
+            txtTelefono.KeyPress += txtTelefono_KeyPress;
             // 
             // txtCorreo
             // 
-            txtCorreo.Location = new Point(162, 213);
+            txtCorreo.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtCorreo.Location = new Point(162, 209);
             txtCorreo.Name = "txtCorreo";
             txtCorreo.PlaceholderText = "Ej: luz17@gmail.com";
             txtCorreo.Size = new Size(357, 27);
@@ -114,9 +119,9 @@
             // 
             // btnAgregar
             // 
-            btnAgregar.Location = new Point(102, 277);
+            btnAgregar.Location = new Point(98, 277);
             btnAgregar.Name = "btnAgregar";
-            btnAgregar.Size = new Size(236, 29);
+            btnAgregar.Size = new Size(140, 29);
             btnAgregar.TabIndex = 8;
             btnAgregar.Text = "Agregar";
             btnAgregar.UseVisualStyleBackColor = true;
@@ -124,9 +129,9 @@
             // 
             // btnEditar
             // 
-            btnEditar.Location = new Point(390, 277);
+            btnEditar.Location = new Point(311, 277);
             btnEditar.Name = "btnEditar";
-            btnEditar.Size = new Size(233, 29);
+            btnEditar.Size = new Size(140, 29);
             btnEditar.TabIndex = 9;
             btnEditar.Text = "Editar";
             btnEditar.UseVisualStyleBackColor = true;
@@ -134,9 +139,9 @@
             // 
             // btnEliminar
             // 
-            btnEliminar.Location = new Point(686, 277);
+            btnEliminar.Location = new Point(518, 277);
             btnEliminar.Name = "btnEliminar";
-            btnEliminar.Size = new Size(233, 29);
+            btnEliminar.Size = new Size(140, 29);
             btnEliminar.TabIndex = 10;
             btnEliminar.Text = "Eliminar";
             btnEliminar.UseVisualStyleBackColor = true;
@@ -146,19 +151,30 @@
             // 
             dgvClientes.BackgroundColor = Color.OldLace;
             dgvClientes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvClientes.Location = new Point(51, 329);
+            dgvClientes.Location = new Point(37, 331);
             dgvClientes.Name = "dgvClientes";
             dgvClientes.RowHeadersWidth = 51;
-            dgvClientes.Size = new Size(922, 151);
+            dgvClientes.Size = new Size(677, 151);
             dgvClientes.TabIndex = 11;
             dgvClientes.CellClick += dgvClientes_CellClick;
+            // 
+            // lblIngrese
+            // 
+            lblIngrese.AutoSize = true;
+            lblIngrese.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblIngrese.Location = new Point(51, 47);
+            lblIngrese.Name = "lblIngrese";
+            lblIngrese.Size = new Size(178, 23);
+            lblIngrese.TabIndex = 12;
+            lblIngrese.Text = "Ingrese nuevo cliente:";
             // 
             // frmClientes
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.LavenderBlush;
-            ClientSize = new Size(1041, 535);
+            ClientSize = new Size(765, 535);
+            Controls.Add(lblIngrese);
             Controls.Add(dgvClientes);
             Controls.Add(btnEliminar);
             Controls.Add(btnEditar);
@@ -198,5 +214,6 @@
         private Button btnEditar;
         private Button btnEliminar;
         private DataGridView dgvClientes;
+        private Label lblIngrese;
     }
 }

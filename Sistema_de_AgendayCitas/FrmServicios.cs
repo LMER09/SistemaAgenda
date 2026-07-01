@@ -34,6 +34,11 @@ namespace SistemaAgenda.UI
 
         private void btnAgregar_Click(object sender, EventArgs e)
         {
+            if (cmbTipo.SelectedIndex == -1 || txtPrecio.Text == "" || txtDuracion.Text == "")
+            {
+                MessageBox.Show("Debe llenar los datos requeridos");
+                return;
+            }
             Servicios servicio = new Servicios();
             servicio.Tipo_DeServicio = cmbTipo.Text;
             servicio.Precio = Convert.ToDecimal(txtPrecio.Text);
@@ -47,6 +52,11 @@ namespace SistemaAgenda.UI
 
         private void btnEditar_Click(object sender, EventArgs e)
         {
+            if (cmbTipo.SelectedIndex == -1 || txtPrecio.Text == "" || txtDuracion.Text == "")
+            {
+                MessageBox.Show("Seleccione la apocion que desea editar");
+                return;
+            }
             if (dgvServicios.CurrentRow == null)
             {
                 MessageBox.Show("Seleccione un servicio.");
@@ -83,7 +93,8 @@ namespace SistemaAgenda.UI
         {
             if (cmbTipo.SelectedIndex == -1 || txtPrecio.Text == "" || txtDuracion.Text == "")
             {
-                MessageBox.Show("Complete tipo, precio y duración primero.");
+                MessageBox.Show("Complete tipo, precio y duración primero" +
+                    "o seleccione el servicio que desea calcular");
                 return;
             }
 
