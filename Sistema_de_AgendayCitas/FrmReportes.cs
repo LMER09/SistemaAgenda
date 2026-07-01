@@ -15,6 +15,7 @@ namespace SistemaAgenda.UI
         private void CargarPagos()
         {
             var pagos = pagosBLL.ObtenerTodos();
+
             dgvPagos.DataSource = null;
             dgvPagos.DataSource = pagos;
 

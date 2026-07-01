@@ -57,6 +57,7 @@
             dgvCitas.RowHeadersWidth = 51;
             dgvCitas.Size = new Size(928, 141);
             dgvCitas.TabIndex = 8;
+            dgvCitas.CellClick += dgvCitas_CellClick;
             // 
             // btnAgendar
             // 

@@ -15,11 +15,14 @@ namespace SistemaAgenda.UI
         private List<Clientes>? _listaClientes;
         private List<Servicios>? _listaServicios;
         private List<Estilista>? _listaEstilistas;
+        private bool _cargandoCita = false;
 
         public frmAgenda()
         {
             InitializeComponent();
+            _recordatorio.RecordatorioDisparado += (mensaje) => MessageBox.Show(mensaje, "Recordatorio");
         }
+
         private void Limpiar()
         {
             cmbClientes.SelectedIndex = -1;
@@ -27,49 +30,41 @@ namespace SistemaAgenda.UI
             cmbEstilistas.SelectedIndex = -1;
             cmbMetodoPago.SelectedIndex = -1;
             txtMonto.Clear();
+            lblPrecioServicio.Text = "Precio servicio: RD$0.00";
+            lblDeposito.Text = "Depósito requerido: RD$0.00";
         }
+
         private void frmAgenda_Load(object sender, EventArgs e)
         {
-            // Suscribirse al evento del recordatorio
-            _recordatorio.RecordatorioDisparado += (mensaje) => MessageBox.Show(mensaje, "Recordatorio");
-
-            // Verificar citas próximas al cargar el formulario
-            var citas = _citasBLL.ObtenerTodos();
-            _recordatorio.RevisarCitasProximas(citas);
-
             CargarCombos();
-            Limpiar();
             CargarCitas();
-
+            _recordatorio.RevisarCitasProximas(_citasBLL.ObtenerTodos());
         }
 
-        // ── Cargar los ComboBox con datos de la BD ────────────────────
         private void CargarCombos()
         {
             _listaClientes = _clientesBLL.ObtenerTodos();
             cmbClientes.Items.Clear();
-            for (int i = 0; i < _listaClientes.Count; i++)
-                cmbClientes.Items.Add(_listaClientes[i].Nombre + " " + _listaClientes[i].Apellido);
+            foreach (var c in _listaClientes)
+                cmbClientes.Items.Add(c.Nombre + " " + c.Apellido);
 
             _listaServicios = _serviciosBLL.ObtenerTodos();
             cmbServicios.Items.Clear();
-            for (int i = 0; i < _listaServicios.Count; i++)
-                cmbServicios.Items.Add(_listaServicios[i].Tipo_DeServicio);
+            foreach (var s in _listaServicios)
+                cmbServicios.Items.Add(s.Tipo_DeServicio);
 
             _listaEstilistas = _estilistaBLL.ObtenerTodos();
             cmbEstilistas.Items.Clear();
-            for (int i = 0; i < _listaEstilistas.Count; i++)
-                cmbEstilistas.Items.Add(_listaEstilistas[i].Nombre + " " + _listaEstilistas[i].Apellido);
+            foreach (var es in _listaEstilistas)
+                cmbEstilistas.Items.Add(es.Nombre + " " + es.Apellido);
         }
 
-        // ── Cargar el DataGridView con las citas ──────────────────────
         private void CargarCitas()
         {
             dgvCitas.DataSource = null;
             dgvCitas.DataSource = _citasBLL.ObtenerTodos();
         }
 
-        // ── Combina fecha y hora seleccionadas ────────────────────────
         private DateTime ObtenerFechaHoraSeleccionada()
         {
             DateTime fecha = dtpFecha.Value.Date;
@@ -77,153 +72,115 @@ namespace SistemaAgenda.UI
             return fecha + hora;
         }
 
-        // ── Botón Agendar ──────────────────────────────────────────────
         private void btnAgendar_Click(object sender, EventArgs e)
         {
-            if (_listaClientes == null || _listaServicios == null || _listaEstilistas == null)
-            {
-                MessageBox.Show("Los datos aún no se han cargado.");
-                return;
-            }
+            if (cmbClientes.SelectedIndex == -1) { MessageBox.Show("Debe seleccionar un cliente."); return; }
+            if (cmbServicios.SelectedIndex == -1) { MessageBox.Show("Debe seleccionar un servicio."); return; }
+            if (cmbEstilistas.SelectedIndex == -1) { MessageBox.Show("Debe seleccionar una estilista."); return; }
 
-            if (cmbClientes.SelectedIndex == -1)
-            {
-                MessageBox.Show("Debe seleccionar un cliente.");
-                return;
-            }
-            if (cmbServicios.SelectedIndex == -1)
-            {
-                MessageBox.Show("Debe seleccionar un servicio.");
-                return;
-            }
-            if (cmbEstilistas.SelectedIndex == -1)
-            {
-                MessageBox.Show("Debe seleccionar una estilista.");
-                return;
-            }
+            Clientes cliente = _listaClientes[cmbClientes.SelectedIndex];
+            Servicios servicio = _listaServicios[cmbServicios.SelectedIndex];
+            Estilista estilista = _listaEstilistas[cmbEstilistas.SelectedIndex];
 
-            Clientes clienteSeleccionado = _listaClientes[cmbClientes.SelectedIndex];
-            Servicios servicioSeleccionado = _listaServicios[cmbServicios.SelectedIndex];
-            Estilista estilistaSeleccionada = _listaEstilistas[cmbEstilistas.SelectedIndex];
-
-            Gestion_DeServicios gestor = new Gestion_DeServicios(servicioSeleccionado);
-            decimal deposito = gestor.CalcularPrecio() * 0.20m;
-
-            Citas nuevaCita = new Citas(clienteSeleccionado, servicioSeleccionado, ObtenerFechaHoraSeleccionada());
-            nuevaCita.Id_Estilista = estilistaSeleccionada.Id;
-            nuevaCita.Deposito = deposito;
+            Citas nuevaCita = new Citas(cliente, servicio, ObtenerFechaHoraSeleccionada());
+            nuevaCita.Id_Estilista = estilista.Id;
+            nuevaCita.Deposito = new Gestion_DeServicios(servicio).CalcularPrecio() * 0.20m;
 
             string resultado = _citasBLL.AgendarCita(nuevaCita);
-
             MessageBox.Show(resultado);
-            if (resultado.StartsWith("OK"))
-            {
-                CargarCitas();
-                Limpiar();
-            }
+            if (resultado.StartsWith("OK")) { CargarCitas(); Limpiar(); }
         }
 
-        // ── Botón Cancelar ─────────────────────────────────────────────
         private void btnCancelar_Click(object sender, EventArgs e)
         {
-            if (dgvCitas.CurrentRow == null)
-            {
-                MessageBox.Show("Seleccione una cita de la lista.");
-                return;
-            }
-
-            int idSeleccionado = (int)dgvCitas.CurrentRow.Cells["Id"].Value;
-            string resultado = _citasBLL.CancelarCita(idSeleccionado);
-
-            MessageBox.Show(resultado);
-            CargarCitas();
-            Limpiar();
+            if (dgvCitas.CurrentRow == null) { MessageBox.Show("Seleccione una cita."); return; }
+            MessageBox.Show(_citasBLL.CancelarCita((int)dgvCitas.CurrentRow.Cells["Id"].Value));
+            CargarCitas(); Limpiar();
         }
 
-        // ── Botón Reprogramar ──────────────────────────────────────────
         private void btnReprogramar_Click(object sender, EventArgs e)
         {
-            if (dgvCitas.CurrentRow == null)
-            {
-                MessageBox.Show("Seleccione una cita de la lista.");
-                return;
-            }
-
-            int idSeleccionado = (int)dgvCitas.CurrentRow.Cells["Id"].Value;
-            string resultado = _citasBLL.ReprogramarCita(idSeleccionado, ObtenerFechaHoraSeleccionada());
-
-            MessageBox.Show(resultado);
-            CargarCitas();
-            Limpiar();
+            if (dgvCitas.CurrentRow == null) { MessageBox.Show("Seleccione una cita."); return; }
+            MessageBox.Show(_citasBLL.ReprogramarCita((int)dgvCitas.CurrentRow.Cells["Id"].Value, ObtenerFechaHoraSeleccionada()));
+            CargarCitas(); Limpiar();
         }
 
-        // ── Botón Actualizar Lista ──────────────────────────────────────
         private void btnActualizarLista_Click(object sender, EventArgs e)
         {
             CargarCitas();
         }
 
-        // ── Botón Registrar Pago ───────────────────────────────────────
         private void btnPagar_Click(object sender, EventArgs e)
         {
-            if (dgvCitas.CurrentRow == null)
-            {
-                MessageBox.Show("Seleccione una cita de la lista.");
-                return;
-            }
+            if (dgvCitas.CurrentRow == null) { MessageBox.Show("Seleccione una cita."); return; }
+            if (cmbMetodoPago.SelectedIndex == -1) { MessageBox.Show("Seleccione un método de pago."); return; }
+            if (string.IsNullOrWhiteSpace(txtMonto.Text)) { MessageBox.Show("Ingrese el monto."); return; }
 
-            if (cmbMetodoPago.SelectedIndex == -1)
-            {
-                MessageBox.Show("Seleccione un método de pago.");
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(txtMonto.Text))
-            {
-                MessageBox.Show("Ingrese el monto.");
-                return;
-            }
-
+            int idCita = (int)dgvCitas.CurrentRow.Cells["Id"].Value;
             Pagos pago = new Pagos();
-            pago.Id_Citas = (int)dgvCitas.CurrentRow.Cells["Id"].Value;
+            pago.Id_Citas = idCita;
             pago.Monto = Convert.ToDecimal(txtMonto.Text);
             pago.Metodo_DePago = cmbMetodoPago.Text;
 
             MessageBox.Show(_pagosBLL.Registrar(pago));
-
-            txtMonto.Clear();
-            cmbMetodoPago.SelectedIndex = -1;
-            Limpiar();
+            CargarCitas(); Limpiar();
         }
 
         private void cmbServicios_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cmbServicios.SelectedIndex == -1)
-                return;
+            if (cmbServicios.SelectedIndex == -1 || _listaServicios == null) return;
 
-            Servicios servicioSeleccionado = _listaServicios[cmbServicios.SelectedIndex];
-            Gestion_DeServicios gestor = new Gestion_DeServicios(servicioSeleccionado);
-
-            decimal precioFinal = gestor.CalcularPrecio();
-            decimal deposito = precioFinal * 0.20m;
+            Servicios s = _listaServicios[cmbServicios.SelectedIndex];
+            decimal precioFinal = new Gestion_DeServicios(s).CalcularPrecio();
 
             lblPrecioServicio.Text = "Precio servicio: RD$ " + precioFinal.ToString("F2");
-            lblDeposito.Text = "Depósito requerido: RD$ " + deposito.ToString("F2");
+            lblDeposito.Text = "Depósito requerido: RD$ " + (precioFinal * 0.20m).ToString("F2");
 
-            txtMonto.Text = precioFinal.ToString("F2");
+            if (!_cargandoCita)
+                txtMonto.Text = precioFinal.ToString("F2");
         }
+
         private void txtMonto_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsDigit(e.KeyChar) && e.KeyChar != '.' && e.KeyChar != (char)Keys.Back)
                 e.Handled = true;
-
-            // Solo un punto decimal
             if (e.KeyChar == '.' && txtMonto.Text.Contains('.'))
                 e.Handled = true;
-            Limpiar();
         }
 
+        private void dgvCitas_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            _cargandoCita = true;
+
+            int idCliente = (int)dgvCitas.CurrentRow.Cells["Id_Clientes"].Value;
+            int idServicio = (int)dgvCitas.CurrentRow.Cells["Id_Servicios"].Value;
+            int idEstilista = (int)dgvCitas.CurrentRow.Cells["Id_Estilista"].Value;
+
+            if (_listaClientes != null)
+                cmbClientes.SelectedIndex = _listaClientes.FindIndex(c => c.Id == idCliente);
+            if (_listaServicios != null)
+                cmbServicios.SelectedIndex = _listaServicios.FindIndex(s => s.Id == idServicio);
+            if (_listaEstilistas != null)
+                cmbEstilistas.SelectedIndex = _listaEstilistas.FindIndex(es => es.Id == idEstilista);
+
+            dtpFecha.Value = (DateTime)dgvCitas.CurrentRow.Cells["Fecha"].Value;
+
+            int idCita = (int)dgvCitas.CurrentRow.Cells["Id"].Value;
+            var pago = _pagosBLL.ObtenerTodos().FirstOrDefault(p => p.Id_Citas == idCita);
+            if (pago != null)
+            {
+                txtMonto.Text = pago.Monto.ToString();
+                cmbMetodoPago.Text = pago.Metodo_DePago;
+            }
+            else
+            {
+                txtMonto.Clear();
+                cmbMetodoPago.SelectedIndex = -1;
+            }
+
+            _cargandoCita = false;
+        }
     }
-
-
 }

@@ -42,6 +42,7 @@
             lblNombre.Size = new Size(70, 20);
             lblNombre.TabIndex = 0;
             lblNombre.Text = "Nombre:";
+            txtNombre.KeyPress += txtNombre_KeyPress;
             // 
             // lblApellido
             // 
@@ -51,6 +52,7 @@
             lblApellido.Size = new Size(70, 20);
             lblApellido.TabIndex = 1;
             lblApellido.Text = "Apellido:";
+            txtApellido.KeyPress += txtApellido_KeyPress;
             // 
             // lblTelefono
             // 
