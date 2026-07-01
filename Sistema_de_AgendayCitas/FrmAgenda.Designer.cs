@@ -23,6 +23,7 @@
             btnActualizarLista = new Button();
             btnCancelar = new Button();
             btnReprogramar = new Button();
+            lblDeposito = new Label();
             dtpHora = new DateTimePicker();
             lblHora = new Label();
             dtpFecha = new DateTimePicker();
@@ -34,8 +35,8 @@
             cmbClientes = new ComboBox();
             lblClientes = new Label();
             lblPrecioServicio = new Label();
-            lblDeposito = new Label();
             groupBox2 = new GroupBox();
+            lblPuedeCambiar = new Label();
             btnPagar = new Button();
             cmbMetodoPago = new ComboBox();
             lblMetodoPago = new Label();
@@ -121,6 +122,17 @@
             btnReprogramar.Text = "Reprogramar";
             btnReprogramar.UseVisualStyleBackColor = true;
             btnReprogramar.Click += btnReprogramar_Click;
+            // 
+            // lblDeposito
+            // 
+            lblDeposito.AutoSize = true;
+            lblDeposito.Font = new Font("Segoe UI Black", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblDeposito.ForeColor = Color.Crimson;
+            lblDeposito.Location = new Point(24, 274);
+            lblDeposito.Name = "lblDeposito";
+            lblDeposito.Size = new Size(225, 20);
+            lblDeposito.TabIndex = 22;
+            lblDeposito.Text = "Depósito requerido: RD$0.00";
             // 
             // dtpHora
             // 
@@ -211,27 +223,17 @@
             // lblPrecioServicio
             // 
             lblPrecioServicio.AutoSize = true;
-            lblPrecioServicio.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblPrecioServicio.ForeColor = Color.DarkGreen;
-            lblPrecioServicio.Location = new Point(22, 199);
+            lblPrecioServicio.Font = new Font("Segoe UI Black", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblPrecioServicio.ForeColor = Color.Crimson;
+            lblPrecioServicio.Location = new Point(22, 229);
             lblPrecioServicio.Name = "lblPrecioServicio";
-            lblPrecioServicio.Size = new Size(179, 20);
+            lblPrecioServicio.Size = new Size(189, 20);
             lblPrecioServicio.TabIndex = 21;
             lblPrecioServicio.Text = "Precio servicio: RD$0.00";
             // 
-            // lblDeposito
-            // 
-            lblDeposito.AutoSize = true;
-            lblDeposito.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblDeposito.ForeColor = Color.Crimson;
-            lblDeposito.Location = new Point(24, 274);
-            lblDeposito.Name = "lblDeposito";
-            lblDeposito.Size = new Size(213, 20);
-            lblDeposito.TabIndex = 22;
-            lblDeposito.Text = "Depósito requerido: RD$0.00";
-            // 
             // groupBox2
             // 
+            groupBox2.Controls.Add(lblPuedeCambiar);
             groupBox2.Controls.Add(btnPagar);
             groupBox2.Controls.Add(cmbMetodoPago);
             groupBox2.Controls.Add(lblMetodoPago);
@@ -244,6 +246,17 @@
             groupBox2.TabIndex = 24;
             groupBox2.TabStop = false;
             groupBox2.Text = "Registre el pago de la cita seleccionada:";
+            // 
+            // lblPuedeCambiar
+            // 
+            lblPuedeCambiar.AutoSize = true;
+            lblPuedeCambiar.Font = new Font("Segoe UI", 7.8F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            lblPuedeCambiar.ForeColor = Color.DimGray;
+            lblPuedeCambiar.Location = new Point(22, 101);
+            lblPuedeCambiar.Name = "lblPuedeCambiar";
+            lblPuedeCambiar.Size = new Size(366, 17);
+            lblPuedeCambiar.TabIndex = 22;
+            lblPuedeCambiar.Text = "Nota: Puede cambiar el precio si hizo mas del precio establecido";
             // 
             // btnPagar
             // 
@@ -259,7 +272,7 @@
             // 
             cmbMetodoPago.FormattingEnabled = true;
             cmbMetodoPago.Items.AddRange(new object[] { "Efectivo", "Tarjeta", "Transferencia" });
-            cmbMetodoPago.Location = new Point(22, 156);
+            cmbMetodoPago.Location = new Point(22, 191);
             cmbMetodoPago.Name = "cmbMetodoPago";
             cmbMetodoPago.Size = new Size(201, 28);
             cmbMetodoPago.TabIndex = 20;
@@ -267,7 +280,7 @@
             // lblMetodoPago
             // 
             lblMetodoPago.AutoSize = true;
-            lblMetodoPago.Location = new Point(22, 114);
+            lblMetodoPago.Location = new Point(22, 159);
             lblMetodoPago.Name = "lblMetodoPago";
             lblMetodoPago.Size = new Size(127, 20);
             lblMetodoPago.TabIndex = 19;
@@ -275,6 +288,7 @@
             // 
             // txtMonto
             // 
+            txtMonto.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtMonto.Location = new Point(22, 71);
             txtMonto.Name = "txtMonto";
             txtMonto.PlaceholderText = "Ej: 200";
@@ -285,7 +299,7 @@
             // lblMonto
             // 
             lblMonto.AutoSize = true;
-            lblMonto.Location = new Point(22, 37);
+            lblMonto.Location = new Point(22, 38);
             lblMonto.Name = "lblMonto";
             lblMonto.Size = new Size(59, 20);
             lblMonto.TabIndex = 16;
@@ -339,5 +353,6 @@
         private Label lblMonto;
         private Button btnPagar;
         private Label lblPrecioServicio;
+        private Label lblPuedeCambiar;
     }
 }

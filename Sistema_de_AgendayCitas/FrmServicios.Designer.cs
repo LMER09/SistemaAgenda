@@ -74,11 +74,11 @@
             // lblResultado
             // 
             lblResultado.AutoSize = true;
-            lblResultado.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblResultado.ForeColor = Color.DeepPink;
+            lblResultado.Font = new Font("Segoe UI Black", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblResultado.ForeColor = Color.Crimson;
             lblResultado.Location = new Point(40, 233);
             lblResultado.Name = "lblResultado";
-            lblResultado.Size = new Size(146, 20);
+            lblResultado.Size = new Size(156, 20);
             lblResultado.TabIndex = 3;
             lblResultado.Text = "Calculo del servicio:";
             // 
