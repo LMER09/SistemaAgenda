@@ -26,26 +26,26 @@
             // lblTitulo
             // 
             lblTitulo.AutoSize = true;
-            lblTitulo.Location = new Point(37, 30);
+            lblTitulo.Location = new Point(42, 93);
             lblTitulo.Name = "lblTitulo";
-            lblTitulo.Size = new Size(175, 20);
+            lblTitulo.Size = new Size(178, 20);
             lblTitulo.TabIndex = 0;
             lblTitulo.Text = "Total de ingresos del día:";
             // 
             // lblTotal
             // 
             lblTotal.AutoSize = true;
-            lblTotal.Location = new Point(37, 60);
+            lblTotal.Location = new Point(42, 134);
             lblTotal.Name = "lblTotal";
-            lblTotal.Size = new Size(68, 20);
+            lblTotal.Size = new Size(69, 20);
             lblTotal.TabIndex = 1;
             lblTotal.Text = "RD$ 0.00";
             // 
             // btnCorteDia
             // 
-            btnCorteDia.Location = new Point(37, 100);
+            btnCorteDia.Location = new Point(42, 168);
             btnCorteDia.Name = "btnCorteDia";
-            btnCorteDia.Size = new Size(160, 29);
+            btnCorteDia.Size = new Size(180, 29);
             btnCorteDia.TabIndex = 2;
             btnCorteDia.Text = "Cerrar corte del día";
             btnCorteDia.UseVisualStyleBackColor = true;
@@ -54,24 +54,26 @@
             // dgvPagos
             // 
             dgvPagos.AllowUserToAddRows = false;
+            dgvPagos.BackgroundColor = Color.OldLace;
             dgvPagos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvPagos.Location = new Point(37, 150);
+            dgvPagos.Location = new Point(42, 222);
             dgvPagos.Name = "dgvPagos";
             dgvPagos.ReadOnly = true;
             dgvPagos.RowHeadersWidth = 51;
-            dgvPagos.Size = new Size(656, 250);
+            dgvPagos.Size = new Size(719, 196);
             dgvPagos.TabIndex = 3;
             // 
             // frmReportes
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.LavenderBlush;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(856, 450);
             Controls.Add(dgvPagos);
             Controls.Add(btnCorteDia);
             Controls.Add(lblTotal);
             Controls.Add(lblTitulo);
+            Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             Name = "frmReportes";
             Text = "Reportes";
             Load += FrmReportes_Load;

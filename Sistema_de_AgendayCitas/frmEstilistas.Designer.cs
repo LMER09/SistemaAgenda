@@ -36,93 +36,93 @@
             // lblNombre
             // 
             lblNombre.AutoSize = true;
-            lblNombre.Location = new Point(63, 50);
+            lblNombre.Location = new Point(38, 91);
             lblNombre.Name = "lblNombre";
-            lblNombre.Size = new Size(67, 20);
+            lblNombre.Size = new Size(70, 20);
             lblNombre.TabIndex = 0;
             lblNombre.Text = "Nombre:";
             // 
             // lblApellido
             // 
             lblApellido.AutoSize = true;
-            lblApellido.Location = new Point(63, 90);
+            lblApellido.Location = new Point(38, 131);
             lblApellido.Name = "lblApellido";
-            lblApellido.Size = new Size(69, 20);
+            lblApellido.Size = new Size(70, 20);
             lblApellido.TabIndex = 1;
             lblApellido.Text = "Apellido:";
             // 
             // lblTelefono
             // 
             lblTelefono.AutoSize = true;
-            lblTelefono.Location = new Point(63, 130);
+            lblTelefono.Location = new Point(38, 165);
             lblTelefono.Name = "lblTelefono";
-            lblTelefono.Size = new Size(70, 20);
+            lblTelefono.Size = new Size(72, 20);
             lblTelefono.TabIndex = 2;
             lblTelefono.Text = "Teléfono:";
             // 
             // lblCorreo
             // 
             lblCorreo.AutoSize = true;
-            lblCorreo.Location = new Point(63, 170);
+            lblCorreo.Location = new Point(38, 198);
             lblCorreo.Name = "lblCorreo";
-            lblCorreo.Size = new Size(57, 20);
+            lblCorreo.Size = new Size(60, 20);
             lblCorreo.TabIndex = 3;
             lblCorreo.Text = "Correo:";
             // 
             // lblEspecialidad
             // 
             lblEspecialidad.AutoSize = true;
-            lblEspecialidad.Location = new Point(63, 210);
+            lblEspecialidad.Location = new Point(38, 231);
             lblEspecialidad.Name = "lblEspecialidad";
-            lblEspecialidad.Size = new Size(96, 20);
+            lblEspecialidad.Size = new Size(97, 20);
             lblEspecialidad.TabIndex = 4;
             lblEspecialidad.Text = "Especialidad:";
             // 
             // txtNombre
             // 
-            txtNombre.Location = new Point(180, 43);
+            txtNombre.Location = new Point(202, 91);
             txtNombre.Name = "txtNombre";
             txtNombre.PlaceholderText = "Ej: Maria";
-            txtNombre.Size = new Size(353, 27);
+            txtNombre.Size = new Size(397, 27);
             txtNombre.TabIndex = 5;
             // 
             // txtApellido
             // 
-            txtApellido.Location = new Point(180, 83);
+            txtApellido.Location = new Point(202, 124);
             txtApellido.Name = "txtApellido";
             txtApellido.PlaceholderText = "Ej: Cedano";
-            txtApellido.Size = new Size(353, 27);
+            txtApellido.Size = new Size(397, 27);
             txtApellido.TabIndex = 6;
             // 
             // txtTelefono
             // 
-            txtTelefono.Location = new Point(180, 123);
+            txtTelefono.Location = new Point(202, 158);
             txtTelefono.Name = "txtTelefono";
             txtTelefono.PlaceholderText = "Ej: 000-000-0000";
-            txtTelefono.Size = new Size(353, 27);
+            txtTelefono.Size = new Size(397, 27);
             txtTelefono.TabIndex = 7;
             // 
             // txtCorreo
             // 
-            txtCorreo.Location = new Point(180, 163);
+            txtCorreo.Location = new Point(202, 191);
             txtCorreo.Name = "txtCorreo";
             txtCorreo.PlaceholderText = "Ej: Maria@gmail.com";
-            txtCorreo.Size = new Size(353, 27);
+            txtCorreo.Size = new Size(397, 27);
             txtCorreo.TabIndex = 8;
             // 
             // txtEspecialidad
             // 
-            txtEspecialidad.Location = new Point(180, 203);
+            txtEspecialidad.Location = new Point(202, 224);
             txtEspecialidad.Name = "txtEspecialidad";
             txtEspecialidad.PlaceholderText = "Ej: Cortes de pelo";
-            txtEspecialidad.Size = new Size(353, 27);
+            txtEspecialidad.Size = new Size(397, 27);
             txtEspecialidad.TabIndex = 9;
             // 
             // btnAgregar
             // 
-            btnAgregar.Location = new Point(63, 260);
+            btnAgregar.Location = new Point(84, 280);
             btnAgregar.Name = "btnAgregar";
-            btnAgregar.Size = new Size(94, 29);
+            btnAgregar.Size = new Size(204, 29);
             btnAgregar.TabIndex = 10;
             btnAgregar.Text = "Agregar";
             btnAgregar.UseVisualStyleBackColor = true;
@@ -130,9 +130,9 @@
             // 
             // btnEditar
             // 
-            btnEditar.Location = new Point(220, 260);
+            btnEditar.Location = new Point(380, 280);
             btnEditar.Name = "btnEditar";
-            btnEditar.Size = new Size(94, 29);
+            btnEditar.Size = new Size(204, 29);
             btnEditar.TabIndex = 11;
             btnEditar.Text = "Editar";
             btnEditar.UseVisualStyleBackColor = true;
@@ -140,9 +140,9 @@
             // 
             // btnEliminar
             // 
-            btnEliminar.Location = new Point(403, 260);
+            btnEliminar.Location = new Point(648, 280);
             btnEliminar.Name = "btnEliminar";
-            btnEliminar.Size = new Size(94, 29);
+            btnEliminar.Size = new Size(204, 29);
             btnEliminar.TabIndex = 12;
             btnEliminar.Text = "Eliminar";
             btnEliminar.UseVisualStyleBackColor = true;
@@ -150,19 +150,21 @@
             // 
             // dgvEstilistas
             // 
+            dgvEstilistas.BackgroundColor = Color.OldLace;
             dgvEstilistas.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvEstilistas.Location = new Point(37, 320);
+            dgvEstilistas.Location = new Point(38, 330);
             dgvEstilistas.Name = "dgvEstilistas";
             dgvEstilistas.RowHeadersWidth = 51;
-            dgvEstilistas.Size = new Size(659, 152);
+            dgvEstilistas.Size = new Size(896, 152);
             dgvEstilistas.TabIndex = 13;
             dgvEstilistas.CellClick += dgvEstilistas_CellClick;
             // 
             // frmEstilistas
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 514);
+            BackColor = Color.LavenderBlush;
+            ClientSize = new Size(986, 514);
             Controls.Add(dgvEstilistas);
             Controls.Add(btnEliminar);
             Controls.Add(btnEditar);
@@ -177,6 +179,7 @@
             Controls.Add(lblTelefono);
             Controls.Add(lblApellido);
             Controls.Add(lblNombre);
+            Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             Name = "frmEstilistas";
             Text = "Estilistas";
             Load += FrmEstilistas_Load;

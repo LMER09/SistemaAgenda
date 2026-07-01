@@ -53,7 +53,7 @@
             dgvCitas.Location = new Point(45, 476);
             dgvCitas.Name = "dgvCitas";
             dgvCitas.RowHeadersWidth = 51;
-            dgvCitas.Size = new Size(915, 141);
+            dgvCitas.Size = new Size(928, 141);
             dgvCitas.TabIndex = 8;
             // 
             // btnAgendar
@@ -68,6 +68,7 @@
             // 
             // groupBox1
             // 
+            groupBox1.BackColor = Color.LavenderBlush;
             groupBox1.Controls.Add(btnActualizarLista);
             groupBox1.Controls.Add(btnCancelar);
             groupBox1.Controls.Add(btnReprogramar);
@@ -189,7 +190,7 @@
             cmbServicios.Name = "cmbServicios";
             cmbServicios.Size = new Size(355, 28);
             cmbServicios.TabIndex = 7;
-            cmbServicios.Click += cmbServicios_SelectedIndexChanged;
+            cmbServicios.SelectedIndexChanged += cmbServicios_SelectedIndexChanged;
             // 
             // lblServicios
             // 
@@ -226,10 +227,10 @@
             groupBox2.Controls.Add(lblMonto);
             groupBox2.Location = new Point(536, 28);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(424, 424);
+            groupBox2.Size = new Size(437, 424);
             groupBox2.TabIndex = 24;
             groupBox2.TabStop = false;
-            groupBox2.Text = "Registre el pago de la cita selecciona:";
+            groupBox2.Text = "Registre el pago de la cita seleccionada:";
             // 
             // btnPagar
             // 

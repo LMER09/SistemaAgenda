@@ -48,11 +48,11 @@
             btnAgendar.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnAgendar.ForeColor = Color.LavenderBlush;
             btnAgendar.ImageAlign = ContentAlignment.TopLeft;
-            btnAgendar.Location = new Point(309, 186);
+            btnAgendar.Location = new Point(283, 186);
             btnAgendar.Name = "btnAgendar";
-            btnAgendar.Size = new Size(210, 40);
+            btnAgendar.Size = new Size(273, 40);
             btnAgendar.TabIndex = 1;
-            btnAgendar.Text = "Agendar Cita";
+            btnAgendar.Text = "Agendar Cita y Pagar Cita";
             btnAgendar.UseVisualStyleBackColor = false;
             btnAgendar.Click += btnAgenda_Click;
             // 
@@ -63,9 +63,9 @@
             btnClientes.FlatStyle = FlatStyle.Popup;
             btnClientes.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnClientes.ForeColor = Color.LavenderBlush;
-            btnClientes.Location = new Point(309, 258);
+            btnClientes.Location = new Point(283, 255);
             btnClientes.Name = "btnClientes";
-            btnClientes.Size = new Size(210, 40);
+            btnClientes.Size = new Size(273, 40);
             btnClientes.TabIndex = 2;
             btnClientes.Text = "Clientes";
             btnClientes.UseVisualStyleBackColor = false;
@@ -78,9 +78,9 @@
             btnReportes.FlatStyle = FlatStyle.Popup;
             btnReportes.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnReportes.ForeColor = Color.LavenderBlush;
-            btnReportes.Location = new Point(309, 454);
+            btnReportes.Location = new Point(283, 454);
             btnReportes.Name = "btnReportes";
-            btnReportes.Size = new Size(210, 40);
+            btnReportes.Size = new Size(273, 40);
             btnReportes.TabIndex = 3;
             btnReportes.Text = "Reportes";
             btnReportes.UseVisualStyleBackColor = false;
@@ -93,9 +93,9 @@
             btnServicios.FlatStyle = FlatStyle.Popup;
             btnServicios.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnServicios.ForeColor = Color.LavenderBlush;
-            btnServicios.Location = new Point(309, 324);
+            btnServicios.Location = new Point(283, 324);
             btnServicios.Name = "btnServicios";
-            btnServicios.Size = new Size(210, 40);
+            btnServicios.Size = new Size(273, 40);
             btnServicios.TabIndex = 4;
             btnServicios.Text = "Servicios";
             btnServicios.UseVisualStyleBackColor = false;
@@ -107,9 +107,9 @@
             btnEstilistas.FlatStyle = FlatStyle.Popup;
             btnEstilistas.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnEstilistas.ForeColor = Color.LavenderBlush;
-            btnEstilistas.Location = new Point(309, 390);
+            btnEstilistas.Location = new Point(283, 390);
             btnEstilistas.Name = "btnEstilistas";
-            btnEstilistas.Size = new Size(210, 40);
+            btnEstilistas.Size = new Size(273, 40);
             btnEstilistas.TabIndex = 5;
             btnEstilistas.Text = "Estilistas";
             btnEstilistas.UseVisualStyleBackColor = false;
@@ -141,9 +141,9 @@
             // 
             picLogo.BackColor = Color.Transparent;
             picLogo.Image = (Image)resources.GetObject("picLogo.Image");
-            picLogo.Location = new Point(540, 270);
+            picLogo.Location = new Point(585, 324);
             picLogo.Name = "picLogo";
-            picLogo.Size = new Size(266, 272);
+            picLogo.Size = new Size(195, 212);
             picLogo.SizeMode = PictureBoxSizeMode.Zoom;
             picLogo.TabIndex = 8;
             picLogo.TabStop = false;

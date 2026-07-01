@@ -108,5 +108,7 @@ namespace SistemaAgenda.UI
                 txtDuracion.Text = dgvServicios.CurrentRow.Cells["DuracionMinutos"].Value.ToString();
             }
         }
+
+        
     }
 }
