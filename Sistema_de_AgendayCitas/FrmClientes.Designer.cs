@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmClientes));
             lblNombre = new Label();
             lblApellido = new Label();
             lblTelefono = new Label();
@@ -41,33 +42,34 @@
             btnEliminar = new Button();
             dgvClientes = new DataGridView();
             lblIngrese = new Label();
+            btnLimpiar = new Button();
+            picLogo = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)dgvClientes).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)picLogo).BeginInit();
             SuspendLayout();
             // 
             // lblNombre
             // 
             lblNombre.AutoSize = true;
-            lblNombre.Location = new Point(51, 117);
+            lblNombre.Location = new Point(51, 94);
             lblNombre.Name = "lblNombre";
             lblNombre.Size = new Size(70, 20);
             lblNombre.TabIndex = 0;
             lblNombre.Text = "Nombre:";
-            txtNombre.KeyPress += txtNombre_KeyPress;
             // 
             // lblApellido
             // 
             lblApellido.AutoSize = true;
-            lblApellido.Location = new Point(51, 150);
+            lblApellido.Location = new Point(51, 127);
             lblApellido.Name = "lblApellido";
             lblApellido.Size = new Size(66, 20);
             lblApellido.TabIndex = 1;
             lblApellido.Text = "Apellido";
-            txtApellido.KeyPress += txtApellido_KeyPress;
             // 
             // lblTelefono
             // 
             lblTelefono.AutoSize = true;
-            lblTelefono.Location = new Point(51, 183);
+            lblTelefono.Location = new Point(51, 160);
             lblTelefono.Name = "lblTelefono";
             lblTelefono.Size = new Size(72, 20);
             lblTelefono.TabIndex = 2;
@@ -76,7 +78,7 @@
             // lblCorreo
             // 
             lblCorreo.AutoSize = true;
-            lblCorreo.Location = new Point(51, 216);
+            lblCorreo.Location = new Point(51, 193);
             lblCorreo.Name = "lblCorreo";
             lblCorreo.Size = new Size(60, 20);
             lblCorreo.TabIndex = 3;
@@ -85,25 +87,27 @@
             // txtNombre
             // 
             txtNombre.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtNombre.Location = new Point(162, 110);
+            txtNombre.Location = new Point(162, 87);
             txtNombre.Name = "txtNombre";
             txtNombre.PlaceholderText = "Ej: Luzmairy";
             txtNombre.Size = new Size(357, 27);
             txtNombre.TabIndex = 4;
+            txtNombre.KeyPress += txtNombre_KeyPress;
             // 
             // txtApellido
             // 
             txtApellido.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtApellido.Location = new Point(162, 143);
+            txtApellido.Location = new Point(162, 120);
             txtApellido.Name = "txtApellido";
             txtApellido.PlaceholderText = "Ej: Rodriguez";
             txtApellido.Size = new Size(357, 27);
             txtApellido.TabIndex = 5;
+            txtApellido.KeyPress += txtApellido_KeyPress;
             // 
             // txtTelefono
             // 
             txtTelefono.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtTelefono.Location = new Point(162, 176);
+            txtTelefono.Location = new Point(162, 153);
             txtTelefono.Name = "txtTelefono";
             txtTelefono.PlaceholderText = "Ej: 000-000-0000";
             txtTelefono.Size = new Size(357, 27);
@@ -113,7 +117,7 @@
             // txtCorreo
             // 
             txtCorreo.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtCorreo.Location = new Point(162, 209);
+            txtCorreo.Location = new Point(162, 186);
             txtCorreo.Name = "txtCorreo";
             txtCorreo.PlaceholderText = "Ej: luz17@gmail.com";
             txtCorreo.Size = new Size(357, 27);
@@ -121,42 +125,51 @@
             // 
             // btnAgregar
             // 
-            btnAgregar.Location = new Point(98, 277);
+            btnAgregar.BackColor = Color.DeepPink;
+            btnAgregar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnAgregar.ForeColor = Color.White;
+            btnAgregar.Location = new Point(37, 260);
             btnAgregar.Name = "btnAgregar";
-            btnAgregar.Size = new Size(140, 29);
+            btnAgregar.Size = new Size(164, 43);
             btnAgregar.TabIndex = 8;
-            btnAgregar.Text = "Agregar";
-            btnAgregar.UseVisualStyleBackColor = true;
+            btnAgregar.Text = "➕ Agregar";
+            btnAgregar.UseVisualStyleBackColor = false;
             btnAgregar.Click += btnAgregar_Click;
             // 
             // btnEditar
             // 
-            btnEditar.Location = new Point(311, 277);
+            btnEditar.BackColor = Color.DeepPink;
+            btnEditar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnEditar.ForeColor = Color.White;
+            btnEditar.Location = new Point(207, 260);
             btnEditar.Name = "btnEditar";
-            btnEditar.Size = new Size(140, 29);
+            btnEditar.Size = new Size(164, 43);
             btnEditar.TabIndex = 9;
-            btnEditar.Text = "Editar";
-            btnEditar.UseVisualStyleBackColor = true;
+            btnEditar.Text = "✏️ Editar";
+            btnEditar.UseVisualStyleBackColor = false;
             btnEditar.Click += btnEditar_Click;
             // 
             // btnEliminar
             // 
-            btnEliminar.Location = new Point(518, 277);
+            btnEliminar.BackColor = Color.DeepPink;
+            btnEliminar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnEliminar.ForeColor = Color.White;
+            btnEliminar.Location = new Point(377, 260);
             btnEliminar.Name = "btnEliminar";
-            btnEliminar.Size = new Size(140, 29);
+            btnEliminar.Size = new Size(164, 43);
             btnEliminar.TabIndex = 10;
-            btnEliminar.Text = "Eliminar";
-            btnEliminar.UseVisualStyleBackColor = true;
+            btnEliminar.Text = "🗑️ Eliminar";
+            btnEliminar.UseVisualStyleBackColor = false;
             btnEliminar.Click += btnEliminar_Click;
             // 
             // dgvClientes
             // 
-            dgvClientes.BackgroundColor = Color.OldLace;
+            dgvClientes.BackgroundColor = Color.LavenderBlush;
             dgvClientes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvClientes.Location = new Point(37, 331);
+            dgvClientes.Location = new Point(37, 323);
             dgvClientes.Name = "dgvClientes";
             dgvClientes.RowHeadersWidth = 51;
-            dgvClientes.Size = new Size(677, 151);
+            dgvClientes.Size = new Size(677, 181);
             dgvClientes.TabIndex = 11;
             dgvClientes.CellClick += dgvClientes_CellClick;
             // 
@@ -170,12 +183,38 @@
             lblIngrese.TabIndex = 12;
             lblIngrese.Text = "Ingrese nuevo cliente:";
             // 
+            // btnLimpiar
+            // 
+            btnLimpiar.BackColor = Color.DeepPink;
+            btnLimpiar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnLimpiar.ForeColor = Color.White;
+            btnLimpiar.Location = new Point(547, 260);
+            btnLimpiar.Name = "btnLimpiar";
+            btnLimpiar.Size = new Size(164, 43);
+            btnLimpiar.TabIndex = 13;
+            btnLimpiar.Text = "\U0001f9f9 Limpiar";
+            btnLimpiar.UseVisualStyleBackColor = false;
+            btnLimpiar.Click += btnLimpiar_Click;
+            // 
+            // picLogo
+            // 
+            picLogo.BackColor = Color.Transparent;
+            picLogo.Image = (Image)resources.GetObject("picLogo.Image");
+            picLogo.Location = new Point(538, 9);
+            picLogo.Name = "picLogo";
+            picLogo.Size = new Size(242, 245);
+            picLogo.SizeMode = PictureBoxSizeMode.Zoom;
+            picLogo.TabIndex = 17;
+            picLogo.TabStop = false;
+            // 
             // frmClientes
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.LavenderBlush;
-            ClientSize = new Size(765, 535);
+            BackColor = SystemColors.ControlLightLight;
+            ClientSize = new Size(801, 535);
+            Controls.Add(picLogo);
+            Controls.Add(btnLimpiar);
             Controls.Add(lblIngrese);
             Controls.Add(dgvClientes);
             Controls.Add(btnEliminar);
@@ -196,6 +235,7 @@
             TransparencyKey = Color.FromArgb(255, 224, 192);
             Load += FrmClientes_Load;
             ((System.ComponentModel.ISupportInitialize)dgvClientes).EndInit();
+            ((System.ComponentModel.ISupportInitialize)picLogo).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -217,5 +257,7 @@
         private Button btnEliminar;
         private DataGridView dgvClientes;
         private Label lblIngrese;
+        private Button btnLimpiar;
+        private PictureBox picLogo;
     }
 }

@@ -17,6 +17,7 @@
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAgenda));
             dgvCitas = new DataGridView();
             btnAgendar = new Button();
             groupBox1 = new GroupBox();
@@ -36,6 +37,8 @@
             lblClientes = new Label();
             lblPrecioServicio = new Label();
             groupBox2 = new GroupBox();
+            picLogo = new PictureBox();
+            btnLimpiar = new Button();
             lblPuedeCambiar = new Label();
             btnPagar = new Button();
             cmbMetodoPago = new ComboBox();
@@ -45,33 +48,37 @@
             ((System.ComponentModel.ISupportInitialize)dgvCitas).BeginInit();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)picLogo).BeginInit();
             SuspendLayout();
             // 
             // dgvCitas
             // 
-            dgvCitas.BackgroundColor = Color.OldLace;
+            dgvCitas.BackgroundColor = Color.LavenderBlush;
             dgvCitas.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvCitas.GridColor = Color.LavenderBlush;
             dgvCitas.Location = new Point(45, 476);
             dgvCitas.Name = "dgvCitas";
             dgvCitas.RowHeadersWidth = 51;
-            dgvCitas.Size = new Size(928, 141);
+            dgvCitas.Size = new Size(928, 196);
             dgvCitas.TabIndex = 8;
             dgvCitas.CellClick += dgvCitas_CellClick;
             // 
             // btnAgendar
             // 
-            btnAgendar.Location = new Point(24, 311);
+            btnAgendar.BackColor = Color.DeepPink;
+            btnAgendar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnAgendar.ForeColor = Color.White;
+            btnAgendar.Location = new Point(24, 310);
             btnAgendar.Name = "btnAgendar";
-            btnAgendar.Size = new Size(164, 29);
+            btnAgendar.Size = new Size(164, 43);
             btnAgendar.TabIndex = 9;
-            btnAgendar.Text = "Agendar";
-            btnAgendar.UseVisualStyleBackColor = true;
+            btnAgendar.Text = "🗓 Agendar";
+            btnAgendar.UseVisualStyleBackColor = false;
             btnAgendar.Click += btnAgendar_Click;
             // 
             // groupBox1
             // 
-            groupBox1.BackColor = Color.LavenderBlush;
+            groupBox1.BackColor = SystemColors.ButtonHighlight;
             groupBox1.Controls.Add(btnActualizarLista);
             groupBox1.Controls.Add(btnCancelar);
             groupBox1.Controls.Add(btnReprogramar);
@@ -96,39 +103,48 @@
             // 
             // btnActualizarLista
             // 
-            btnActualizarLista.Location = new Point(215, 367);
+            btnActualizarLista.BackColor = Color.DeepPink;
+            btnActualizarLista.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnActualizarLista.ForeColor = Color.White;
+            btnActualizarLista.Location = new Point(215, 311);
             btnActualizarLista.Name = "btnActualizarLista";
-            btnActualizarLista.Size = new Size(164, 29);
+            btnActualizarLista.Size = new Size(164, 43);
             btnActualizarLista.TabIndex = 25;
-            btnActualizarLista.Text = "Actualizar lista";
-            btnActualizarLista.UseVisualStyleBackColor = true;
+            btnActualizarLista.Text = "🔃 Actualizar lista";
+            btnActualizarLista.UseVisualStyleBackColor = false;
             btnActualizarLista.Click += btnActualizarLista_Click;
             // 
             // btnCancelar
             // 
-            btnCancelar.Location = new Point(215, 311);
+            btnCancelar.BackColor = Color.DeepPink;
+            btnCancelar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnCancelar.ForeColor = Color.White;
+            btnCancelar.Location = new Point(215, 362);
             btnCancelar.Name = "btnCancelar";
-            btnCancelar.Size = new Size(164, 29);
+            btnCancelar.Size = new Size(164, 43);
             btnCancelar.TabIndex = 24;
-            btnCancelar.Text = "Cancelar";
-            btnCancelar.UseVisualStyleBackColor = true;
+            btnCancelar.Text = "❌ Cancelar";
+            btnCancelar.UseVisualStyleBackColor = false;
             btnCancelar.Click += btnCancelar_Click;
             // 
             // btnReprogramar
             // 
-            btnReprogramar.Location = new Point(24, 367);
+            btnReprogramar.BackColor = Color.DeepPink;
+            btnReprogramar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnReprogramar.ForeColor = Color.White;
+            btnReprogramar.Location = new Point(24, 362);
             btnReprogramar.Name = "btnReprogramar";
-            btnReprogramar.Size = new Size(164, 29);
+            btnReprogramar.Size = new Size(164, 43);
             btnReprogramar.TabIndex = 23;
-            btnReprogramar.Text = "Reprogramar";
-            btnReprogramar.UseVisualStyleBackColor = true;
+            btnReprogramar.Text = "🔄 Reprogramar";
+            btnReprogramar.UseVisualStyleBackColor = false;
             btnReprogramar.Click += btnReprogramar_Click;
             // 
             // lblDeposito
             // 
             lblDeposito.AutoSize = true;
             lblDeposito.Font = new Font("Segoe UI Black", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblDeposito.ForeColor = Color.Crimson;
+            lblDeposito.ForeColor = Color.DeepPink;
             lblDeposito.Location = new Point(24, 274);
             lblDeposito.Name = "lblDeposito";
             lblDeposito.Size = new Size(225, 20);
@@ -225,8 +241,8 @@
             // 
             lblPrecioServicio.AutoSize = true;
             lblPrecioServicio.Font = new Font("Segoe UI Black", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblPrecioServicio.ForeColor = Color.Crimson;
-            lblPrecioServicio.Location = new Point(22, 229);
+            lblPrecioServicio.ForeColor = Color.DeepPink;
+            lblPrecioServicio.Location = new Point(22, 47);
             lblPrecioServicio.Name = "lblPrecioServicio";
             lblPrecioServicio.Size = new Size(189, 20);
             lblPrecioServicio.TabIndex = 21;
@@ -234,6 +250,8 @@
             // 
             // groupBox2
             // 
+            groupBox2.Controls.Add(picLogo);
+            groupBox2.Controls.Add(btnLimpiar);
             groupBox2.Controls.Add(lblPuedeCambiar);
             groupBox2.Controls.Add(btnPagar);
             groupBox2.Controls.Add(cmbMetodoPago);
@@ -243,37 +261,66 @@
             groupBox2.Controls.Add(lblMonto);
             groupBox2.Location = new Point(536, 28);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(437, 424);
+            groupBox2.Size = new Size(436, 424);
             groupBox2.TabIndex = 24;
             groupBox2.TabStop = false;
             groupBox2.Text = "Registre el pago de la cita seleccionada:";
             // 
+            // picLogo
+            // 
+            picLogo.BackColor = Color.Transparent;
+            picLogo.Image = (Image)resources.GetObject("picLogo.Image");
+            picLogo.Location = new Point(251, 168);
+            picLogo.Name = "picLogo";
+            picLogo.Size = new Size(127, 137);
+            picLogo.SizeMode = PictureBoxSizeMode.Zoom;
+            picLogo.TabIndex = 24;
+            picLogo.TabStop = false;
+            // 
+            // btnLimpiar
+            // 
+            btnLimpiar.BackColor = Color.DeepPink;
+            btnLimpiar.BackgroundImageLayout = ImageLayout.Center;
+            btnLimpiar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnLimpiar.ForeColor = Color.White;
+            btnLimpiar.Location = new Point(224, 310);
+            btnLimpiar.Name = "btnLimpiar";
+            btnLimpiar.Size = new Size(164, 43);
+            btnLimpiar.TabIndex = 23;
+            btnLimpiar.Text = "🗑️Limpiar todo";
+            btnLimpiar.UseVisualStyleBackColor = false;
+            btnLimpiar.Click += btnLimpiar_Click;
+            // 
             // lblPuedeCambiar
             // 
             lblPuedeCambiar.AutoSize = true;
-            lblPuedeCambiar.Font = new Font("Segoe UI", 7.8F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            lblPuedeCambiar.Font = new Font("Segoe UI Semibold", 7.8F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             lblPuedeCambiar.ForeColor = Color.DimGray;
-            lblPuedeCambiar.Location = new Point(22, 101);
+            lblPuedeCambiar.Location = new Point(22, 148);
             lblPuedeCambiar.Name = "lblPuedeCambiar";
-            lblPuedeCambiar.Size = new Size(366, 17);
+            lblPuedeCambiar.Size = new Size(388, 17);
             lblPuedeCambiar.TabIndex = 22;
             lblPuedeCambiar.Text = "Nota: Puede cambiar el precio si hizo mas del precio establecido";
             // 
             // btnPagar
             // 
-            btnPagar.Location = new Point(120, 322);
+            btnPagar.BackColor = Color.DeepPink;
+            btnPagar.BackgroundImageLayout = ImageLayout.Center;
+            btnPagar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnPagar.ForeColor = Color.White;
+            btnPagar.Location = new Point(36, 311);
             btnPagar.Name = "btnPagar";
-            btnPagar.Size = new Size(201, 29);
+            btnPagar.Size = new Size(164, 43);
             btnPagar.TabIndex = 21;
-            btnPagar.Text = "Registrar pago";
-            btnPagar.UseVisualStyleBackColor = true;
+            btnPagar.Text = "💳 Registrar pago";
+            btnPagar.UseVisualStyleBackColor = false;
             btnPagar.Click += btnPagar_Click;
             // 
             // cmbMetodoPago
             // 
             cmbMetodoPago.FormattingEnabled = true;
             cmbMetodoPago.Items.AddRange(new object[] { "Efectivo", "Tarjeta", "Transferencia" });
-            cmbMetodoPago.Location = new Point(22, 191);
+            cmbMetodoPago.Location = new Point(22, 221);
             cmbMetodoPago.Name = "cmbMetodoPago";
             cmbMetodoPago.Size = new Size(201, 28);
             cmbMetodoPago.TabIndex = 20;
@@ -281,7 +328,7 @@
             // lblMetodoPago
             // 
             lblMetodoPago.AutoSize = true;
-            lblMetodoPago.Location = new Point(22, 159);
+            lblMetodoPago.Location = new Point(22, 189);
             lblMetodoPago.Name = "lblMetodoPago";
             lblMetodoPago.Size = new Size(127, 20);
             lblMetodoPago.TabIndex = 19;
@@ -290,7 +337,7 @@
             // txtMonto
             // 
             txtMonto.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtMonto.Location = new Point(22, 71);
+            txtMonto.Location = new Point(22, 114);
             txtMonto.Name = "txtMonto";
             txtMonto.PlaceholderText = "Ej: 200";
             txtMonto.Size = new Size(201, 27);
@@ -300,7 +347,7 @@
             // lblMonto
             // 
             lblMonto.AutoSize = true;
-            lblMonto.Location = new Point(22, 38);
+            lblMonto.Location = new Point(22, 81);
             lblMonto.Name = "lblMonto";
             lblMonto.Size = new Size(59, 20);
             lblMonto.TabIndex = 16;
@@ -310,21 +357,22 @@
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.LavenderBlush;
-            ClientSize = new Size(1033, 660);
+            BackColor = SystemColors.ControlLightLight;
+            ClientSize = new Size(1033, 707);
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);
             Controls.Add(dgvCitas);
             Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             ForeColor = Color.Black;
             Name = "frmAgenda";
-            Text = "Agenda";
+            Text = "Agenda y Pagos";
             Load += frmAgenda_Load;
             ((System.ComponentModel.ISupportInitialize)dgvCitas).EndInit();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             groupBox2.ResumeLayout(false);
             groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)picLogo).EndInit();
             ResumeLayout(false);
         }
 
@@ -355,5 +403,7 @@
         private Button btnPagar;
         private Label lblPrecioServicio;
         private Label lblPuedeCambiar;
+        private Button btnLimpiar;
+        private PictureBox picLogo;
     }
 }

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmServicios));
             lblTipo = new Label();
             lblPrecio = new Label();
             lblDuracion = new Label();
@@ -41,7 +42,10 @@
             btnCalcular = new Button();
             dgvServicios = new DataGridView();
             lblElijaS = new Label();
+            btnLimpiar = new Button();
+            picLogo = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)dgvServicios).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)picLogo).BeginInit();
             SuspendLayout();
             // 
             // lblTipo
@@ -75,8 +79,8 @@
             // 
             lblResultado.AutoSize = true;
             lblResultado.Font = new Font("Segoe UI Black", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblResultado.ForeColor = Color.Crimson;
-            lblResultado.Location = new Point(40, 233);
+            lblResultado.ForeColor = Color.DeepPink;
+            lblResultado.Location = new Point(40, 227);
             lblResultado.Name = "lblResultado";
             lblResultado.Size = new Size(156, 20);
             lblResultado.TabIndex = 3;
@@ -114,53 +118,66 @@
             // 
             // btnAgregar
             // 
-            btnAgregar.Location = new Point(40, 288);
+            btnAgregar.BackColor = Color.DeepPink;
+            btnAgregar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnAgregar.ForeColor = Color.White;
+            btnAgregar.Location = new Point(40, 290);
             btnAgregar.Name = "btnAgregar";
-            btnAgregar.Size = new Size(106, 29);
+            btnAgregar.Size = new Size(164, 43);
             btnAgregar.TabIndex = 7;
-            btnAgregar.Text = "Agregar";
-            btnAgregar.UseVisualStyleBackColor = true;
+            btnAgregar.Text = "➕Agregar";
+            btnAgregar.UseVisualStyleBackColor = false;
             btnAgregar.Click += btnAgregar_Click;
             // 
             // btnEditar
             // 
-            btnEditar.Location = new Point(169, 288);
+            btnEditar.BackColor = Color.DeepPink;
+            btnEditar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnEditar.ForeColor = Color.White;
+            btnEditar.Location = new Point(40, 339);
             btnEditar.Name = "btnEditar";
-            btnEditar.Size = new Size(106, 29);
+            btnEditar.Size = new Size(164, 43);
             btnEditar.TabIndex = 8;
-            btnEditar.Text = "Editar";
-            btnEditar.UseVisualStyleBackColor = true;
+            btnEditar.Text = "✏️ Editar";
+            btnEditar.UseVisualStyleBackColor = false;
             btnEditar.Click += btnEditar_Click;
             // 
             // btnEliminar
             // 
-            btnEliminar.Location = new Point(311, 288);
+            btnEliminar.BackColor = Color.DeepPink;
+            btnEliminar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnEliminar.ForeColor = Color.White;
+            btnEliminar.Location = new Point(226, 339);
             btnEliminar.Name = "btnEliminar";
-            btnEliminar.Size = new Size(106, 29);
+            btnEliminar.Size = new Size(164, 43);
             btnEliminar.TabIndex = 9;
-            btnEliminar.Text = "Eliminar";
-            btnEliminar.UseVisualStyleBackColor = true;
+            btnEliminar.Text = "🗑️ Eliminar";
+            btnEliminar.UseVisualStyleBackColor = false;
             btnEliminar.Click += btnEliminar_Click;
             // 
             // btnCalcular
             // 
-            btnCalcular.Location = new Point(436, 288);
+            btnCalcular.BackColor = Color.DeepPink;
+            btnCalcular.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnCalcular.ForeColor = Color.White;
+            btnCalcular.Location = new Point(226, 290);
             btnCalcular.Name = "btnCalcular";
-            btnCalcular.Size = new Size(112, 29);
+            btnCalcular.Size = new Size(164, 43);
             btnCalcular.TabIndex = 10;
-            btnCalcular.Text = "Calcular precio/duracion";
-            btnCalcular.UseVisualStyleBackColor = true;
+            btnCalcular.Text = "💲 Calcular";
+            btnCalcular.UseVisualStyleBackColor = false;
             btnCalcular.Click += btnCalcular_Click;
             // 
             // dgvServicios
             // 
             dgvServicios.AllowUserToAddRows = false;
+            dgvServicios.BackgroundColor = Color.LavenderBlush;
             dgvServicios.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvServicios.Location = new Point(40, 345);
+            dgvServicios.Location = new Point(40, 400);
             dgvServicios.Name = "dgvServicios";
             dgvServicios.ReadOnly = true;
             dgvServicios.RowHeadersWidth = 51;
-            dgvServicios.Size = new Size(554, 127);
+            dgvServicios.Size = new Size(554, 182);
             dgvServicios.TabIndex = 11;
             dgvServicios.CellClick += dgvServicios_CellClick;
             // 
@@ -174,12 +191,38 @@
             lblElijaS.TabIndex = 12;
             lblElijaS.Text = "Elija un servicio, precio y duracion del servicio:";
             // 
+            // btnLimpiar
+            // 
+            btnLimpiar.BackColor = Color.DeepPink;
+            btnLimpiar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnLimpiar.ForeColor = Color.White;
+            btnLimpiar.Location = new Point(409, 290);
+            btnLimpiar.Name = "btnLimpiar";
+            btnLimpiar.Size = new Size(164, 43);
+            btnLimpiar.TabIndex = 13;
+            btnLimpiar.Text = "\U0001f9f9Limpiar";
+            btnLimpiar.UseVisualStyleBackColor = false;
+            btnLimpiar.Click += btnLimpiar_Click;
+            // 
+            // picLogo
+            // 
+            picLogo.BackColor = Color.Transparent;
+            picLogo.Image = (Image)resources.GetObject("picLogo.Image");
+            picLogo.Location = new Point(409, 39);
+            picLogo.Name = "picLogo";
+            picLogo.Size = new Size(202, 201);
+            picLogo.SizeMode = PictureBoxSizeMode.Zoom;
+            picLogo.TabIndex = 18;
+            picLogo.TabStop = false;
+            // 
             // frmServicios
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.LavenderBlush;
-            ClientSize = new Size(679, 497);
+            BackColor = SystemColors.ControlLightLight;
+            ClientSize = new Size(655, 594);
+            Controls.Add(picLogo);
+            Controls.Add(btnLimpiar);
             Controls.Add(lblElijaS);
             Controls.Add(dgvServicios);
             Controls.Add(btnCalcular);
@@ -198,6 +241,7 @@
             Text = "Servicios";
             Load += FrmServicios_Load;
             ((System.ComponentModel.ISupportInitialize)dgvServicios).EndInit();
+            ((System.ComponentModel.ISupportInitialize)picLogo).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -217,5 +261,7 @@
         private Button btnCalcular;
         private DataGridView dgvServicios;
         private Label lblElijaS;
+        private Button btnLimpiar;
+        private PictureBox picLogo;
     }
 }

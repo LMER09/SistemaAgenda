@@ -157,6 +157,9 @@ namespace SistemaAgenda.UI
             int idCliente = (int)dgvCitas.CurrentRow.Cells["Id_Clientes"].Value;
             int idServicio = (int)dgvCitas.CurrentRow.Cells["Id_Servicios"].Value;
             int idEstilista = (int)dgvCitas.CurrentRow.Cells["Id_Estilista"].Value;
+            dgvCitas.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvCitas.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvCitas.MultiSelect = false;
 
             if (_listaClientes != null)
                 cmbClientes.SelectedIndex = _listaClientes.FindIndex(c => c.Id == idCliente);
@@ -181,6 +184,11 @@ namespace SistemaAgenda.UI
             }
 
             _cargandoCita = false;
+        }
+
+        private void btnLimpiar_Click(object sender, EventArgs e)
+        {
+            Limpiar();
         }
     }
 }

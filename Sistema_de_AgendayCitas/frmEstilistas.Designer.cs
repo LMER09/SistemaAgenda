@@ -16,6 +16,7 @@
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmEstilistas));
             lblNombre = new Label();
             lblApellido = new Label();
             lblTelefono = new Label();
@@ -31,7 +32,10 @@
             btnEliminar = new Button();
             dgvEstilistas = new DataGridView();
             lblIngrese = new Label();
+            btnLimpiar = new Button();
+            picLogo = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)dgvEstilistas).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)picLogo).BeginInit();
             SuspendLayout();
             // 
             // lblNombre
@@ -42,7 +46,6 @@
             lblNombre.Size = new Size(70, 20);
             lblNombre.TabIndex = 0;
             lblNombre.Text = "Nombre:";
-            txtNombre.KeyPress += txtNombre_KeyPress;
             // 
             // lblApellido
             // 
@@ -52,7 +55,6 @@
             lblApellido.Size = new Size(70, 20);
             lblApellido.TabIndex = 1;
             lblApellido.Text = "Apellido:";
-            txtApellido.KeyPress += txtApellido_KeyPress;
             // 
             // lblTelefono
             // 
@@ -85,25 +87,27 @@
             // 
             txtNombre.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtNombre.ForeColor = SystemColors.ActiveCaptionText;
-            txtNombre.Location = new Point(157, 80);
+            txtNombre.Location = new Point(158, 80);
             txtNombre.Name = "txtNombre";
             txtNombre.PlaceholderText = "Ej: Maria";
             txtNombre.Size = new Size(397, 27);
             txtNombre.TabIndex = 5;
+            txtNombre.KeyPress += txtNombre_KeyPress;
             // 
             // txtApellido
             // 
             txtApellido.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtApellido.Location = new Point(157, 117);
+            txtApellido.Location = new Point(158, 117);
             txtApellido.Name = "txtApellido";
             txtApellido.PlaceholderText = "Ej: Cedano";
             txtApellido.Size = new Size(397, 27);
             txtApellido.TabIndex = 6;
+            txtApellido.KeyPress += txtApellido_KeyPress;
             // 
             // txtTelefono
             // 
             txtTelefono.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtTelefono.Location = new Point(157, 150);
+            txtTelefono.Location = new Point(158, 150);
             txtTelefono.Name = "txtTelefono";
             txtTelefono.PlaceholderText = "Ej: 000-000-0000";
             txtTelefono.Size = new Size(397, 27);
@@ -113,7 +117,7 @@
             // txtCorreo
             // 
             txtCorreo.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtCorreo.Location = new Point(157, 183);
+            txtCorreo.Location = new Point(158, 183);
             txtCorreo.Name = "txtCorreo";
             txtCorreo.PlaceholderText = "Ej: Maria@gmail.com";
             txtCorreo.Size = new Size(397, 27);
@@ -122,7 +126,7 @@
             // txtEspecialidad
             // 
             txtEspecialidad.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtEspecialidad.Location = new Point(157, 216);
+            txtEspecialidad.Location = new Point(158, 216);
             txtEspecialidad.Name = "txtEspecialidad";
             txtEspecialidad.PlaceholderText = "Ej: Cortes de pelo";
             txtEspecialidad.Size = new Size(397, 27);
@@ -130,42 +134,51 @@
             // 
             // btnAgregar
             // 
-            btnAgregar.Location = new Point(89, 280);
+            btnAgregar.BackColor = Color.DeepPink;
+            btnAgregar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnAgregar.ForeColor = Color.White;
+            btnAgregar.Location = new Point(65, 281);
             btnAgregar.Name = "btnAgregar";
-            btnAgregar.Size = new Size(182, 29);
+            btnAgregar.Size = new Size(164, 43);
             btnAgregar.TabIndex = 10;
-            btnAgregar.Text = "Agregar";
-            btnAgregar.UseVisualStyleBackColor = true;
+            btnAgregar.Text = "➕ Agregar";
+            btnAgregar.UseVisualStyleBackColor = false;
             btnAgregar.Click += btnAgregar_Click;
             // 
             // btnEditar
             // 
-            btnEditar.Location = new Point(337, 280);
+            btnEditar.BackColor = Color.DeepPink;
+            btnEditar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnEditar.ForeColor = Color.White;
+            btnEditar.Location = new Point(260, 281);
             btnEditar.Name = "btnEditar";
-            btnEditar.Size = new Size(182, 29);
+            btnEditar.Size = new Size(164, 43);
             btnEditar.TabIndex = 11;
-            btnEditar.Text = "Editar";
-            btnEditar.UseVisualStyleBackColor = true;
+            btnEditar.Text = "✏️ Editar";
+            btnEditar.UseVisualStyleBackColor = false;
             btnEditar.Click += btnEditar_Click;
             // 
             // btnEliminar
             // 
-            btnEliminar.Location = new Point(584, 280);
+            btnEliminar.BackColor = Color.DeepPink;
+            btnEliminar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnEliminar.ForeColor = Color.White;
+            btnEliminar.Location = new Point(450, 280);
             btnEliminar.Name = "btnEliminar";
-            btnEliminar.Size = new Size(182, 29);
+            btnEliminar.Size = new Size(164, 43);
             btnEliminar.TabIndex = 12;
-            btnEliminar.Text = "Eliminar";
-            btnEliminar.UseVisualStyleBackColor = true;
+            btnEliminar.Text = "🗑️ Eliminar";
+            btnEliminar.UseVisualStyleBackColor = false;
             btnEliminar.Click += btnEliminar_Click;
             // 
             // dgvEstilistas
             // 
-            dgvEstilistas.BackgroundColor = Color.OldLace;
+            dgvEstilistas.BackgroundColor = Color.LavenderBlush;
             dgvEstilistas.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvEstilistas.Location = new Point(38, 330);
             dgvEstilistas.Name = "dgvEstilistas";
             dgvEstilistas.RowHeadersWidth = 51;
-            dgvEstilistas.Size = new Size(798, 152);
+            dgvEstilistas.Size = new Size(798, 214);
             dgvEstilistas.TabIndex = 13;
             dgvEstilistas.CellClick += dgvEstilistas_CellClick;
             // 
@@ -179,12 +192,38 @@
             lblIngrese.TabIndex = 14;
             lblIngrese.Text = "Ingrese nuevo estilista:";
             // 
+            // btnLimpiar
+            // 
+            btnLimpiar.BackColor = Color.DeepPink;
+            btnLimpiar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnLimpiar.ForeColor = Color.White;
+            btnLimpiar.Location = new Point(638, 280);
+            btnLimpiar.Name = "btnLimpiar";
+            btnLimpiar.Size = new Size(164, 43);
+            btnLimpiar.TabIndex = 15;
+            btnLimpiar.Text = "\U0001f9f9 Limpiar";
+            btnLimpiar.UseVisualStyleBackColor = false;
+            btnLimpiar.Click += btnLimpiar_Click;
+            // 
+            // picLogo
+            // 
+            picLogo.BackColor = Color.Transparent;
+            picLogo.Image = (Image)resources.GetObject("picLogo.Image");
+            picLogo.Location = new Point(561, -5);
+            picLogo.Name = "picLogo";
+            picLogo.Size = new Size(284, 279);
+            picLogo.SizeMode = PictureBoxSizeMode.Zoom;
+            picLogo.TabIndex = 16;
+            picLogo.TabStop = false;
+            // 
             // frmEstilistas
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.LavenderBlush;
-            ClientSize = new Size(875, 514);
+            BackColor = SystemColors.ControlLightLight;
+            ClientSize = new Size(875, 591);
+            Controls.Add(picLogo);
+            Controls.Add(btnLimpiar);
             Controls.Add(lblIngrese);
             Controls.Add(dgvEstilistas);
             Controls.Add(btnEliminar);
@@ -205,6 +244,7 @@
             Text = "Estilistas";
             Load += FrmEstilistas_Load;
             ((System.ComponentModel.ISupportInitialize)dgvEstilistas).EndInit();
+            ((System.ComponentModel.ISupportInitialize)picLogo).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -226,5 +266,7 @@
         private Button btnEliminar;
         private DataGridView dgvEstilistas;
         private Label lblIngrese;
+        private Button btnLimpiar;
+        private PictureBox picLogo;
     }
 }

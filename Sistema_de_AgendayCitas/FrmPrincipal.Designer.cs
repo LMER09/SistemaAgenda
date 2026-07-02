@@ -48,9 +48,9 @@
             btnAgendar.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnAgendar.ForeColor = Color.LavenderBlush;
             btnAgendar.ImageAlign = ContentAlignment.TopLeft;
-            btnAgendar.Location = new Point(283, 186);
+            btnAgendar.Location = new Point(341, 198);
             btnAgendar.Name = "btnAgendar";
-            btnAgendar.Size = new Size(273, 40);
+            btnAgendar.Size = new Size(273, 48);
             btnAgendar.TabIndex = 1;
             btnAgendar.Text = "Agendar Cita y Pagar Cita";
             btnAgendar.UseVisualStyleBackColor = false;
@@ -63,9 +63,9 @@
             btnClientes.FlatStyle = FlatStyle.Popup;
             btnClientes.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnClientes.ForeColor = Color.LavenderBlush;
-            btnClientes.Location = new Point(283, 255);
+            btnClientes.Location = new Point(341, 266);
             btnClientes.Name = "btnClientes";
-            btnClientes.Size = new Size(273, 40);
+            btnClientes.Size = new Size(273, 48);
             btnClientes.TabIndex = 2;
             btnClientes.Text = "Clientes";
             btnClientes.UseVisualStyleBackColor = false;
@@ -78,9 +78,9 @@
             btnReportes.FlatStyle = FlatStyle.Popup;
             btnReportes.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnReportes.ForeColor = Color.LavenderBlush;
-            btnReportes.Location = new Point(283, 454);
+            btnReportes.Location = new Point(341, 472);
             btnReportes.Name = "btnReportes";
-            btnReportes.Size = new Size(273, 40);
+            btnReportes.Size = new Size(273, 48);
             btnReportes.TabIndex = 3;
             btnReportes.Text = "Reportes";
             btnReportes.UseVisualStyleBackColor = false;
@@ -93,9 +93,9 @@
             btnServicios.FlatStyle = FlatStyle.Popup;
             btnServicios.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnServicios.ForeColor = Color.LavenderBlush;
-            btnServicios.Location = new Point(283, 324);
+            btnServicios.Location = new Point(341, 335);
             btnServicios.Name = "btnServicios";
-            btnServicios.Size = new Size(273, 40);
+            btnServicios.Size = new Size(273, 48);
             btnServicios.TabIndex = 4;
             btnServicios.Text = "Servicios";
             btnServicios.UseVisualStyleBackColor = false;
@@ -107,9 +107,9 @@
             btnEstilistas.FlatStyle = FlatStyle.Popup;
             btnEstilistas.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnEstilistas.ForeColor = Color.LavenderBlush;
-            btnEstilistas.Location = new Point(283, 390);
+            btnEstilistas.Location = new Point(341, 404);
             btnEstilistas.Name = "btnEstilistas";
-            btnEstilistas.Size = new Size(273, 40);
+            btnEstilistas.Size = new Size(273, 48);
             btnEstilistas.TabIndex = 5;
             btnEstilistas.Text = "Estilistas";
             btnEstilistas.UseVisualStyleBackColor = false;
@@ -120,7 +120,7 @@
             lblGestion.AutoSize = true;
             lblGestion.Font = new Font("Segoe UI", 22.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblGestion.ForeColor = Color.MediumVioletRed;
-            lblGestion.Location = new Point(73, 62);
+            lblGestion.Location = new Point(141, 57);
             lblGestion.Name = "lblGestion";
             lblGestion.Size = new Size(672, 50);
             lblGestion.TabIndex = 6;
@@ -131,7 +131,7 @@
             lblElija.AutoSize = true;
             lblElija.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
             lblElija.ForeColor = Color.DarkGray;
-            lblElija.Location = new Point(253, 121);
+            lblElija.Location = new Point(315, 124);
             lblElija.Name = "lblElija";
             lblElija.Size = new Size(329, 25);
             lblElija.TabIndex = 7;
@@ -141,9 +141,9 @@
             // 
             picLogo.BackColor = Color.Transparent;
             picLogo.Image = (Image)resources.GetObject("picLogo.Image");
-            picLogo.Location = new Point(585, 324);
+            picLogo.Location = new Point(629, 188);
             picLogo.Name = "picLogo";
-            picLogo.Size = new Size(195, 212);
+            picLogo.Size = new Size(383, 426);
             picLogo.SizeMode = PictureBoxSizeMode.Zoom;
             picLogo.TabIndex = 8;
             picLogo.TabStop = false;
@@ -152,8 +152,8 @@
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.LavenderBlush;
-            ClientSize = new Size(862, 554);
+            BackColor = Color.White;
+            ClientSize = new Size(1024, 596);
             Controls.Add(picLogo);
             Controls.Add(lblElija);
             Controls.Add(lblGestion);
@@ -166,7 +166,6 @@
             ForeColor = Color.LavenderBlush;
             Name = "frmPrincipal";
             Text = "Sistema de Agenda y Citas";
-            TransparencyKey = Color.White;
             Load += frmPrincipal_Load;
             ((System.ComponentModel.ISupportInitialize)picLogo).EndInit();
             ResumeLayout(false);
