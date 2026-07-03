@@ -21,11 +21,11 @@ namespace SistemaAgenda.Negocios
                 $"=== CORTE DEL DÍA ===\nFecha: {DateTime.Today:dd/MM/yyyy}\nTotal ingresos: RD${_totalIngresos:F2}\n\n");
         }
 
-        // Destructor: garantiza que el resumen de ingresos se escriba al destruirse el objeto,
-        // aunque el usuario no haya presionado "Cerrar corte del día".
+        // Destructor: registra el resumen del día y libera el recurso asociado
+        // al archivo de texto una vez finalizada la escritura.
         ~CorteDia()
-        {
-            File.WriteAllText("CorteDia.txt",
+        { 
+            File.AppendAllText("CorteDia.txt",
                  $"=== CORTE DEL DÍA ===\n" +
                  $"Fecha: {DateTime.Today:dd/MM/yyyy}\n" +
                  $"Total ingresos: RD${_totalIngresos:F2}");
