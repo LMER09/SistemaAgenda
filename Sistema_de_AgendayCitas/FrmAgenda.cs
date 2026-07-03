@@ -5,6 +5,7 @@ namespace SistemaAgenda.UI
 {
     public partial class frmAgenda : Form
     {
+        // Se crean objetos de todas las clases que utilizaremos
         private readonly CitasBLL _citasBLL = new CitasBLL();
         private readonly ClientesBLL _clientesBLL = new ClientesBLL();
         private readonly ServiciosBLL _serviciosBLL = new ServiciosBLL();
@@ -12,14 +13,18 @@ namespace SistemaAgenda.UI
         private readonly PagosBLL _pagosBLL = new PagosBLL();
         private readonly RecordatorioCitas _recordatorio = new RecordatorioCitas();
 
+        // Almacenan los datos obtenidos de la base de datos
         private List<Clientes>? _listaClientes;
         private List<Servicios>? _listaServicios;
         private List<Estilista>? _listaEstilistas;
+
+        // Evita cambios automáticos mientras se carga una cita
         private bool _cargandoCita = false;
 
         public frmAgenda()
         {
             InitializeComponent();
+            // conecta el evento del recordatorio
             _recordatorio.RecordatorioDisparado += (mensaje) => MessageBox.Show(mensaje, "Recordatorio");
         }
 
@@ -45,18 +50,24 @@ namespace SistemaAgenda.UI
         {
             _listaClientes = _clientesBLL.ObtenerTodos();
             cmbClientes.Items.Clear();
-            foreach (var c in _listaClientes)
-                cmbClientes.Items.Add(c.Nombre + " " + c.Apellido);
+            for (int i = 0; i < _listaClientes.Count; i++)
+            {
+                cmbClientes.Items.Add(_listaClientes[i].Nombre + " " + _listaClientes[i].Apellido);
+            }
 
             _listaServicios = _serviciosBLL.ObtenerTodos();
             cmbServicios.Items.Clear();
-            foreach (var s in _listaServicios)
-                cmbServicios.Items.Add(s.Tipo_DeServicio);
+            for (int i = 0; i < _listaServicios.Count; i++)
+            {
+                cmbServicios.Items.Add(_listaServicios[i].Tipo_DeServicio);
+            }
 
             _listaEstilistas = _estilistaBLL.ObtenerTodos();
             cmbEstilistas.Items.Clear();
-            foreach (var es in _listaEstilistas)
-                cmbEstilistas.Items.Add(es.Nombre + " " + es.Apellido);
+            for (int i = 0; i < _listaEstilistas.Count; i++)
+            {
+                cmbEstilistas.Items.Add(_listaEstilistas[i].Nombre + " " + _listaEstilistas[i].Apellido);
+            }
         }
 
         private void CargarCitas()
@@ -65,6 +76,7 @@ namespace SistemaAgenda.UI
             dgvCitas.DataSource = _citasBLL.ObtenerTodos();
         }
 
+        // Une la fecha y la hora seleccionadas
         private DateTime ObtenerFechaHoraSeleccionada()
         {
             DateTime fecha = dtpFecha.Value.Date;
@@ -95,7 +107,7 @@ namespace SistemaAgenda.UI
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             if (dgvCitas.CurrentRow == null) { MessageBox.Show("Seleccione una cita."); return; }
-            MessageBox.Show(_citasBLL.CancelarCita((int)dgvCitas.CurrentRow.Cells["Id"].Value));
+            MessageBox.Show(_citasBLL.CancelarCita((int) dgvCitas.CurrentRow.Cells["Id"].Value));
             CargarCitas(); Limpiar();
         }
 
@@ -117,6 +129,7 @@ namespace SistemaAgenda.UI
             if (cmbMetodoPago.SelectedIndex == -1) { MessageBox.Show("Seleccione un método de pago."); return; }
             if (string.IsNullOrWhiteSpace(txtMonto.Text)) { MessageBox.Show("Ingrese el monto."); return; }
 
+            // Obtiene el Id de la cita seleccionada
             int idCita = (int)dgvCitas.CurrentRow.Cells["Id"].Value;
             Pagos pago = new Pagos();
             pago.Id_Citas = idCita;
@@ -141,6 +154,7 @@ namespace SistemaAgenda.UI
                 txtMonto.Text = precioFinal.ToString("F2");
         }
 
+        // Permite escribir solo números y un punto decimal
         private void txtMonto_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsDigit(e.KeyChar) && e.KeyChar != '.' && e.KeyChar != (char)Keys.Back)
@@ -158,21 +172,57 @@ namespace SistemaAgenda.UI
             int idCliente = (int)dgvCitas.CurrentRow.Cells["Id_Clientes"].Value;
             int idServicio = (int)dgvCitas.CurrentRow.Cells["Id_Servicios"].Value;
             int idEstilista = (int)dgvCitas.CurrentRow.Cells["Id_Estilista"].Value;
-            dgvCitas.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvCitas.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvCitas.MultiSelect = false;
-
+            
             if (_listaClientes != null)
-                cmbClientes.SelectedIndex = _listaClientes.FindIndex(c => c.Id == idCliente);
+            {
+                for (int i = 0; i < _listaClientes.Count; i++)
+                {
+                    if (_listaClientes[i].Id == idCliente)
+                    {
+                        cmbClientes.SelectedIndex = i;
+                        break;
+                    }
+                }
+            }
+
             if (_listaServicios != null)
-                cmbServicios.SelectedIndex = _listaServicios.FindIndex(s => s.Id == idServicio);
+            {
+                for (int i = 0; i < _listaServicios.Count; i++)
+                {
+                    if (_listaServicios[i].Id == idServicio)
+                    {
+                        cmbServicios.SelectedIndex = i;
+                        break;
+                    }
+                }
+            }
+
             if (_listaEstilistas != null)
-                cmbEstilistas.SelectedIndex = _listaEstilistas.FindIndex(es => es.Id == idEstilista);
+            {
+                for (int i = 0; i < _listaEstilistas.Count; i++)
+                {
+                    if (_listaEstilistas[i].Id == idEstilista)
+                    {
+                        cmbEstilistas.SelectedIndex = i;
+                        break;
+                    }
+                }
+            }
 
             dtpFecha.Value = (DateTime)dgvCitas.CurrentRow.Cells["Fecha"].Value;
-
             int idCita = (int)dgvCitas.CurrentRow.Cells["Id"].Value;
-            var pago = _pagosBLL.ObtenerTodos().FirstOrDefault(p => p.Id_Citas == idCita);
+
+            List<Pagos> pagos = _pagosBLL.ObtenerTodos();
+            Pagos pago = null;
+
+            for (int i = 0; i < pagos.Count; i++)
+            {
+                if (pagos[i].Id_Citas == idCita)
+                {
+                    pago = pagos[i];
+                    break;
+                }
+            }
             if (pago != null)
             {
                 txtMonto.Text = pago.Monto.ToString();
@@ -186,7 +236,6 @@ namespace SistemaAgenda.UI
 
             _cargandoCita = false;
         }
-
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
             Limpiar();

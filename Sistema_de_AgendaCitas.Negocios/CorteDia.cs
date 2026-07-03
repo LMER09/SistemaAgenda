@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Linq;
 using System.IO;
 
 namespace SistemaAgenda.Negocios
 {
     // Destructor de CorteDia
-    // Destructor: al cerrar el corte del día, genera un resumen de ingresos en un archivo de texto.
+    // Aal cerrar el corte del día, genera un resumen de ingresos en un archivo de texto.
    
     public class CorteDia
     {

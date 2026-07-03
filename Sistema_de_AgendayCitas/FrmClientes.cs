@@ -1,14 +1,12 @@
-﻿
-using SistemaAgenda.Negocios;
+﻿using SistemaAgenda.Negocios;
 using SistemaAgenda.Datos;
 
 namespace SistemaAgenda.UI
 {
     public partial class frmClientes : Form
     {
+        
         private ClientesBLL clientesBLL = new ClientesBLL();
-
-
         public frmClientes()
         {
             InitializeComponent();
@@ -40,11 +38,9 @@ namespace SistemaAgenda.UI
             cliente.Apellido = txtApellido.Text;
             cliente.Telefono = txtTelefono.Text;
             cliente.Correo = txtCorreo.Text;
-
             MessageBox.Show(clientesBLL.Registrar(cliente));
 
-            CargarClientes();
-            Limpiar();
+            CargarClientes(); Limpiar();
         }
         private void btnEditar_Click(object sender, EventArgs e)
         {
@@ -64,8 +60,7 @@ namespace SistemaAgenda.UI
 
             MessageBox.Show(clientesBLL.Actualizar(cliente));
 
-            CargarClientes();
-            Limpiar();
+            CargarClientes(); Limpiar();
         }
         private void btnEliminar_Click(object sender, EventArgs e)
         {
@@ -75,8 +70,7 @@ namespace SistemaAgenda.UI
 
                 MessageBox.Show(clientesBLL.Eliminar(id));
 
-                CargarClientes();
-                Limpiar();
+                CargarClientes(); Limpiar();
             }
             else
             {
@@ -93,23 +87,25 @@ namespace SistemaAgenda.UI
                 txtCorreo.Text = dgvClientes.CurrentRow.Cells["Correo"].Value.ToString();
             }
         }
+
+        //Evita números en nombre/apellido
         private void txtNombre_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsLetter(e.KeyChar) && e.KeyChar != ' ' && e.KeyChar != (char)Keys.Back)
                 e.Handled = true;
         }
-
         private void txtApellido_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsLetter(e.KeyChar) && e.KeyChar != ' ' && e.KeyChar != (char)Keys.Back)
                 e.Handled = true;
         }
+
+        //Evita letras en teléfono
         private void txtTelefono_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsDigit(e.KeyChar) && e.KeyChar != '-' && e.KeyChar != (char)Keys.Back)
                 e.Handled = true;
         }
-
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
             Limpiar();

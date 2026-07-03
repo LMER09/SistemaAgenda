@@ -17,9 +17,16 @@ namespace SistemaAgenda.UI
             var pagos = pagosBLL.ObtenerTodos();
 
             dgvPagos.DataSource = null;
+            // Muestra los pagos en la tabla
             dgvPagos.DataSource = pagos;
 
-            decimal total = pagos.Sum(p => p.Monto);
+            decimal total = 0;
+
+            for (int i = 0; i < pagos.Count; i++)
+            {
+                total = total + pagos[i].Monto;
+            }
+
             lblTotal.Text = $"RD$ {total:F2}";
         }
 
@@ -30,13 +37,17 @@ namespace SistemaAgenda.UI
 
         private void btnCorteDia_Click(object sender, EventArgs e)
         {
-            decimal total = pagosBLL.ObtenerTodos().Sum(p => p.Monto);
+            List<Pagos> pagos = pagosBLL.ObtenerTodos();
 
-            
+            decimal total = 0;
+
+            for (int i = 0; i < pagos.Count; i++)
+            {
+                total += pagos[i].Monto;
+            }
+
             CorteDia corte = new CorteDia(total);
             corte.Cerrar();
-
-
             MessageBox.Show($"Corte del día generado.\nTotal: RD$ {total:F2}", "Corte del día");
         }
     }

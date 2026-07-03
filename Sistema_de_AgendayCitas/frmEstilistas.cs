@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
+﻿
 using SistemaAgenda.Negocios;
 using SistemaAgenda.Datos;
 
@@ -12,7 +7,6 @@ namespace SistemaAgenda.UI
     public partial class frmEstilistas : Form
     {
         private EstilistaBLL estilistaBLL = new EstilistaBLL();
-
         public frmEstilistas()
         {
             InitializeComponent();
@@ -27,13 +21,11 @@ namespace SistemaAgenda.UI
             txtEspecialidad.Clear();
             txtNombre.Focus();
         }
-
         private void CargarEstilistas()
         {
             dgvEstilistas.DataSource = null;
             dgvEstilistas.DataSource = estilistaBLL.ObtenerTodos();
         }
-
         private void FrmEstilistas_Load(object sender, EventArgs e)
         {
             CargarEstilistas();
@@ -51,8 +43,7 @@ namespace SistemaAgenda.UI
 
             MessageBox.Show(estilistaBLL.Registrar(estilista));
 
-            CargarEstilistas();
-            Limpiar();
+            CargarEstilistas(); Limpiar();
         }
 
         private void btnEditar_Click(object sender, EventArgs e)
@@ -73,8 +64,7 @@ namespace SistemaAgenda.UI
 
             MessageBox.Show(estilistaBLL.Actualizar(estilista));
 
-            CargarEstilistas();
-            Limpiar();
+            CargarEstilistas();  Limpiar();
         }
 
         private void btnEliminar_Click(object sender, EventArgs e)
@@ -85,8 +75,7 @@ namespace SistemaAgenda.UI
 
                 MessageBox.Show(estilistaBLL.Eliminar(id));
 
-                CargarEstilistas();
-                Limpiar();
+                CargarEstilistas(); Limpiar();
             }
             else
             {
@@ -105,6 +94,8 @@ namespace SistemaAgenda.UI
                 txtEspecialidad.Text = dgvEstilistas.CurrentRow.Cells["Especialidad"].Value.ToString();
             }
         }
+
+        //Evita números en nombre/apellido
         private void txtNombre_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsLetter(e.KeyChar) && e.KeyChar != ' ' && e.KeyChar != (char)Keys.Back)
@@ -116,6 +107,7 @@ namespace SistemaAgenda.UI
             if (!char.IsLetter(e.KeyChar) && e.KeyChar != ' ' && e.KeyChar != (char)Keys.Back)
                 e.Handled = true;
         }
+        //Evita letras en teléfono
         private void txtTelefono_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsDigit(e.KeyChar) && e.KeyChar != '-' && e.KeyChar != (char)Keys.Back)

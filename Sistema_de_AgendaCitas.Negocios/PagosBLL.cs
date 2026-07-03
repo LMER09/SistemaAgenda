@@ -1,5 +1,4 @@
 ﻿using SistemaAgenda.Datos;
-using System.Linq;
 
 namespace SistemaAgenda.Negocios
 {
@@ -23,7 +22,16 @@ namespace SistemaAgenda.Negocios
 
                 CitasDAL citasDAL = new CitasDAL();
                 var citas = citasDAL.ObtenerTodos();
-                var cita = citas.FirstOrDefault(c => c.Id == p.Id_Citas);
+                Citas cita = null;
+
+                for (int i = 0; i < citas.Count; i++)
+                {
+                    if (citas[i].Id == p.Id_Citas)
+                    {
+                        cita = citas[i];
+                        break;
+                    }
+                }
 
                 if (cita == null)
                     return "ERROR: Cita no encontrada.";

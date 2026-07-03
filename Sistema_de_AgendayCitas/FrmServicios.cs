@@ -46,8 +46,7 @@ namespace SistemaAgenda.UI
 
             MessageBox.Show(serviciosBLL.Registrar(servicio));
 
-            CargarServicios();
-            Limpiar();
+            CargarServicios();  Limpiar();
         }
 
         private void btnEditar_Click(object sender, EventArgs e)
@@ -71,10 +70,8 @@ namespace SistemaAgenda.UI
 
             MessageBox.Show(serviciosBLL.Actualizar(servicio));
 
-            CargarServicios();
-            Limpiar();
+            CargarServicios();  Limpiar();
         }
-
         private void btnEliminar_Click(object sender, EventArgs e)
         {
             if (dgvServicios.CurrentRow != null)
@@ -94,7 +91,7 @@ namespace SistemaAgenda.UI
             if (cmbTipo.SelectedIndex == -1 || txtPrecio.Text == "" || txtDuracion.Text == "")
             {
                 MessageBox.Show("Complete tipo, precio y duración primero" +
-                    "o seleccione el servicio que desea calcular");
+                    " o seleccione el servicio que desea calcular");
                 return;
             }
 
@@ -119,6 +116,8 @@ namespace SistemaAgenda.UI
                 txtDuracion.Text = dgvServicios.CurrentRow.Cells["DuracionMinutos"].Value.ToString();
             }
         }
+
+        //Evita entrar letras en precio y duracion
         private void txtPrecio_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsDigit(e.KeyChar) && e.KeyChar != '.' && e.KeyChar != (char)Keys.Back)

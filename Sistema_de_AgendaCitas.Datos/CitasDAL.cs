@@ -8,7 +8,9 @@ namespace SistemaAgenda.Datos
         {
             try
             {
+                //Abre la conexion a SQL
                 using (var con = ConexionDB.ObtenerConexion())
+                //Envia una consulta a SQL Server
                 using (var cmd = new SqlCommand(@"
                 INSERT INTO Citas (id_Clientes, id_Servicios, id_Estilista, Fecha, Estado, Deposito)
                 VALUES (@IdCliente, @IdServicio, @IdEstilista, @Fecha, @Estado, @Deposito)", con))
@@ -20,6 +22,7 @@ namespace SistemaAgenda.Datos
                     cmd.Parameters.AddWithValue("@Estado", c.Estado);
                     cmd.Parameters.AddWithValue("@Deposito", c.Deposito);
 
+                    //Esta línea ejecuta el INSERT y devuelve cuantas filas fueron afectadas
                     int filas = cmd.ExecuteNonQuery();
                     return filas > 0;
                 }
@@ -38,6 +41,7 @@ namespace SistemaAgenda.Datos
                 using (var con = ConexionDB.ObtenerConexion())
                 using (var cmd = new SqlCommand(
                     "SELECT id, id_Clientes, id_Servicios, id_Estilista, Fecha, Estado, Deposito FROM Citas", con))
+                //lee los registros uno por uno
                 using (var reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
@@ -71,6 +75,7 @@ namespace SistemaAgenda.Datos
                 UPDATE Citas SET id_Clientes=@IdCliente, id_Servicios=@IdServicio,
                 id_Estilista=@IdEstilista, Fecha=@Fecha, Estado=@Estado, Deposito=@Deposito
                 WHERE id=@Id", con))
+                //Solo actualiza solo cita que seleccionamos WHERE id=@Id
                 {
                     cmd.Parameters.AddWithValue("@IdCliente", c.Id_Clientes);
                     cmd.Parameters.AddWithValue("@IdServicio", c.Id_Servicios);

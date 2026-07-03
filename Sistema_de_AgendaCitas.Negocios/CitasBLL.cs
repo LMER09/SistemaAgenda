@@ -7,10 +7,10 @@ namespace SistemaAgenda.Negocios
 {
     public class CitasBLL
     {
+        //Esto se hace hace para poder utilizar lis metodso de la capa datos
         private readonly CitasDAL _dal = new CitasDAL();
         public List<Citas> ObtenerTodos()
         {
-
             try
             {
                 return _dal.ObtenerTodos();
@@ -47,7 +47,16 @@ namespace SistemaAgenda.Negocios
             {
 
                 var lista = _dal.ObtenerTodos();
-                var cita = lista.FirstOrDefault(c => c.Id == id);
+                Citas cita = null;
+
+                for (int i = 0; i < lista.Count; i++)
+                {
+                    if (lista[i].Id == id)
+                    {
+                        cita = lista[i];
+                        break;
+                    }
+                }
 
                 if (cita == null)
                     return "ERROR: Cita no encontrada.";
@@ -78,7 +87,16 @@ namespace SistemaAgenda.Negocios
                     return "ERROR: La nueva fecha no puede ser en el pasado.";
 
                 var lista = _dal.ObtenerTodos();
-                var cita = lista.FirstOrDefault(c => c.Id == id);
+                Citas cita = null;
+
+                for (int i = 0; i < lista.Count; i++)
+                {
+                    if (lista[i].Id == id)
+                    {
+                        cita = lista[i];
+                        break;
+                    }
+                }
 
                 if (cita == null)
                     return "ERROR: Cita no encontrada.";
