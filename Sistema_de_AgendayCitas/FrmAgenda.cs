@@ -77,6 +77,7 @@ namespace SistemaAgenda.UI
             if (cmbClientes.SelectedIndex == -1) { MessageBox.Show("Debe seleccionar un cliente."); return; }
             if (cmbServicios.SelectedIndex == -1) { MessageBox.Show("Debe seleccionar un servicio."); return; }
             if (cmbEstilistas.SelectedIndex == -1) { MessageBox.Show("Debe seleccionar una estilista."); return; }
+            if (_listaClientes == null || _listaServicios == null || _listaEstilistas == null) return;
 
             Clientes cliente = _listaClientes[cmbClientes.SelectedIndex];
             Servicios servicio = _listaServicios[cmbServicios.SelectedIndex];

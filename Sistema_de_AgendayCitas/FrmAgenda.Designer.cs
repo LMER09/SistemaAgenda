@@ -379,7 +379,6 @@
         #endregion
         private DataGridView dgvCitas;
         private Button btnAgendar;
-        private Label lblComplete;
         private GroupBox groupBox1;
         private Label lblDeposito;
         private DateTimePicker dtpHora;

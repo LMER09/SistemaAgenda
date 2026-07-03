@@ -12,6 +12,7 @@ namespace SistemaAgenda.Datos
         public string Estado { get; set; } = string.Empty;
         public decimal Deposito { get; set; }
 
+        //Constructor vacio con desposito y constructor con parametros - Pedido en el proyecto.
         public Citas()
         {
             Deposito = 0;
