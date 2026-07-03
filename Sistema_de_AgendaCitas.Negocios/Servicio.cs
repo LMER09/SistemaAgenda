@@ -4,32 +4,38 @@ using SistemaAgenda.Datos;
 
 namespace SistemaAgenda.Negocios
 {
-    //Clase abstracta con metodos abtractos y metodos virtuales
+    
+    // Clase abstracta qque representa un servicio del salon
     public abstract class Servicio
     {
+
+        // Atributo protegido que almacena los datos del servicio desde la base de datos
         protected Servicios _servicio;
 
         public Servicio()
         {
             _servicio = new Servicios();
         }
+
+        // Constructor parametrizado: recibe un servicio de la BD
         public Servicio(Servicios servicio)
         {
             _servicio = servicio;
         }
 
-        //Metodos abstractos
+        // ── MÉTODOS ABSTRACTOS ────────────────────────────────────────
         public abstract decimal ServicioCabello();
         public abstract decimal ServicioUnas();
         public abstract decimal ServicioSpa();
 
-        //Metodos virtuales
+        // ── MÉTODOS VIRTUALES ─────────────────────────────────────────
+        //Tienen implementación base pero pueden sobreescribirse
         public virtual decimal CalcularPrecio()=> _servicio.Precio;
         public virtual int CalcularDuracion() => _servicio.DuracionMinutos;
         
     }
 
-    //Clase nueva creada para implementar los metodos abstractos y la sobreescritura en los metodos virtuales
+    //Clase nueva creada para implementar los metodos abstractos y la sobreescritura en los metodos virtuales.
     public class Gestion_DeServicios : Servicio
     {
         public Gestion_DeServicios() { }
@@ -40,7 +46,7 @@ namespace SistemaAgenda.Negocios
         public override decimal ServicioUnas() => _servicio.Precio;
         public override decimal ServicioSpa()=> _servicio.Precio * 1.15m;
 
-        // Sobrescritura de los métodos virtual
+        // Sobreescritura: calcula precio final según tipo de servicio
         public override decimal CalcularPrecio()
         {
             switch (_servicio.Tipo_DeServicio)
@@ -54,6 +60,8 @@ namespace SistemaAgenda.Negocios
                 default: return _servicio.Precio;
             }
         }
+
+        // Sobreescritura: añade tiempo extra según el tipo de servicio
         public override int CalcularDuracion()
         {
             switch (_servicio.Tipo_DeServicio)

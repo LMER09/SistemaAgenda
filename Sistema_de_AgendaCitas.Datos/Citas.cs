@@ -17,6 +17,9 @@ namespace SistemaAgenda.Datos
         {
             Deposito = 0;
         }
+
+        // Constructor parametrizado: recibe cliente, servicio y hora para crear la cita
+        // El depósito se calcula y asigna desde frmAgenda según el precio del servici
         public Citas(Clientes c, Servicios s, DateTime hora)
         {
             Id_Clientes = c.Id;

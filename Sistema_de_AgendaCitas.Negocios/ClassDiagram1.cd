@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="SistemaAgenda.Negocios.CitasBLL">
+    <Position X="3.75" Y="1.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAABAIAAAAABAAgAAAAACAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CitasBLL.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SistemaAgenda.Negocios.ClientesBLL">
+    <Position X="8.5" Y="1.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAgAAAAACAAAAAAAAAAIAAAAAAAAAAQ=</HashCode>
+      <FileName>ClientesBLL.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SistemaAgenda.Negocios.CorteDia">
+    <Position X="10.75" Y="4.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CorteDia.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SistemaAgenda.Negocios.EstilistaBLL">
+    <Position X="11" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAgAAAAACAAAAAAAAAAIAAAAAAAAAAQ=</HashCode>
+      <FileName>EstilistaBLL.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SistemaAgenda.Negocios.PagosBLL">
+    <Position X="8.5" Y="4.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAgAAAAACAAAAAAAAAAIAAAAAAAAAAQ=</HashCode>
+      <FileName>PagosBLL.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SistemaAgenda.Negocios.RecordatorioCitas">
+    <Position X="6.25" Y="1.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAAAAAAAAAACAAAAAAAAIAAAAAAA=</HashCode>
+      <FileName>RecordatorioCitas.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SistemaAgenda.Negocios.Servicio">
+    <Position X="6" Y="4.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAEAAAAAAAQAEAAAAAAAABAAAAAQAAAAAAA=</HashCode>
+      <FileName>Servicio.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SistemaAgenda.Negocios.Gestion_DeServicios">
+    <Position X="7" Y="7.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAAQAEAAAAAAAABAAAAAQAAAAAAA=</HashCode>
+      <FileName>Servicio.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SistemaAgenda.Negocios.ServiciosBLL">
+    <Position X="3.75" Y="4.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAgAAAAACAAAAAAAAAAIAAAAAAAAAAQ=</HashCode>
+      <FileName>ServiciosBLL.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

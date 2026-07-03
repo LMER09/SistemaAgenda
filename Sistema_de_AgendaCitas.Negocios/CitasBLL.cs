@@ -21,9 +21,7 @@ namespace SistemaAgenda.Negocios
             }
         }
 
-        ///Se hizo un cambio con estos metodos Registrar, Actualizar y Eliminar.
-        ///Y se crearon en su lugar estos:
-        ///Requisito del Proyecto: Métodos normales: agendarCita(), cancelarCita(), reprogramarCita()
+        // Métodos normales requeridos por el proyecto: agendarCita(), cancelarCita(), reprogramarCita()
 
         // ── AGENDAR CITA ─────────────────────────────────────────────
         public string AgendarCita(Citas c)

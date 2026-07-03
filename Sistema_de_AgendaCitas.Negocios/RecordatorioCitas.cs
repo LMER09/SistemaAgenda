@@ -2,10 +2,14 @@
 
 namespace SistemaAgenda.Negocios
 {
+    // Delegate: define la firma del método que manejará los recordatorios automáticos
     public delegate void RecordatorioDelegate(string mensaje);
     public class RecordatorioCitas
     {
+        // Evento basado en el delegate: se dispara cuando hay citas próximas
         public event RecordatorioDelegate? RecordatorioDisparado;
+
+        // Método que invoca el evento enviando el mensaje al usuario (frmAgenda)
         public void EnviarRecordatorio(string mensaje)
         {
             RecordatorioDisparado?.Invoke(mensaje);
