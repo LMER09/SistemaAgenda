@@ -20,13 +20,18 @@ namespace SistemaAgenda.Negocios
                 if (string.IsNullOrWhiteSpace(p.Metodo_DePago))
                     return "ERROR: El método de pago es obligatorio.";
 
-                // Verificar si la cita ya fue completada
 
                 CitasDAL citasDAL = new CitasDAL();
                 var citas = citasDAL.ObtenerTodos();
                 var cita = citas.FirstOrDefault(c => c.Id == p.Id_Citas);
 
-                if (cita != null && cita.Estado == "Completada")
+                if (cita == null)
+                    return "ERROR: Cita no encontrada.";
+                if (cita.Estado == "Cancelada")
+                    return "ERROR: No se puede registrar un pago para una cita cancelada.";
+
+                // Verificar si la cita ya fue completada
+                if (cita.Estado == "Completada")
                     return "ERROR: Esta cita ya fue completada y pagada.";
 
                 bool ok = _dal.Insertar(p);
