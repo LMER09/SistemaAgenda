@@ -14,7 +14,8 @@ namespace SistemaAgenda.Negocios
                     string.IsNullOrWhiteSpace(e.Apellido) ||
                     string.IsNullOrWhiteSpace(e.Telefono) ||
                     string.IsNullOrWhiteSpace(e.Correo) ||
-                    string.IsNullOrWhiteSpace(e.Especialidad))
+                    string.IsNullOrWhiteSpace(e.Especialidad) ||
+                    string.IsNullOrWhiteSpace(e.Cedula))
                     return "ERROR: Todos los campos son obligatorios.";
 
                 if (!e.Correo.Contains("@"))
@@ -51,7 +52,8 @@ namespace SistemaAgenda.Negocios
                     string.IsNullOrWhiteSpace(e.Apellido) ||
                     string.IsNullOrWhiteSpace(e.Telefono) ||
                     string.IsNullOrWhiteSpace(e.Correo) ||
-                    string.IsNullOrWhiteSpace(e.Especialidad))
+                    string.IsNullOrWhiteSpace(e.Especialidad) ||
+                    string.IsNullOrWhiteSpace(e.Cedula))
                     return "ERROR: Todos los campos son obligatorios.";
 
                 bool ok = _dal.Actualizar(e);
