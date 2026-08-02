@@ -11,13 +11,14 @@ namespace SistemaAgenda.Datos
                 using (var con = ConexionDB.ObtenerConexion())
                 using (var cmd = new SqlCommand(@"
                     INSERT INTO Estilista (Nombre, Apellido, Telefono, Correo, Especialidad)
-                    VALUES (@Nombre, @Apellido, @Telefono, @Correo, @Especialidad)", con))
+                    VALUES (@Nombre, @Apellido, @Telefono, @Correo, @Especialidad, @Cedula)", con))
                 {
                     cmd.Parameters.AddWithValue("@Nombre", e.Nombre);
                     cmd.Parameters.AddWithValue("@Apellido", e.Apellido);
                     cmd.Parameters.AddWithValue("@Telefono", e.Telefono);
                     cmd.Parameters.AddWithValue("@Correo", e.Correo);
                     cmd.Parameters.AddWithValue("@Especialidad", e.Especialidad);
+                    cmd.Parameters.AddWithValue("@Cedula", e.Cedula);
                     return cmd.ExecuteNonQuery() > 0;
                 }
             }
@@ -34,7 +35,7 @@ namespace SistemaAgenda.Datos
             {
                 using (var con = ConexionDB.ObtenerConexion())
                 using (var cmd = new SqlCommand(
-                    "SELECT id, Nombre, Apellido, Telefono, Correo, Especialidad FROM Estilista", con))
+                    "SELECT id, Nombre, Apellido, Telefono, Correo, Especialidad, Cedula FROM Estilista", con))
                 using (var reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
@@ -46,7 +47,8 @@ namespace SistemaAgenda.Datos
                             Apellido = reader.GetString(2),
                             Telefono = reader.GetString(3),
                             Correo = reader.GetString(4),
-                            Especialidad = reader.GetString(5)
+                            Especialidad = reader.GetString(5),
+                            Cedula = reader.GetString(6)
                         });
                     }
                 }
@@ -65,7 +67,7 @@ namespace SistemaAgenda.Datos
                 using (var con = ConexionDB.ObtenerConexion())
                 using (var cmd = new SqlCommand(@"
                     UPDATE Estilista SET Nombre=@Nombre, Apellido=@Apellido,
-                    Telefono=@Telefono, Correo=@Correo, Especialidad=@Especialidad
+                    Telefono=@Telefono, Correo=@Correo, Especialidad=@Especialidad, Cedula=@Cedula
                     WHERE id=@Id", con))
                 {
                     cmd.Parameters.AddWithValue("@Nombre", e.Nombre);
@@ -73,6 +75,7 @@ namespace SistemaAgenda.Datos
                     cmd.Parameters.AddWithValue("@Telefono", e.Telefono);
                     cmd.Parameters.AddWithValue("@Correo", e.Correo);
                     cmd.Parameters.AddWithValue("@Especialidad", e.Especialidad);
+                    cmd.Parameters.AddWithValue("@Cedula", e.Cedula);
                     cmd.Parameters.AddWithValue("@Id", e.Id);
                     return cmd.ExecuteNonQuery() > 0;
                 }
@@ -94,6 +97,12 @@ namespace SistemaAgenda.Datos
                     cmd.Parameters.AddWithValue("@Id", id);
                     return cmd.ExecuteNonQuery() > 0;
                 }
+            }
+            //Error 547 = violación de llave foránea: la estilista tiene citas
+            //en su historial, o tiene un horario laboral asociado
+            catch (SqlException ex) when (ex.Number == 547)
+            {
+                throw new Exception("No se puede eliminar la estilista: tiene citas u horario laboral registrados.");
             }
             catch (Exception ex)
             {
