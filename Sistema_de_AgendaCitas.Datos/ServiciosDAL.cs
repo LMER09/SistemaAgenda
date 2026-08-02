@@ -89,6 +89,12 @@ namespace SistemaAgenda.Datos
                     return cmd.ExecuteNonQuery() > 0;
                 }
             }
+            //Error 547 = violación de llave foránea: el servicio tiene citas
+            //en su historial (ya no se borran en cascada, así se conserva el historial)
+            catch (SqlException ex) when (ex.Number == 547)
+            {
+                throw new Exception("No se puede eliminar el servicio: tiene citas registradas en su historial.");
+            }
             catch (Exception ex)
             {
                 throw new Exception("Error al eliminar servicio: " + ex.Message);

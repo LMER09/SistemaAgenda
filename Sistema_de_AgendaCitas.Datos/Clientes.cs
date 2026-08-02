@@ -9,15 +9,17 @@ namespace SistemaAgenda.Datos
         public string Apellido { get; set; } = string.Empty;
         public string Telefono { get; set; } = string.Empty;
         public string Correo { get; set; } = string.Empty;
+        public string Cedula { get; set;  } = string.Empty;
 
         public Clientes() {}
-        public Clientes(int Id, string Nombre, string Apellido, string Telefono, string Correo)
+        public Clientes(int Id, string Nombre, string Apellido, string Telefono, string Correo, string Cedula)
         {
             this.Id = Id;
             this.Nombre = Nombre;
             this.Apellido = Apellido;
             this.Telefono = Telefono;
             this.Correo = Correo;
+            this.Cedula = Cedula;
         }
     }
 }

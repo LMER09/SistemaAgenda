@@ -10,9 +10,11 @@ namespace SistemaAgenda.Datos
         public string Telefono { get; set; } = string.Empty;
         public string Correo { get; set; } = string.Empty;
         public string Especialidad { get; set;} = string.Empty;
+        public string Cedula {  get; set; } = string.Empty;
 
         public Estilista() { }
-        public Estilista(int Id, string Nombre, string Apellido, string Telefono, string Correo, string Especialidad)
+        public Estilista(int Id, string Nombre, string Apellido, 
+            string Telefono, string Correo, string Especialidad, string Cedula)
         {
             this.Id = Id;
             this.Nombre = Nombre;
@@ -20,6 +22,7 @@ namespace SistemaAgenda.Datos
             this.Telefono = Telefono;
             this.Correo = Correo;
             this.Especialidad = Especialidad;
+            this.Cedula = Cedula;
         }
 
     }
