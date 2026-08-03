@@ -169,10 +169,10 @@
             // 
             dgvClientes.BackgroundColor = Color.LavenderBlush;
             dgvClientes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvClientes.Location = new Point(37, 323);
+            dgvClientes.Location = new Point(24, 323);
             dgvClientes.Name = "dgvClientes";
             dgvClientes.RowHeadersWidth = 51;
-            dgvClientes.Size = new Size(677, 181);
+            dgvClientes.Size = new Size(756, 181);
             dgvClientes.TabIndex = 11;
             dgvClientes.CellClick += dgvClientes_CellClick;
             // 
@@ -271,7 +271,7 @@
             Name = "frmRegistrarClientes";
             Text = "Consulta de Clientes";
             TransparencyKey = Color.FromArgb(255, 224, 192);
-            Load += FrmClientes_Load;
+            Load += frmRegistrarClientes_Load;
             ((System.ComponentModel.ISupportInitialize)dgvClientes).EndInit();
             ((System.ComponentModel.ISupportInitialize)picLogo).EndInit();
             ResumeLayout(false);

@@ -16,7 +16,7 @@ namespace SistemaAgenda.UI
 
         private void btnClientes_Click(object sender, EventArgs e)
         {
-            AbrirFormulario(new frmRegistrarClientes());
+            AbrirFormulario(new frmMenuClientes());
         }
 
         private void btnServicios_Click(object sender, EventArgs e)

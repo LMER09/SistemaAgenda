@@ -9,16 +9,9 @@ namespace SistemaAgenda.UI
         private ClientesBLL clientesBLL = new ClientesBLL();
         public frmRegistrarClientes()
         {
-            HabilitarControles(true);
-
-            txtNombre.Clear();
-            txtApellido.Clear();
-            txtTelefono.Clear();
-            txtCorreo.Clear();
-
-
-            txtNombre.Focus();
             InitializeComponent();
+
+            HabilitarControles(false);
         }
 
         private void HabilitarControles(bool habilitar)
@@ -34,7 +27,7 @@ namespace SistemaAgenda.UI
             btnEditar.Enabled = habilitar;
             btnEliminar.Enabled = habilitar;
             btnLimpiar.Enabled = habilitar;
-            HabilitarControles(false);
+           
         }
         private void Limpiar()
         {
@@ -54,11 +47,9 @@ namespace SistemaAgenda.UI
         private void frmRegistrarClientes_Load(object sender, EventArgs e)
         {
             HabilitarControles(false);
-        }
-        private void FrmClientes_Load(object sender, EventArgs e)
-        {
             CargarClientes();
         }
+       
         private void btnAgregar_Click(object sender, EventArgs e)
         {
             Clientes cliente = new Clientes();
