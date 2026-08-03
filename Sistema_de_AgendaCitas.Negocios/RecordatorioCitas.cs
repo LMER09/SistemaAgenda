@@ -51,11 +51,7 @@ namespace SistemaAgenda.Negocios
             for (int i = 0; i < citas.Count; i++)
             {
                 Citas cita = citas[i];
-
-
                 bool esValida = cita.Estado == "Pendiente" || cita.Estado == "Reprogramada";
-
-              
                 bool esDentroDeUnaHora = cita.Fecha >= DateTime.Now && cita.Fecha <= DateTime.Now.AddHours(1);
 
                 if (esValida && esDentroDeUnaHora)
