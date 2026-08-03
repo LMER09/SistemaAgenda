@@ -44,6 +44,8 @@
             lblElijaS = new Label();
             btnLimpiar = new Button();
             picLogo = new PictureBox();
+            txtBuscar = new TextBox();
+            lblBuscar = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvServicios).BeginInit();
             ((System.ComponentModel.ISupportInitialize)picLogo).BeginInit();
             SuspendLayout();
@@ -173,13 +175,32 @@
             dgvServicios.AllowUserToAddRows = false;
             dgvServicios.BackgroundColor = Color.LavenderBlush;
             dgvServicios.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvServicios.Location = new Point(40, 400);
+            dgvServicios.Location = new Point(40, 438);
             dgvServicios.Name = "dgvServicios";
             dgvServicios.ReadOnly = true;
             dgvServicios.RowHeadersWidth = 51;
             dgvServicios.Size = new Size(554, 182);
             dgvServicios.TabIndex = 11;
             dgvServicios.CellClick += dgvServicios_CellClick;
+            // 
+            // txtBuscar
+            // 
+            txtBuscar.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtBuscar.Location = new Point(155, 403);
+            txtBuscar.Name = "txtBuscar";
+            txtBuscar.PlaceholderText = "Tipo de servicio...";
+            txtBuscar.Size = new Size(202, 27);
+            txtBuscar.TabIndex = 19;
+            txtBuscar.TextChanged += txtBuscar_TextChanged;
+            // 
+            // lblBuscar
+            // 
+            lblBuscar.AutoSize = true;
+            lblBuscar.Location = new Point(40, 406);
+            lblBuscar.Name = "lblBuscar";
+            lblBuscar.Size = new Size(76, 20);
+            lblBuscar.TabIndex = 20;
+            lblBuscar.Text = "🔍 Buscar:";
             // 
             // lblElijaS
             // 
@@ -220,7 +241,9 @@
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLightLight;
-            ClientSize = new Size(655, 594);
+            ClientSize = new Size(655, 632);
+            Controls.Add(lblBuscar);
+            Controls.Add(txtBuscar);
             Controls.Add(picLogo);
             Controls.Add(btnLimpiar);
             Controls.Add(lblElijaS);
@@ -263,5 +286,7 @@
         private Label lblElijaS;
         private Button btnLimpiar;
         private PictureBox picLogo;
+        private TextBox txtBuscar;
+        private Label lblBuscar;
     }
 }

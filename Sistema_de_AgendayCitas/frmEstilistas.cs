@@ -1,12 +1,13 @@
-﻿
-using SistemaAgenda.Negocios;
+﻿using SistemaAgenda.Negocios;
 using SistemaAgenda.Datos;
+using System.Linq;
 
 namespace SistemaAgenda.UI
 {
     public partial class frmEstilistas : Form
     {
         private EstilistaBLL estilistaBLL = new EstilistaBLL();
+        private List<Estilista> _todosLosEstilistas = new List<Estilista>();
         public frmEstilistas()
         {
             InitializeComponent();
@@ -23,8 +24,34 @@ namespace SistemaAgenda.UI
         }
         private void CargarEstilistas()
         {
+            _todosLosEstilistas = estilistaBLL.ObtenerTodos();
+            AplicarBusqueda();
+        }
+
+        // Filtra la lista de estilistas según lo escrito en txtBuscar
+        private void AplicarBusqueda()
+        {
             dgvEstilistas.DataSource = null;
-            dgvEstilistas.DataSource = estilistaBLL.ObtenerTodos();
+
+            string texto = txtBuscar.Text.Trim();
+
+            if (string.IsNullOrEmpty(texto))
+            {
+                dgvEstilistas.DataSource = _todosLosEstilistas;
+                return;
+            }
+
+            dgvEstilistas.DataSource = _todosLosEstilistas.Where(e =>
+                (e.Nombre?.Contains(texto, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                (e.Apellido?.Contains(texto, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                (e.Correo?.Contains(texto, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                (e.Especialidad?.Contains(texto, StringComparison.OrdinalIgnoreCase) ?? false)
+            ).ToList();
+        }
+
+        private void txtBuscar_TextChanged(object sender, EventArgs e)
+        {
+            AplicarBusqueda();
         }
         private void FrmEstilistas_Load(object sender, EventArgs e)
         {
@@ -64,7 +91,7 @@ namespace SistemaAgenda.UI
 
             MessageBox.Show(estilistaBLL.Actualizar(estilista));
 
-            CargarEstilistas();  Limpiar();
+            CargarEstilistas(); Limpiar();
         }
 
         private void btnEliminar_Click(object sender, EventArgs e)

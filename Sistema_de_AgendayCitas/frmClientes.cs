@@ -1,12 +1,14 @@
 ﻿using SistemaAgenda.Negocios;
 using SistemaAgenda.Datos;
+using System.Linq;
 
 namespace SistemaAgenda.UI
 {
     public partial class frmClientes : Form
     {
-        
+
         private ClientesBLL clientesBLL = new ClientesBLL();
+        private List<Clientes> _todosLosClientes = new List<Clientes>();
         public frmClientes()
         {
             InitializeComponent();
@@ -22,8 +24,34 @@ namespace SistemaAgenda.UI
 
         private void CargarClientes()
         {
+            _todosLosClientes = clientesBLL.ObtenerTodos();
+            AplicarBusqueda();
+        }
+
+        // Filtra la lista de clientes según lo escrito en txtBuscar (nombre, apellido, teléfono o correo)
+        private void AplicarBusqueda()
+        {
             dgvClientes.DataSource = null;
-            dgvClientes.DataSource = clientesBLL.ObtenerTodos();
+
+            string texto = txtBuscar.Text.Trim();
+
+            if (string.IsNullOrEmpty(texto))
+            {
+                dgvClientes.DataSource = _todosLosClientes;
+                return;
+            }
+
+            dgvClientes.DataSource = _todosLosClientes.Where(c =>
+                (c.Nombre?.Contains(texto, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                (c.Apellido?.Contains(texto, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                (c.Telefono?.Contains(texto, StringComparison.OrdinalIgnoreCase) ?? false) ||
+                (c.Correo?.Contains(texto, StringComparison.OrdinalIgnoreCase) ?? false)
+            ).ToList();
+        }
+
+        private void txtBuscar_TextChanged(object sender, EventArgs e)
+        {
+            AplicarBusqueda();
         }
 
         private void FrmClientes_Load(object sender, EventArgs e)

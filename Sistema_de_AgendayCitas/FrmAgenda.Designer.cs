@@ -45,6 +45,9 @@
             lblMetodoPago = new Label();
             txtMonto = new TextBox();
             lblMonto = new Label();
+            mcalCitas = new MonthCalendar();
+            btnVerTodas = new Button();
+            lblFiltroCalendario = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvCitas).BeginInit();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
@@ -59,9 +62,10 @@
             dgvCitas.Location = new Point(45, 476);
             dgvCitas.Name = "dgvCitas";
             dgvCitas.RowHeadersWidth = 51;
-            dgvCitas.Size = new Size(928, 196);
+            dgvCitas.Size = new Size(660, 196);
             dgvCitas.TabIndex = 8;
             dgvCitas.CellClick += dgvCitas_CellClick;
+            dgvCitas.CellFormatting += dgvCitas_CellFormatting;
             // 
             // btnAgendar
             // 
@@ -147,58 +151,60 @@
             lblDeposito.ForeColor = Color.DeepPink;
             lblDeposito.Location = new Point(24, 274);
             lblDeposito.Name = "lblDeposito";
-            lblDeposito.Size = new Size(225, 20);
+            lblDeposito.Size = new Size(273, 25);
             lblDeposito.TabIndex = 22;
             lblDeposito.Text = "Depósito requerido: RD$0.00";
             // 
             // dtpHora
             // 
             dtpHora.Format = DateTimePickerFormat.Time;
-            dtpHora.Location = new Point(255, 222);
+            dtpHora.Location = new Point(255, 232);
             dtpHora.Name = "dtpHora";
             dtpHora.ShowUpDown = true;
-            dtpHora.Size = new Size(124, 27);
+            dtpHora.Size = new Size(124, 31);
             dtpHora.TabIndex = 17;
+            dtpHora.ValueChanged += dtpHora_ValueChanged;
             // 
             // lblHora
             // 
             lblHora.AutoSize = true;
-            lblHora.Location = new Point(255, 199);
+            lblHora.Location = new Point(255, 209);
             lblHora.Name = "lblHora";
-            lblHora.Size = new Size(47, 20);
+            lblHora.Size = new Size(56, 25);
             lblHora.TabIndex = 16;
             lblHora.Text = "Hora:";
             // 
             // dtpFecha
             // 
-            dtpFecha.Location = new Point(24, 222);
+            dtpFecha.Location = new Point(24, 232);
             dtpFecha.Name = "dtpFecha";
-            dtpFecha.Size = new Size(204, 27);
+            dtpFecha.Size = new Size(225, 31);
             dtpFecha.TabIndex = 15;
             // 
             // lblFecha
             // 
             lblFecha.AutoSize = true;
-            lblFecha.Location = new Point(24, 199);
+            lblFecha.Location = new Point(24, 209);
             lblFecha.Name = "lblFecha";
-            lblFecha.Size = new Size(53, 20);
+            lblFecha.Size = new Size(62, 25);
             lblFecha.TabIndex = 14;
             lblFecha.Text = "Fecha:";
+            lblFecha.Click += lblFecha_Click;
             // 
             // cmbEstilistas
             // 
             cmbEstilistas.FormattingEnabled = true;
-            cmbEstilistas.Location = new Point(24, 168);
+            cmbEstilistas.Location = new Point(24, 173);
             cmbEstilistas.Name = "cmbEstilistas";
-            cmbEstilistas.Size = new Size(355, 28);
+            cmbEstilistas.Size = new Size(355, 33);
             cmbEstilistas.TabIndex = 9;
             // 
             // lblEstilistas
             // 
             lblEstilistas.AutoSize = true;
-            lblEstilistas.Location = new Point(24, 145);
+            lblEstilistas.Location = new Point(20, 148);
             lblEstilistas.Name = "lblEstilistas";
-            lblEstilistas.Size = new Size(65, 20);
+            lblEstilistas.Size = new Size(83, 25);
             lblEstilistas.TabIndex = 8;
             lblEstilistas.Text = "Estilistas";
             // 
@@ -207,7 +213,7 @@
             cmbServicios.FormattingEnabled = true;
             cmbServicios.Location = new Point(24, 114);
             cmbServicios.Name = "cmbServicios";
-            cmbServicios.Size = new Size(355, 28);
+            cmbServicios.Size = new Size(355, 33);
             cmbServicios.TabIndex = 7;
             cmbServicios.SelectedIndexChanged += cmbServicios_SelectedIndexChanged;
             // 
@@ -216,26 +222,27 @@
             lblServicios.AutoSize = true;
             lblServicios.Location = new Point(24, 91);
             lblServicios.Name = "lblServicios";
-            lblServicios.Size = new Size(70, 20);
+            lblServicios.Size = new Size(86, 25);
             lblServicios.TabIndex = 6;
             lblServicios.Text = "Servicios";
             // 
             // cmbClientes
             // 
             cmbClientes.FormattingEnabled = true;
-            cmbClientes.Location = new Point(24, 60);
+            cmbClientes.Location = new Point(24, 55);
             cmbClientes.Name = "cmbClientes";
-            cmbClientes.Size = new Size(355, 28);
+            cmbClientes.Size = new Size(355, 33);
             cmbClientes.TabIndex = 5;
             // 
             // lblClientes
             // 
             lblClientes.AutoSize = true;
-            lblClientes.Location = new Point(24, 37);
+            lblClientes.Location = new Point(24, 32);
             lblClientes.Name = "lblClientes";
-            lblClientes.Size = new Size(62, 20);
+            lblClientes.Size = new Size(79, 25);
             lblClientes.TabIndex = 4;
             lblClientes.Text = "Clientes";
+            lblClientes.Click += lblClientes_Click;
             // 
             // lblPrecioServicio
             // 
@@ -244,7 +251,7 @@
             lblPrecioServicio.ForeColor = Color.DeepPink;
             lblPrecioServicio.Location = new Point(22, 47);
             lblPrecioServicio.Name = "lblPrecioServicio";
-            lblPrecioServicio.Size = new Size(189, 20);
+            lblPrecioServicio.Size = new Size(230, 25);
             lblPrecioServicio.TabIndex = 21;
             lblPrecioServicio.Text = "Precio servicio: RD$0.00";
             // 
@@ -298,7 +305,7 @@
             lblPuedeCambiar.ForeColor = Color.DimGray;
             lblPuedeCambiar.Location = new Point(22, 148);
             lblPuedeCambiar.Name = "lblPuedeCambiar";
-            lblPuedeCambiar.Size = new Size(388, 17);
+            lblPuedeCambiar.Size = new Size(471, 21);
             lblPuedeCambiar.TabIndex = 22;
             lblPuedeCambiar.Text = "Nota: Puede cambiar el precio si hizo mas del precio establecido";
             // 
@@ -322,7 +329,7 @@
             cmbMetodoPago.Items.AddRange(new object[] { "Efectivo", "Tarjeta", "Transferencia" });
             cmbMetodoPago.Location = new Point(22, 221);
             cmbMetodoPago.Name = "cmbMetodoPago";
-            cmbMetodoPago.Size = new Size(201, 28);
+            cmbMetodoPago.Size = new Size(201, 33);
             cmbMetodoPago.TabIndex = 20;
             // 
             // lblMetodoPago
@@ -330,7 +337,7 @@
             lblMetodoPago.AutoSize = true;
             lblMetodoPago.Location = new Point(22, 189);
             lblMetodoPago.Name = "lblMetodoPago";
-            lblMetodoPago.Size = new Size(127, 20);
+            lblMetodoPago.Size = new Size(156, 25);
             lblMetodoPago.TabIndex = 19;
             lblMetodoPago.Text = "Método de pago:";
             // 
@@ -340,7 +347,7 @@
             txtMonto.Location = new Point(22, 114);
             txtMonto.Name = "txtMonto";
             txtMonto.PlaceholderText = "Ej: 200";
-            txtMonto.Size = new Size(201, 27);
+            txtMonto.Size = new Size(201, 31);
             txtMonto.TabIndex = 18;
             txtMonto.KeyPress += txtMonto_KeyPress;
             // 
@@ -349,16 +356,51 @@
             lblMonto.AutoSize = true;
             lblMonto.Location = new Point(22, 81);
             lblMonto.Name = "lblMonto";
-            lblMonto.Size = new Size(59, 20);
+            lblMonto.Size = new Size(73, 25);
             lblMonto.TabIndex = 16;
             lblMonto.Text = "Monto:";
             // 
+            // mcalCitas
+            // 
+            mcalCitas.Location = new Point(722, 476);
+            mcalCitas.MaxSelectionCount = 1;
+            mcalCitas.Name = "mcalCitas";
+            mcalCitas.TabIndex = 26;
+            mcalCitas.DateChanged += mcalCitas_DateChanged;
+            // 
+            // btnVerTodas
+            // 
+            btnVerTodas.BackColor = Color.DeepPink;
+            btnVerTodas.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnVerTodas.ForeColor = Color.White;
+            btnVerTodas.Location = new Point(470, 687);
+            btnVerTodas.Name = "btnVerTodas";
+            btnVerTodas.Size = new Size(240, 33);
+            btnVerTodas.TabIndex = 27;
+            btnVerTodas.Text = "📋 Ver todas las citas";
+            btnVerTodas.UseVisualStyleBackColor = false;
+            btnVerTodas.Click += btnVerTodas_Click;
+            // 
+            // lblFiltroCalendario
+            // 
+            lblFiltroCalendario.AutoSize = true;
+            lblFiltroCalendario.Font = new Font("Segoe UI Semibold", 8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblFiltroCalendario.ForeColor = Color.DimGray;
+            lblFiltroCalendario.Location = new Point(760, 455);
+            lblFiltroCalendario.Name = "lblFiltroCalendario";
+            lblFiltroCalendario.Size = new Size(233, 21);
+            lblFiltroCalendario.TabIndex = 28;
+            lblFiltroCalendario.Text = "Los días en negrita tienen citas";
+            // 
             // frmAgenda
             // 
-            AutoScaleDimensions = new SizeF(9F, 20F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLightLight;
-            ClientSize = new Size(1033, 707);
+            ClientSize = new Size(1043, 732);
+            Controls.Add(lblFiltroCalendario);
+            Controls.Add(btnVerTodas);
+            Controls.Add(mcalCitas);
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);
             Controls.Add(dgvCitas);
@@ -374,6 +416,7 @@
             groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)picLogo).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -404,5 +447,8 @@
         private Label lblPuedeCambiar;
         private Button btnLimpiar;
         private PictureBox picLogo;
+        private MonthCalendar mcalCitas;
+        private Button btnVerTodas;
+        private Label lblFiltroCalendario;
     }
 }

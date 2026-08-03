@@ -44,6 +44,8 @@
             lblIngrese = new Label();
             btnLimpiar = new Button();
             picLogo = new PictureBox();
+            txtBuscar = new TextBox();
+            lblBuscar = new Label();
             ((System.ComponentModel.ISupportInitialize)dgvClientes).BeginInit();
             ((System.ComponentModel.ISupportInitialize)picLogo).BeginInit();
             SuspendLayout();
@@ -166,12 +168,31 @@
             // 
             dgvClientes.BackgroundColor = Color.LavenderBlush;
             dgvClientes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvClientes.Location = new Point(37, 323);
+            dgvClientes.Location = new Point(37, 363);
             dgvClientes.Name = "dgvClientes";
             dgvClientes.RowHeadersWidth = 51;
             dgvClientes.Size = new Size(677, 181);
             dgvClientes.TabIndex = 11;
             dgvClientes.CellClick += dgvClientes_CellClick;
+            // 
+            // txtBuscar
+            // 
+            txtBuscar.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtBuscar.Location = new Point(122, 328);
+            txtBuscar.Name = "txtBuscar";
+            txtBuscar.PlaceholderText = "Nombre, apellido, teléfono o correo...";
+            txtBuscar.Size = new Size(357, 27);
+            txtBuscar.TabIndex = 18;
+            txtBuscar.TextChanged += txtBuscar_TextChanged;
+            // 
+            // lblBuscar
+            // 
+            lblBuscar.AutoSize = true;
+            lblBuscar.Location = new Point(37, 331);
+            lblBuscar.Name = "lblBuscar";
+            lblBuscar.Size = new Size(76, 20);
+            lblBuscar.TabIndex = 19;
+            lblBuscar.Text = "🔍 Buscar:";
             // 
             // lblIngrese
             // 
@@ -212,7 +233,9 @@
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLightLight;
-            ClientSize = new Size(801, 535);
+            ClientSize = new Size(801, 575);
+            Controls.Add(lblBuscar);
+            Controls.Add(txtBuscar);
             Controls.Add(picLogo);
             Controls.Add(btnLimpiar);
             Controls.Add(lblIngrese);
@@ -259,5 +282,7 @@
         private Label lblIngrese;
         private Button btnLimpiar;
         private PictureBox picLogo;
+        private TextBox txtBuscar;
+        private Label lblBuscar;
     }
 }

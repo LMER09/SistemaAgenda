@@ -1,11 +1,13 @@
 ﻿using SistemaAgenda.Negocios;
 using SistemaAgenda.Datos;
+using System.Linq;
 
 namespace SistemaAgenda.UI
 {
     public partial class frmServicios : Form
     {
         private ServiciosBLL serviciosBLL = new ServiciosBLL();
+        private List<Servicios> _todosLosServicios = new List<Servicios>();
 
         public frmServicios()
         {
@@ -22,8 +24,31 @@ namespace SistemaAgenda.UI
 
         private void CargarServicios()
         {
+            _todosLosServicios = serviciosBLL.ObtenerTodos();
+            AplicarBusqueda();
+        }
+
+        // Filtra la lista de servicios según lo escrito en txtBuscar (tipo de servicio)
+        private void AplicarBusqueda()
+        {
             dgvServicios.DataSource = null;
-            dgvServicios.DataSource = serviciosBLL.ObtenerTodos();
+
+            string texto = txtBuscar.Text.Trim();
+
+            if (string.IsNullOrEmpty(texto))
+            {
+                dgvServicios.DataSource = _todosLosServicios;
+                return;
+            }
+
+            dgvServicios.DataSource = _todosLosServicios.Where(s =>
+                s.Tipo_DeServicio?.Contains(texto, StringComparison.OrdinalIgnoreCase) ?? false
+            ).ToList();
+        }
+
+        private void txtBuscar_TextChanged(object sender, EventArgs e)
+        {
+            AplicarBusqueda();
         }
 
         private void FrmServicios_Load(object sender, EventArgs e)
@@ -46,7 +71,7 @@ namespace SistemaAgenda.UI
 
             MessageBox.Show(serviciosBLL.Registrar(servicio));
 
-            CargarServicios();  Limpiar();
+            CargarServicios(); Limpiar();
         }
 
         private void btnEditar_Click(object sender, EventArgs e)
@@ -70,7 +95,7 @@ namespace SistemaAgenda.UI
 
             MessageBox.Show(serviciosBLL.Actualizar(servicio));
 
-            CargarServicios();  Limpiar();
+            CargarServicios(); Limpiar();
         }
         private void btnEliminar_Click(object sender, EventArgs e)
         {

@@ -1,5 +1,6 @@
 using SistemaAgenda.Datos;
 using SistemaAgenda.Negocios;
+using System.Linq;
 
 namespace SistemaAgenda.UI
 {
@@ -20,6 +21,10 @@ namespace SistemaAgenda.UI
 
         // Evita cambios automáticos mientras se carga una cita
         private bool _cargandoCita = false;
+
+        // Guarda todas las citas sin filtrar, y la fecha seleccionada en el calendario (si hay alguna)
+        private List<Citas>? _todasLasCitas;
+        private DateTime? _fechaFiltro = null;
 
         public frmAgenda()
         {
@@ -72,8 +77,80 @@ namespace SistemaAgenda.UI
 
         private void CargarCitas()
         {
+            _todasLasCitas = _citasBLL.ObtenerTodos();
+            ActualizarDiasEnCalendario();
+            AplicarFiltroCalendario();
+        }
+
+        // Pone en negrita, en el MonthCalendar, todos los días que tengan al menos una cita
+        private void ActualizarDiasEnCalendario()
+        {
+            mcalCitas.RemoveAllBoldedDates();
+            if (_todasLasCitas == null) return;
+
+            var fechasConCitas = _todasLasCitas
+                .Select(c => c.Fecha.Date)
+                .Distinct();
+
+            foreach (DateTime fecha in fechasConCitas)
+            {
+                mcalCitas.AddBoldedDate(fecha);
+            }
+            mcalCitas.UpdateBoldedDates();
+        }
+
+        // Muestra en el grid solo las citas del día seleccionado en el calendario,
+        // o todas las citas si no hay ningún filtro activo
+        private void AplicarFiltroCalendario()
+        {
+            if (_todasLasCitas == null) return;
+
             dgvCitas.DataSource = null;
-            dgvCitas.DataSource = _citasBLL.ObtenerTodos();
+
+            if (_fechaFiltro.HasValue)
+            {
+                dgvCitas.DataSource = _todasLasCitas
+                    .Where(c => c.Fecha.Date == _fechaFiltro.Value.Date)
+                    .ToList();
+            }
+            else
+            {
+                dgvCitas.DataSource = _todasLasCitas;
+            }
+        }
+
+        private void mcalCitas_DateChanged(object sender, DateRangeEventArgs e)
+        {
+            _fechaFiltro = e.Start.Date;
+            AplicarFiltroCalendario();
+        }
+
+        private void btnVerTodas_Click(object sender, EventArgs e)
+        {
+            _fechaFiltro = null;
+            AplicarFiltroCalendario();
+        }
+
+        // Colorea cada fila del grid según el estado de la cita
+        private void dgvCitas_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            DataGridViewRow fila = dgvCitas.Rows[e.RowIndex];
+            object? valorEstado = fila.Cells["Estado"].Value;
+            string estado = valorEstado?.ToString() ?? string.Empty;
+
+            Color colorFondo = estado switch
+            {
+                "Pendiente" => Color.LightYellow,
+                "Confirmada" => Color.LightBlue,
+                "Completada" => Color.LightGreen,
+                "Cancelada" => Color.LightCoral,
+                "Reprogramada" => Color.Plum,
+                _ => Color.White
+            };
+
+            fila.DefaultCellStyle.BackColor = colorFondo;
         }
 
         // Une la fecha y la hora seleccionadas
@@ -107,7 +184,7 @@ namespace SistemaAgenda.UI
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             if (dgvCitas.CurrentRow == null) { MessageBox.Show("Seleccione una cita."); return; }
-            MessageBox.Show(_citasBLL.CancelarCita((int) dgvCitas.CurrentRow.Cells["Id"].Value));
+            MessageBox.Show(_citasBLL.CancelarCita((int)dgvCitas.CurrentRow.Cells["Id"].Value));
             CargarCitas(); Limpiar();
         }
 
@@ -172,7 +249,7 @@ namespace SistemaAgenda.UI
             int idCliente = (int)dgvCitas.CurrentRow.Cells["Id_Clientes"].Value;
             int idServicio = (int)dgvCitas.CurrentRow.Cells["Id_Servicios"].Value;
             int idEstilista = (int)dgvCitas.CurrentRow.Cells["Id_Estilista"].Value;
-            
+
             if (_listaClientes != null)
             {
                 for (int i = 0; i < _listaClientes.Count; i++)
@@ -239,6 +316,21 @@ namespace SistemaAgenda.UI
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
             Limpiar();
+        }
+
+        private void lblFecha_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblClientes_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dtpHora_ValueChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
