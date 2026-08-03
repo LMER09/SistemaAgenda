@@ -13,8 +13,7 @@ namespace SistemaAgenda.Negocios
                 if (string.IsNullOrWhiteSpace(c.Nombre) ||
                     string.IsNullOrWhiteSpace(c.Apellido) ||
                     string.IsNullOrWhiteSpace(c.Telefono) ||
-                    string.IsNullOrWhiteSpace(c.Correo) ||
-                    string.IsNullOrWhiteSpace(c.Cedula))
+                    string.IsNullOrWhiteSpace(c.Correo))
                     return "ERROR: Todos los campos son obligatorios.";
 
                 if (!c.Correo.Contains("@"))

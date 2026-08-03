@@ -58,6 +58,8 @@ namespace SistemaAgenda.UI
             cliente.Apellido = txtApellido.Text;
             cliente.Telefono = txtTelefono.Text;
             cliente.Correo = txtCorreo.Text;
+            cliente.Cedula = txtCedula.Text;
+
             MessageBox.Show(clientesBLL.Registrar(cliente));
 
             CargarClientes(); Limpiar();
@@ -77,6 +79,7 @@ namespace SistemaAgenda.UI
             cliente.Apellido = txtApellido.Text;
             cliente.Telefono = txtTelefono.Text;
             cliente.Correo = txtCorreo.Text;
+            cliente.Cedula = txtCedula.Text;
 
             MessageBox.Show(clientesBLL.Actualizar(cliente));
 
@@ -105,6 +108,7 @@ namespace SistemaAgenda.UI
                 txtApellido.Text = dgvClientes.CurrentRow.Cells["Apellido"].Value.ToString();
                 txtTelefono.Text = dgvClientes.CurrentRow.Cells["Telefono"].Value.ToString();
                 txtCorreo.Text = dgvClientes.CurrentRow.Cells["Correo"].Value.ToString();
+                txtCedula.Text = dgvClientes.CurrentRow.Cells["Cedula"].Value?.ToString() ?? "";
             }
         }
 
