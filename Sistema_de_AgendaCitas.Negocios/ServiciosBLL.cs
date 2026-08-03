@@ -19,6 +19,9 @@ namespace SistemaAgenda.Negocios
                 if (s.DuracionMinutos <= 0)
                     return "ERROR: La duración debe ser mayor a 0 minutos.";
 
+                if (string.IsNullOrWhiteSpace(s.Subtipo_DeServicio))
+                    return "ERROR: El subtipo de servicio es obligatorio.";
+
                 bool ok = _dal.Insertar(s);
                 return ok
                     ? "OK: Servicio registrado exitosamente."
@@ -55,6 +58,9 @@ namespace SistemaAgenda.Negocios
                 if (s.DuracionMinutos <= 0)
                     return "ERROR: La duración debe ser mayor a 0 minutos.";
 
+                if (string.IsNullOrWhiteSpace(s.Subtipo_DeServicio))
+                    return "ERROR: El subtipo de servicio es obligatorio.";
+
                 bool ok = _dal.Actualizar(s);
                 return ok
                     ? "OK: Servicio actualizado exitosamente."
@@ -65,7 +71,6 @@ namespace SistemaAgenda.Negocios
                 return "ERROR: " + ex.Message;
             }
         }
-
         public string Eliminar(int id)
         {
             try

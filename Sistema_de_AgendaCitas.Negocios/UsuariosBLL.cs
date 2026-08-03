@@ -1,11 +1,11 @@
 ﻿using SistemaAgenda.Datos;
-using SistemaAgenda.Datos.SistemaAgenda.Datos;
 
 namespace SistemaAgenda.Negocios
 {
     public class UsuariosBLL
     {
         private readonly UsuariosDAL _dal = new UsuariosDAL();
+        
 
         public string Registrar(Usuarios u)
         {
@@ -70,7 +70,6 @@ namespace SistemaAgenda.Negocios
                 return "ERROR: " + ex.Message;
             }
         }
-
         // Valida usuario/contraseña
         public bool ValidarCredenciales(string usuario, string contrasena)
         {

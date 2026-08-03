@@ -10,10 +10,11 @@ namespace SistemaAgenda.Datos
             {
                 using (var con = ConexionDB.ObtenerConexion())
                 using (var cmd = new SqlCommand(@"
-                    INSERT INTO Servicios (Tipo_DeServicio, Precio, DuracionMinutos)
+                    INSERT INTO Servicios (Tipo_DeServicio,Subtipo_DeServicio, Precio, DuracionMinutos)
                     VALUES (@Tipo, @Precio, @Duracion)", con))
                 {
                     cmd.Parameters.AddWithValue("@Tipo", s.Tipo_DeServicio);
+                    cmd.Parameters.AddWithValue("@Subtipo", s.Subtipo_DeServicio);
                     cmd.Parameters.AddWithValue("@Precio", s.Precio);
                     cmd.Parameters.AddWithValue("@Duracion", s.DuracionMinutos);
                     return cmd.ExecuteNonQuery() > 0;
@@ -32,7 +33,7 @@ namespace SistemaAgenda.Datos
             {
                 using (var con = ConexionDB.ObtenerConexion())
                 using (var cmd = new SqlCommand(
-                    "SELECT id, Tipo_DeServicio, Precio, DuracionMinutos FROM Servicios", con))
+                    "SELECT id, Tipo_DeServicio,Subtipo_DeServicio, Precio, DuracionMinutos FROM Servicios", con))
                 using (var reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
@@ -41,8 +42,9 @@ namespace SistemaAgenda.Datos
                         {
                             Id = reader.GetInt32(0),
                             Tipo_DeServicio = reader.GetString(1),
-                            Precio = reader.GetDecimal(2),
-                            DuracionMinutos = reader.GetInt32(3)
+                            Subtipo_DeServicio = reader.GetString(2),
+                            Precio = reader.GetDecimal(3),
+                            DuracionMinutos = reader.GetInt32(4)
                         });
                     }
                 }
@@ -60,11 +62,12 @@ namespace SistemaAgenda.Datos
             {
                 using (var con = ConexionDB.ObtenerConexion())
                 using (var cmd = new SqlCommand(@"
-                    UPDATE Servicios SET Tipo_DeServicio=@Tipo,
+                    UPDATE Servicios SET Tipo_DeServicio=@Tipo, Subtipo_DeServicio=@Subtipo,
                     Precio=@Precio, DuracionMinutos=@Duracion
                     WHERE id=@Id", con))
                 {
                     cmd.Parameters.AddWithValue("@Tipo", s.Tipo_DeServicio);
+                    cmd.Parameters.AddWithValue("@Subtipo", s.Subtipo_DeServicio);
                     cmd.Parameters.AddWithValue("@Precio", s.Precio);
                     cmd.Parameters.AddWithValue("@Duracion", s.DuracionMinutos);
                     cmd.Parameters.AddWithValue("@Id", s.Id);

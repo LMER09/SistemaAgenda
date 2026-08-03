@@ -1,5 +1,4 @@
-﻿namespace SistemaAgenda.Datos
-{
+﻿
     using Microsoft.Data.SqlClient;
 
     namespace SistemaAgenda.Datos
@@ -141,4 +140,3 @@
             }
         }
     }
-}
