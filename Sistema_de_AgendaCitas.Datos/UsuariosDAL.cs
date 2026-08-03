@@ -1,11 +1,9 @@
-﻿namespace SistemaAgenda.Datos
-{
-    using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 
     namespace SistemaAgenda.Datos
     {
-        public class UsuariosDAL
-        {
+    public class UsuariosDAL : IUsuariosDatos
+    {
             public bool Insertar(Usuarios u)
             {
                 try
@@ -141,4 +139,3 @@
             }
         }
     }
-}

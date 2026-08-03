@@ -2,7 +2,7 @@
 
 namespace SistemaAgenda.Datos
 {
-    public class ClientesDAL
+    public class ClientesDAL : IClientesDatos
     {
         public bool Insertar(Clientes c)
         {

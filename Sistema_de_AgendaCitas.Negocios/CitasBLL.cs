@@ -8,7 +8,9 @@ namespace SistemaAgenda.Negocios
     public class CitasBLL
     {
         //Esto se hace hace para poder utilizar lis metodso de la capa datos
-        private readonly CitasDAL _dal = new CitasDAL();
+        private readonly ICitasDatos _dal;
+        public CitasBLL() : this(new CitasDAL()) { }
+        public CitasBLL(ICitasDatos dal) { _dal = dal; }
         public List<Citas> ObtenerTodos()
         {
             try

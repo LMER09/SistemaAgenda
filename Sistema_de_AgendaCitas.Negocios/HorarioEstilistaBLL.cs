@@ -4,7 +4,9 @@ namespace SistemaAgenda.Negocios
 {
     public class HorarioEstilistaBLL
     {
-        private readonly HorarioEstilistaDAL _dal = new HorarioEstilistaDAL();
+        private readonly IHorarioEstilistaDatos _dal;
+        public HorarioEstilistaBLL() : this(new HorarioEstilistaDAL()) { }
+        public HorarioEstilistaBLL(IHorarioEstilistaDatos dal) { _dal = dal; }
 
         public string Registrar(HorarioEstilista h)
         {

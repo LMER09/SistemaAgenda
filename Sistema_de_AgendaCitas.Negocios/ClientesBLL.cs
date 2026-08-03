@@ -4,7 +4,9 @@ namespace SistemaAgenda.Negocios
 {
     public class ClientesBLL
     {
-        private readonly ClientesDAL _dal = new ClientesDAL();
+        private readonly IClientesDatos _dal;
+        public ClientesBLL() : this(new ClientesDAL()) { }
+        public ClientesBLL(IClientesDatos dal) { _dal = dal; }
 
         public string Registrar(Clientes c)
         {

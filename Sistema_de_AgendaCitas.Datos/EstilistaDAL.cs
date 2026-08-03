@@ -2,7 +2,7 @@
 
 namespace SistemaAgenda.Datos
 {
-    public class EstilistaDAL
+    public class EstilistaDAL : IEstilistaDatos
     {
         public bool Insertar(Estilista e)
         {

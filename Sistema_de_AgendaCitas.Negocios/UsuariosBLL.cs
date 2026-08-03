@@ -1,11 +1,12 @@
 ﻿using SistemaAgenda.Datos;
-using SistemaAgenda.Datos.SistemaAgenda.Datos;
 
 namespace SistemaAgenda.Negocios
 {
     public class UsuariosBLL
     {
-        private readonly UsuariosDAL _dal = new UsuariosDAL();
+        private readonly IUsuariosDatos _dal;
+        public UsuariosBLL() : this(new UsuariosDAL()) { }
+        public UsuariosBLL(IUsuariosDatos dal) { _dal = dal; }
 
         public string Registrar(Usuarios u)
         {

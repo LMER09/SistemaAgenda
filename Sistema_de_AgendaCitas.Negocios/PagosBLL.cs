@@ -4,7 +4,9 @@ namespace SistemaAgenda.Negocios
 {
     public class PagosBLL
     {
-        private readonly PagosDAL _dal = new PagosDAL();
+        private readonly IPagosDatos _dal;
+        public PagosBLL() : this(new PagosDAL()) { }
+        public PagosBLL(IPagosDatos dal) { _dal = dal; }
 
         public string Registrar(Pagos p)
         {
