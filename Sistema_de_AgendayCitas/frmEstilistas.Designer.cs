@@ -45,7 +45,7 @@
             lblNombre.AutoSize = true;
             lblNombre.Location = new Point(38, 87);
             lblNombre.Name = "lblNombre";
-            lblNombre.Size = new Size(70, 20);
+            lblNombre.Size = new Size(85, 25);
             lblNombre.TabIndex = 0;
             lblNombre.Text = "Nombre:";
             // 
@@ -54,7 +54,7 @@
             lblApellido.AutoSize = true;
             lblApellido.Location = new Point(38, 124);
             lblApellido.Name = "lblApellido";
-            lblApellido.Size = new Size(70, 20);
+            lblApellido.Size = new Size(86, 25);
             lblApellido.TabIndex = 1;
             lblApellido.Text = "Apellido:";
             // 
@@ -63,7 +63,7 @@
             lblTelefono.AutoSize = true;
             lblTelefono.Location = new Point(38, 157);
             lblTelefono.Name = "lblTelefono";
-            lblTelefono.Size = new Size(72, 20);
+            lblTelefono.Size = new Size(88, 25);
             lblTelefono.TabIndex = 2;
             lblTelefono.Text = "Teléfono:";
             // 
@@ -72,7 +72,7 @@
             lblCorreo.AutoSize = true;
             lblCorreo.Location = new Point(38, 190);
             lblCorreo.Name = "lblCorreo";
-            lblCorreo.Size = new Size(60, 20);
+            lblCorreo.Size = new Size(73, 25);
             lblCorreo.TabIndex = 3;
             lblCorreo.Text = "Correo:";
             // 
@@ -81,7 +81,7 @@
             lblEspecialidad.AutoSize = true;
             lblEspecialidad.Location = new Point(38, 223);
             lblEspecialidad.Name = "lblEspecialidad";
-            lblEspecialidad.Size = new Size(97, 20);
+            lblEspecialidad.Size = new Size(117, 25);
             lblEspecialidad.TabIndex = 4;
             lblEspecialidad.Text = "Especialidad:";
             // 
@@ -92,7 +92,7 @@
             txtNombre.Location = new Point(158, 80);
             txtNombre.Name = "txtNombre";
             txtNombre.PlaceholderText = "Ej: Maria";
-            txtNombre.Size = new Size(397, 27);
+            txtNombre.Size = new Size(397, 31);
             txtNombre.TabIndex = 5;
             txtNombre.KeyPress += txtNombre_KeyPress;
             // 
@@ -102,7 +102,7 @@
             txtApellido.Location = new Point(158, 117);
             txtApellido.Name = "txtApellido";
             txtApellido.PlaceholderText = "Ej: Cedano";
-            txtApellido.Size = new Size(397, 27);
+            txtApellido.Size = new Size(397, 31);
             txtApellido.TabIndex = 6;
             txtApellido.KeyPress += txtApellido_KeyPress;
             // 
@@ -112,7 +112,7 @@
             txtTelefono.Location = new Point(158, 150);
             txtTelefono.Name = "txtTelefono";
             txtTelefono.PlaceholderText = "Ej: 000-000-0000";
-            txtTelefono.Size = new Size(397, 27);
+            txtTelefono.Size = new Size(397, 31);
             txtTelefono.TabIndex = 7;
             txtTelefono.KeyPress += txtTelefono_KeyPress;
             // 
@@ -122,7 +122,7 @@
             txtCorreo.Location = new Point(158, 183);
             txtCorreo.Name = "txtCorreo";
             txtCorreo.PlaceholderText = "Ej: Maria@gmail.com";
-            txtCorreo.Size = new Size(397, 27);
+            txtCorreo.Size = new Size(397, 31);
             txtCorreo.TabIndex = 8;
             // 
             // txtEspecialidad
@@ -131,7 +131,7 @@
             txtEspecialidad.Location = new Point(158, 216);
             txtEspecialidad.Name = "txtEspecialidad";
             txtEspecialidad.PlaceholderText = "Ej: Cortes de pelo";
-            txtEspecialidad.Size = new Size(397, 27);
+            txtEspecialidad.Size = new Size(397, 31);
             txtEspecialidad.TabIndex = 9;
             // 
             // btnAgregar
@@ -184,32 +184,13 @@
             dgvEstilistas.TabIndex = 13;
             dgvEstilistas.CellClick += dgvEstilistas_CellClick;
             // 
-            // txtBuscar
-            // 
-            txtBuscar.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtBuscar.Location = new Point(123, 333);
-            txtBuscar.Name = "txtBuscar";
-            txtBuscar.PlaceholderText = "Nombre, apellido, correo o especialidad...";
-            txtBuscar.Size = new Size(357, 27);
-            txtBuscar.TabIndex = 17;
-            txtBuscar.TextChanged += txtBuscar_TextChanged;
-            // 
-            // lblBuscar
-            // 
-            lblBuscar.AutoSize = true;
-            lblBuscar.Location = new Point(38, 336);
-            lblBuscar.Name = "lblBuscar";
-            lblBuscar.Size = new Size(76, 20);
-            lblBuscar.TabIndex = 18;
-            lblBuscar.Text = "🔍 Buscar:";
-            // 
             // lblIngrese
             // 
             lblIngrese.AutoSize = true;
             lblIngrese.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblIngrese.Location = new Point(38, 25);
             lblIngrese.Name = "lblIngrese";
-            lblIngrese.Size = new Size(184, 23);
+            lblIngrese.Size = new Size(230, 30);
             lblIngrese.TabIndex = 14;
             lblIngrese.Text = "Ingrese nuevo estilista:";
             // 
@@ -237,9 +218,28 @@
             picLogo.TabIndex = 16;
             picLogo.TabStop = false;
             // 
+            // txtBuscar
+            // 
+            txtBuscar.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtBuscar.Location = new Point(146, 333);
+            txtBuscar.Name = "txtBuscar";
+            txtBuscar.PlaceholderText = "Nombre, apellido, correo o especialidad...";
+            txtBuscar.Size = new Size(357, 31);
+            txtBuscar.TabIndex = 17;
+            txtBuscar.TextChanged += txtBuscar_TextChanged;
+            // 
+            // lblBuscar
+            // 
+            lblBuscar.AutoSize = true;
+            lblBuscar.Location = new Point(38, 336);
+            lblBuscar.Name = "lblBuscar";
+            lblBuscar.Size = new Size(102, 25);
+            lblBuscar.TabIndex = 18;
+            lblBuscar.Text = "🔍 Buscar:";
+            // 
             // frmEstilistas
             // 
-            AutoScaleDimensions = new SizeF(9F, 20F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLightLight;
             ClientSize = new Size(875, 631);

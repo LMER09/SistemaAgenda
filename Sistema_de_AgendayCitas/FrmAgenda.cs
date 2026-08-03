@@ -30,7 +30,12 @@ namespace SistemaAgenda.UI
         {
             InitializeComponent();
             // conecta el evento del recordatorio
-            _recordatorio.RecordatorioDisparado += (mensaje) => MessageBox.Show(mensaje, "Recordatorio");
+            _recordatorio.RecordatorioDisparado += (mensaje) =>
+            {
+                if (mensaje.StartsWith("No hay citas próximas")) return;
+                HistorialNotificaciones.Agregar(mensaje);
+                Toast.Mostrar(mensaje);
+            };
         }
 
         private void Limpiar()
@@ -318,19 +323,18 @@ namespace SistemaAgenda.UI
             Limpiar();
         }
 
+        // Estos tres quedaron enganchados en el Designer pero sin método —
+        // los dejamos vacíos para que compile; bórralos del Designer si no los usas.
+        private void dtpHora_ValueChanged(object sender, EventArgs e)
+        {
+        }
+
         private void lblFecha_Click(object sender, EventArgs e)
         {
-
         }
 
         private void lblClientes_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void dtpHora_ValueChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }
