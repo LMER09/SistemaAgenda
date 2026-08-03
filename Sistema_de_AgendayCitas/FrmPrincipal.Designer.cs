@@ -37,16 +37,7 @@
             lblGestion = new Label();
             lblElija = new Label();
             picLogo = new PictureBox();
-            grpResumen = new GroupBox();
-            lblResumenCitasHoyValor = new Label();
-            lblResumenCitasHoy = new Label();
-            lblResumenIngresosHoyValor = new Label();
-            lblResumenIngresosHoy = new Label();
-            lblResumenProximaCitaValor = new Label();
-            btnNotificaciones = new Button();
-            lblResumenProximaCita = new Label();
             ((System.ComponentModel.ISupportInitialize)picLogo).BeginInit();
-            grpResumen.SuspendLayout();
             SuspendLayout();
             // 
             // btnAgendar
@@ -131,7 +122,7 @@
             lblGestion.ForeColor = Color.MediumVioletRed;
             lblGestion.Location = new Point(141, 57);
             lblGestion.Name = "lblGestion";
-            lblGestion.Size = new Size(672, 50);
+            lblGestion.Size = new Size(814, 61);
             lblGestion.TabIndex = 6;
             lblGestion.Text = "Gestión de citas para salón de belleza";
             // 
@@ -142,106 +133,9 @@
             lblElija.ForeColor = Color.DarkGray;
             lblElija.Location = new Point(315, 124);
             lblElija.Name = "lblElija";
-            lblElija.Size = new Size(329, 25);
+            lblElija.Size = new Size(397, 30);
             lblElija.TabIndex = 7;
             lblElija.Text = "Seleccione una opción para continuar";
-            // 
-            // grpResumen
-            // 
-            grpResumen.Controls.Add(lblResumenCitasHoy);
-            grpResumen.Controls.Add(lblResumenCitasHoyValor);
-            grpResumen.Controls.Add(lblResumenIngresosHoy);
-            grpResumen.Controls.Add(lblResumenIngresosHoyValor);
-            grpResumen.Controls.Add(lblResumenProximaCita);
-            grpResumen.Controls.Add(lblResumenProximaCitaValor);
-            grpResumen.FlatStyle = FlatStyle.Flat;
-            grpResumen.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            grpResumen.ForeColor = Color.MediumVioletRed;
-            grpResumen.Location = new Point(45, 198);
-            grpResumen.Name = "grpResumen";
-            grpResumen.Size = new Size(270, 322);
-            grpResumen.TabIndex = 9;
-            grpResumen.TabStop = false;
-            grpResumen.Text = "📊 Resumen de hoy";
-            // 
-            // lblResumenCitasHoy
-            // 
-            lblResumenCitasHoy.AutoSize = true;
-            lblResumenCitasHoy.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblResumenCitasHoy.ForeColor = Color.DimGray;
-            lblResumenCitasHoy.Location = new Point(18, 45);
-            lblResumenCitasHoy.Name = "lblResumenCitasHoy";
-            lblResumenCitasHoy.Size = new Size(97, 20);
-            lblResumenCitasHoy.TabIndex = 0;
-            lblResumenCitasHoy.Text = "Citas de hoy";
-            // 
-            // lblResumenCitasHoyValor
-            // 
-            lblResumenCitasHoyValor.AutoSize = true;
-            lblResumenCitasHoyValor.Font = new Font("Segoe UI", 20F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblResumenCitasHoyValor.ForeColor = Color.MediumVioletRed;
-            lblResumenCitasHoyValor.Location = new Point(18, 68);
-            lblResumenCitasHoyValor.Name = "lblResumenCitasHoyValor";
-            lblResumenCitasHoyValor.Size = new Size(35, 45);
-            lblResumenCitasHoyValor.TabIndex = 1;
-            lblResumenCitasHoyValor.Text = "0";
-            // 
-            // lblResumenIngresosHoy
-            // 
-            lblResumenIngresosHoy.AutoSize = true;
-            lblResumenIngresosHoy.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblResumenIngresosHoy.ForeColor = Color.DimGray;
-            lblResumenIngresosHoy.Location = new Point(18, 130);
-            lblResumenIngresosHoy.Name = "lblResumenIngresosHoy";
-            lblResumenIngresosHoy.Size = new Size(115, 20);
-            lblResumenIngresosHoy.TabIndex = 2;
-            lblResumenIngresosHoy.Text = "Ingresos de hoy";
-            // 
-            // lblResumenIngresosHoyValor
-            // 
-            lblResumenIngresosHoyValor.AutoSize = true;
-            lblResumenIngresosHoyValor.Font = new Font("Segoe UI", 20F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblResumenIngresosHoyValor.ForeColor = Color.MediumVioletRed;
-            lblResumenIngresosHoyValor.Location = new Point(18, 153);
-            lblResumenIngresosHoyValor.Name = "lblResumenIngresosHoyValor";
-            lblResumenIngresosHoyValor.Size = new Size(76, 45);
-            lblResumenIngresosHoyValor.TabIndex = 3;
-            lblResumenIngresosHoyValor.Text = "RD$0";
-            // 
-            // lblResumenProximaCita
-            // 
-            lblResumenProximaCita.AutoSize = true;
-            lblResumenProximaCita.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblResumenProximaCita.ForeColor = Color.DimGray;
-            lblResumenProximaCita.Location = new Point(18, 215);
-            lblResumenProximaCita.Name = "lblResumenProximaCita";
-            lblResumenProximaCita.Size = new Size(126, 20);
-            lblResumenProximaCita.TabIndex = 4;
-            lblResumenProximaCita.Text = "Próxima cita pendiente";
-            // 
-            // lblResumenProximaCitaValor
-            // 
-            lblResumenProximaCitaValor.Font = new Font("Segoe UI", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblResumenProximaCitaValor.ForeColor = Color.MediumVioletRed;
-            lblResumenProximaCitaValor.Location = new Point(18, 240);
-            lblResumenProximaCitaValor.Name = "lblResumenProximaCitaValor";
-            lblResumenProximaCitaValor.Size = new Size(234, 65);
-            lblResumenProximaCitaValor.TabIndex = 5;
-            lblResumenProximaCitaValor.Text = "No hay citas pendientes";
-            // 
-            // btnNotificaciones
-            // 
-            btnNotificaciones.BackColor = Color.DeepPink;
-            btnNotificaciones.FlatStyle = FlatStyle.Popup;
-            btnNotificaciones.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnNotificaciones.ForeColor = Color.LavenderBlush;
-            btnNotificaciones.Location = new Point(45, 532);
-            btnNotificaciones.Name = "btnNotificaciones";
-            btnNotificaciones.Size = new Size(270, 40);
-            btnNotificaciones.TabIndex = 10;
-            btnNotificaciones.Text = "🔔 Ver notificaciones";
-            btnNotificaciones.UseVisualStyleBackColor = false;
-            btnNotificaciones.Click += btnNotificaciones_Click;
             // 
             // picLogo
             // 
@@ -256,12 +150,10 @@
             // 
             // frmPrincipal
             // 
-            AutoScaleDimensions = new SizeF(9F, 20F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(1024, 596);
-            Controls.Add(grpResumen);
-            Controls.Add(btnNotificaciones);
             Controls.Add(picLogo);
             Controls.Add(lblElija);
             Controls.Add(lblGestion);
@@ -276,8 +168,6 @@
             Text = "Sistema de Agenda y Citas";
             Load += frmPrincipal_Load;
             ((System.ComponentModel.ISupportInitialize)picLogo).EndInit();
-            grpResumen.ResumeLayout(false);
-            grpResumen.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -293,13 +183,5 @@
         private Label lblGestion;
         private Label lblElija;
         private PictureBox picLogo;
-        private GroupBox grpResumen;
-        private Label lblResumenCitasHoy;
-        private Label lblResumenCitasHoyValor;
-        private Label lblResumenIngresosHoy;
-        private Label lblResumenIngresosHoyValor;
-        private Label lblResumenProximaCita;
-        private Label lblResumenProximaCitaValor;
-        private Button btnNotificaciones;
     }
 }
