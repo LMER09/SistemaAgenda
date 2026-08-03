@@ -54,6 +54,7 @@
             pnlHeader.Name = "pnlHeader";
             pnlHeader.Size = new Size(622, 125);
             pnlHeader.TabIndex = 0;
+            pnlHeader.Paint += pnlHeader_Paint;
             // 
             // lblTitulo2
             // 
