@@ -115,6 +115,7 @@
             txtTelefono.PlaceholderText = "Ej: 000-000-0000";
             txtTelefono.Size = new Size(357, 27);
             txtTelefono.TabIndex = 6;
+            txtTelefono.TextChanged += txtTelefono_TextChanged;
             txtTelefono.KeyPress += txtTelefono_KeyPress;
             // 
             // txtCorreo
@@ -125,6 +126,7 @@
             txtCorreo.PlaceholderText = "Ej: luz17@gmail.com";
             txtCorreo.Size = new Size(357, 27);
             txtCorreo.TabIndex = 7;
+            txtCorreo.TextChanged += txtCorreo_TextChanged;
             // 
             // btnAgregar
             // 
@@ -241,6 +243,7 @@
             txtCedula.PlaceholderText = "Ej: 001-1234567-8";
             txtCedula.Size = new Size(357, 27);
             txtCedula.TabIndex = 20;
+            txtCedula.TextChanged += txtCedula_TextChanged;
             // 
             // frmRegistrarClientes
             // 

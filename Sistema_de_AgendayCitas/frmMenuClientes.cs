@@ -17,6 +17,7 @@
         {
             frmConsultarClientes frm = new frmConsultarClientes();
             frm.ShowDialog();
+            Close();
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
