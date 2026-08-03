@@ -20,19 +20,18 @@ namespace SistemaAgenda.UI
             cmbTipo.Focus();
         }
 
-        private void CargarServicios()
+        private async Task CargarServiciosAsync()
         {
             dgvServicios.DataSource = null;
-            dgvServicios.DataSource = serviciosBLL.ObtenerTodos();
+            dgvServicios.DataSource = await serviciosBLL.ObtenerTodosAsync();
         }
 
-        private void FrmServicios_Load(object sender, EventArgs e)
+        private async void FrmServicios_Load(object sender, EventArgs e)
         {
-            CargarServicios();
-
+            await CargarServiciosAsync();
         }
 
-        private void btnAgregar_Click(object sender, EventArgs e)
+        private async void btnAgregar_Click(object sender, EventArgs e)
         {
             if (cmbTipo.SelectedIndex == -1 || txtPrecio.Text == "" || txtDuracion.Text == "")
             {
@@ -44,12 +43,12 @@ namespace SistemaAgenda.UI
             servicio.Precio = Convert.ToDecimal(txtPrecio.Text);
             servicio.DuracionMinutos = Convert.ToInt32(txtDuracion.Text);
 
-            MessageBox.Show(serviciosBLL.Registrar(servicio));
+            MessageBox.Show(await serviciosBLL.RegistrarAsync(servicio));
 
-            CargarServicios();  Limpiar();
+            await CargarServiciosAsync(); Limpiar();
         }
 
-        private void btnEditar_Click(object sender, EventArgs e)
+        private async void btnEditar_Click(object sender, EventArgs e)
         {
             if (cmbTipo.SelectedIndex == -1 || txtPrecio.Text == "" || txtDuracion.Text == "")
             {
@@ -68,17 +67,17 @@ namespace SistemaAgenda.UI
             servicio.Precio = Convert.ToDecimal(txtPrecio.Text);
             servicio.DuracionMinutos = Convert.ToInt32(txtDuracion.Text);
 
-            MessageBox.Show(serviciosBLL.Actualizar(servicio));
+            MessageBox.Show(await serviciosBLL.ActualizarAsync(servicio));
 
-            CargarServicios();  Limpiar();
+            await CargarServiciosAsync(); Limpiar();
         }
-        private void btnEliminar_Click(object sender, EventArgs e)
+        private async void btnEliminar_Click(object sender, EventArgs e)
         {
             if (dgvServicios.CurrentRow != null)
             {
                 int id = Convert.ToInt32(dgvServicios.CurrentRow.Cells["Id"].Value);
-                MessageBox.Show(serviciosBLL.Eliminar(id));
-                CargarServicios();
+                MessageBox.Show(await serviciosBLL.EliminarAsync(id));
+                await CargarServiciosAsync();
             }
             else
             {
@@ -86,6 +85,7 @@ namespace SistemaAgenda.UI
             }
         }
 
+        // No toca base de datos: sigue igual
         private void btnCalcular_Click(object sender, EventArgs e)
         {
             if (cmbTipo.SelectedIndex == -1 || txtPrecio.Text == "" || txtDuracion.Text == "")
@@ -117,7 +117,6 @@ namespace SistemaAgenda.UI
             }
         }
 
-        //Evita entrar letras en precio y duracion
         private void txtPrecio_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsDigit(e.KeyChar) && e.KeyChar != '.' && e.KeyChar != (char)Keys.Back)

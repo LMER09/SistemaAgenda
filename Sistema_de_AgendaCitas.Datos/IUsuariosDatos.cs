@@ -2,10 +2,10 @@
 {
     public interface IUsuariosDatos
     {
-        bool Insertar(Usuarios u);
-        Usuarios? ObtenerPorUsuario(string usuario);
-        List<Usuarios> ObtenerTodos();
-        bool Actualizar(Usuarios u);
-        bool Eliminar(int id);
+        Task<bool> InsertarAsync(Usuarios u);
+        Task<Usuarios?> ObtenerPorUsuarioAsync(string usuario);
+        Task<List<Usuarios>> ObtenerTodosAsync();
+        Task<bool> ActualizarAsync(Usuarios u);
+        Task<bool> EliminarAsync(int id);
     }
 }

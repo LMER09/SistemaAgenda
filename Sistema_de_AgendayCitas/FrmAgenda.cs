@@ -5,7 +5,6 @@ namespace SistemaAgenda.UI
 {
     public partial class frmAgenda : Form
     {
-        // Se crean objetos de todas las clases que utilizaremos
         private readonly CitasBLL _citasBLL = new CitasBLL();
         private readonly ClientesBLL _clientesBLL = new ClientesBLL();
         private readonly ServiciosBLL _serviciosBLL = new ServiciosBLL();
@@ -13,18 +12,15 @@ namespace SistemaAgenda.UI
         private readonly PagosBLL _pagosBLL = new PagosBLL();
         private readonly RecordatorioCitas _recordatorio = new RecordatorioCitas();
 
-        // Almacenan los datos obtenidos de la base de datos
         private List<Clientes>? _listaClientes;
         private List<Servicios>? _listaServicios;
         private List<Estilista>? _listaEstilistas;
 
-        // Evita cambios automáticos mientras se carga una cita
         private bool _cargandoCita = false;
 
         public frmAgenda()
         {
             InitializeComponent();
-            // conecta el evento del recordatorio
             _recordatorio.RecordatorioDisparado += (mensaje) => MessageBox.Show(mensaje, "Recordatorio");
         }
 
@@ -39,30 +35,35 @@ namespace SistemaAgenda.UI
             lblDeposito.Text = "Depósito requerido: RD$0.00";
         }
 
-        private void frmAgenda_Load(object sender, EventArgs e)
+        // 1. async void: es un evento, no puede devolver Task
+        private async void frmAgenda_Load(object sender, EventArgs e)
         {
-            CargarCombos();
-            CargarCitas();
-            _recordatorio.RevisarCitasProximas(_citasBLL.ObtenerTodos());
+            await CargarCombosAsync();
+            await CargarCitasAsync();
+            _recordatorio.RevisarCitasProximas(await _citasBLL.ObtenerTodosAsync());
         }
 
-        private void CargarCombos()
+        // 2. Este método ya NO es un evento, pero SÍ usa await adentro,
+        //    así que también debe ser async. Como no es un evento, usamos
+        //    "async Task" (no "async void") — es la forma correcta cuando
+        //    el método sí lo vas a "esperar" (await) desde otro lado.
+        private async Task CargarCombosAsync()
         {
-            _listaClientes = _clientesBLL.ObtenerTodos();
+            _listaClientes = await _clientesBLL.ObtenerTodosAsync();
             cmbClientes.Items.Clear();
             for (int i = 0; i < _listaClientes.Count; i++)
             {
                 cmbClientes.Items.Add(_listaClientes[i].Nombre + " " + _listaClientes[i].Apellido);
             }
 
-            _listaServicios = _serviciosBLL.ObtenerTodos();
+            _listaServicios = await _serviciosBLL.ObtenerTodosAsync();
             cmbServicios.Items.Clear();
             for (int i = 0; i < _listaServicios.Count; i++)
             {
                 cmbServicios.Items.Add(_listaServicios[i].Tipo_DeServicio);
             }
 
-            _listaEstilistas = _estilistaBLL.ObtenerTodos();
+            _listaEstilistas = await _estilistaBLL.ObtenerTodosAsync();
             cmbEstilistas.Items.Clear();
             for (int i = 0; i < _listaEstilistas.Count; i++)
             {
@@ -70,13 +71,13 @@ namespace SistemaAgenda.UI
             }
         }
 
-        private void CargarCitas()
+        private async Task CargarCitasAsync()
         {
             dgvCitas.DataSource = null;
-            dgvCitas.DataSource = _citasBLL.ObtenerTodos();
+            dgvCitas.DataSource = await _citasBLL.ObtenerTodosAsync();
         }
 
-        // Une la fecha y la hora seleccionadas
+        // Este método no toca la base de datos, no necesita async
         private DateTime ObtenerFechaHoraSeleccionada()
         {
             DateTime fecha = dtpFecha.Value.Date;
@@ -84,7 +85,7 @@ namespace SistemaAgenda.UI
             return fecha + hora;
         }
 
-        private void btnAgendar_Click(object sender, EventArgs e)
+        private async void btnAgendar_Click(object sender, EventArgs e)
         {
             if (cmbClientes.SelectedIndex == -1) { MessageBox.Show("Debe seleccionar un cliente."); return; }
             if (cmbServicios.SelectedIndex == -1) { MessageBox.Show("Debe seleccionar un servicio."); return; }
@@ -99,47 +100,47 @@ namespace SistemaAgenda.UI
             nuevaCita.Id_Estilista = estilista.Id;
             nuevaCita.Deposito = new Gestion_DeServicios(servicio).CalcularPrecio() * 0.20m;
 
-            string resultado = _citasBLL.AgendarCita(nuevaCita);
+            string resultado = await _citasBLL.AgendarCitaAsync(nuevaCita);
             MessageBox.Show(resultado);
-            if (resultado.StartsWith("OK")) { CargarCitas(); Limpiar(); }
+            if (resultado.StartsWith("OK")) { await CargarCitasAsync(); Limpiar(); }
         }
 
-        private void btnCancelar_Click(object sender, EventArgs e)
+        private async void btnCancelar_Click(object sender, EventArgs e)
         {
             if (dgvCitas.CurrentRow == null) { MessageBox.Show("Seleccione una cita."); return; }
-            MessageBox.Show(_citasBLL.CancelarCita((int) dgvCitas.CurrentRow.Cells["Id"].Value));
-            CargarCitas(); Limpiar();
+            MessageBox.Show(await _citasBLL.CancelarCitaAsync((int)dgvCitas.CurrentRow.Cells["Id"].Value));
+            await CargarCitasAsync(); Limpiar();
         }
 
-        private void btnReprogramar_Click(object sender, EventArgs e)
+        private async void btnReprogramar_Click(object sender, EventArgs e)
         {
             if (dgvCitas.CurrentRow == null) { MessageBox.Show("Seleccione una cita."); return; }
-            MessageBox.Show(_citasBLL.ReprogramarCita((int)dgvCitas.CurrentRow.Cells["Id"].Value, ObtenerFechaHoraSeleccionada()));
-            CargarCitas(); Limpiar();
+            MessageBox.Show(await _citasBLL.ReprogramarCitaAsync((int)dgvCitas.CurrentRow.Cells["Id"].Value, ObtenerFechaHoraSeleccionada()));
+            await CargarCitasAsync(); Limpiar();
         }
 
-        private void btnActualizarLista_Click(object sender, EventArgs e)
+        private async void btnActualizarLista_Click(object sender, EventArgs e)
         {
-            CargarCitas();
+            await CargarCitasAsync();
         }
 
-        private void btnPagar_Click(object sender, EventArgs e)
+        private async void btnPagar_Click(object sender, EventArgs e)
         {
             if (dgvCitas.CurrentRow == null) { MessageBox.Show("Seleccione una cita."); return; }
             if (cmbMetodoPago.SelectedIndex == -1) { MessageBox.Show("Seleccione un método de pago."); return; }
             if (string.IsNullOrWhiteSpace(txtMonto.Text)) { MessageBox.Show("Ingrese el monto."); return; }
 
-            // Obtiene el Id de la cita seleccionada
             int idCita = (int)dgvCitas.CurrentRow.Cells["Id"].Value;
             Pagos pago = new Pagos();
             pago.Id_Citas = idCita;
             pago.Monto = Convert.ToDecimal(txtMonto.Text);
             pago.Metodo_DePago = cmbMetodoPago.Text;
 
-            MessageBox.Show(_pagosBLL.Registrar(pago));
-            CargarCitas(); Limpiar();
+            MessageBox.Show(await _pagosBLL.RegistrarAsync(pago));
+            await CargarCitasAsync(); Limpiar();
         }
 
+        // No toca base de datos: sigue igual, sin async
         private void cmbServicios_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cmbServicios.SelectedIndex == -1 || _listaServicios == null) return;
@@ -154,7 +155,7 @@ namespace SistemaAgenda.UI
                 txtMonto.Text = precioFinal.ToString("F2");
         }
 
-        // Permite escribir solo números y un punto decimal
+        // No toca base de datos: sigue igual, sin async
         private void txtMonto_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsDigit(e.KeyChar) && e.KeyChar != '.' && e.KeyChar != (char)Keys.Back)
@@ -163,7 +164,7 @@ namespace SistemaAgenda.UI
                 e.Handled = true;
         }
 
-        private void dgvCitas_CellClick(object sender, DataGridViewCellEventArgs e)
+        private async void dgvCitas_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
 
@@ -172,7 +173,7 @@ namespace SistemaAgenda.UI
             int idCliente = (int)dgvCitas.CurrentRow.Cells["Id_Clientes"].Value;
             int idServicio = (int)dgvCitas.CurrentRow.Cells["Id_Servicios"].Value;
             int idEstilista = (int)dgvCitas.CurrentRow.Cells["Id_Estilista"].Value;
-            
+
             if (_listaClientes != null)
             {
                 for (int i = 0; i < _listaClientes.Count; i++)
@@ -212,7 +213,7 @@ namespace SistemaAgenda.UI
             dtpFecha.Value = (DateTime)dgvCitas.CurrentRow.Cells["Fecha"].Value;
             int idCita = (int)dgvCitas.CurrentRow.Cells["Id"].Value;
 
-            List<Pagos> pagos = _pagosBLL.ObtenerTodos();
+            List<Pagos> pagos = await _pagosBLL.ObtenerTodosAsync();
             Pagos pago = null;
 
             for (int i = 0; i < pagos.Count; i++)
@@ -236,6 +237,7 @@ namespace SistemaAgenda.UI
 
             _cargandoCita = false;
         }
+
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
             Limpiar();

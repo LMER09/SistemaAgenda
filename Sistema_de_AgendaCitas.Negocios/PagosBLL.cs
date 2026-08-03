@@ -1,14 +1,17 @@
-﻿using SistemaAgenda.Datos;
+﻿using System.Linq;
+using SistemaAgenda.Datos;
 
 namespace SistemaAgenda.Negocios
 {
     public class PagosBLL
     {
         private readonly IPagosDatos _dal;
-        public PagosBLL() : this(new PagosDAL()) { }
-        public PagosBLL(IPagosDatos dal) { _dal = dal; }
+        private readonly ICitasDatos _citasDal;
 
-        public string Registrar(Pagos p)
+        public PagosBLL() : this(new PagosDAL(), new CitasDAL()) { }
+        public PagosBLL(IPagosDatos dal, ICitasDatos citasDal) { _dal = dal; _citasDal = citasDal; }
+
+        public async Task<string> RegistrarAsync(Pagos p)
         {
             try
             {
@@ -21,44 +24,25 @@ namespace SistemaAgenda.Negocios
                 if (string.IsNullOrWhiteSpace(p.Metodo_DePago))
                     return "ERROR: El método de pago es obligatorio.";
 
-
-                CitasDAL citasDAL = new CitasDAL();
-                var citas = citasDAL.ObtenerTodos();
-                Citas cita = null;
-
-                for (int i = 0; i < citas.Count; i++)
-                {
-                    if (citas[i].Id == p.Id_Citas)
-                    {
-                        cita = citas[i];
-                        break;
-                    }
-                }
+                var citas = await _citasDal.ObtenerTodosAsync();
+                Citas cita = citas.FirstOrDefault(c => c.Id == p.Id_Citas);
 
                 if (cita == null)
                     return "ERROR: Cita no encontrada.";
                 if (cita.Estado == "Cancelada")
                     return "ERROR: No se puede registrar un pago para una cita cancelada.";
-
-                // Verificar si la cita ya fue completada
                 if (cita.Estado == "Completada")
                     return "ERROR: Esta cita ya fue completada y pagada.";
 
-                bool ok = _dal.Insertar(p);
+                bool ok = await _dal.InsertarAsync(p);
 
                 if (ok)
                 {
-                    // Actualizar el estado de la cita a "Completada" cuando se hace el pago
-
-                    if (cita != null)
-                    {
-                        cita.Estado = "Completada";
-                        citasDAL.Actualizar(cita);
-                    }
-
+                    cita.Estado = "Completada";
+                    await _citasDal.ActualizarAsync(cita);
                     return "OK: Pago registrado y cita completada exitosamente.";
                 }
-                
+
                 return "ERROR: No se pudo guardar en la base de datos.";
             }
             catch (Exception ex)
@@ -67,11 +51,11 @@ namespace SistemaAgenda.Negocios
             }
         }
 
-        public List<Pagos> ObtenerTodos()
+        public async Task<List<Pagos>> ObtenerTodosAsync()
         {
             try
             {
-                return _dal.ObtenerTodos();
+                return await _dal.ObtenerTodosAsync();
             }
             catch (Exception ex)
             {
@@ -79,7 +63,7 @@ namespace SistemaAgenda.Negocios
             }
         }
 
-        public string Actualizar(Pagos p)
+        public async Task<string> ActualizarAsync(Pagos p)
         {
             try
             {
@@ -92,7 +76,7 @@ namespace SistemaAgenda.Negocios
                 if (string.IsNullOrWhiteSpace(p.Metodo_DePago))
                     return "ERROR: El método de pago es obligatorio.";
 
-                bool ok = _dal.Actualizar(p);
+                bool ok = await _dal.ActualizarAsync(p);
                 return ok
                     ? "OK: Pago actualizado exitosamente."
                     : "ERROR: No se pudo actualizar en la base de datos.";
@@ -103,11 +87,11 @@ namespace SistemaAgenda.Negocios
             }
         }
 
-        public string Eliminar(int id)
+        public async Task<string> EliminarAsync(int id)
         {
             try
             {
-                bool ok = _dal.Eliminar(id);
+                bool ok = await _dal.EliminarAsync(id);
                 return ok
                     ? "OK: Pago eliminado exitosamente."
                     : "ERROR: No se pudo eliminar.";

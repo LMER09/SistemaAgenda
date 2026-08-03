@@ -4,11 +4,11 @@ namespace SistemaAgenda.Datos
 {
     public class HorarioEstilistaDAL : IHorarioEstilistaDatos
     {
-        public bool Insertar(HorarioEstilista h)
+        public async Task<bool> InsertarAsync(HorarioEstilista h)
         {
             try
             {
-                using (var con = ConexionDB.ObtenerConexion())
+                using (var con = await ConexionDB.ObtenerConexionAsync())
                 using (var cmd = new SqlCommand(@"
                 INSERT INTO HorarioEstilista (id_Estilista, DiaSemana, HoraInicio, HoraFin)
                 VALUES (@IdEstilista, @DiaSemana, @HoraInicio, @HoraFin)", con))
@@ -17,13 +17,10 @@ namespace SistemaAgenda.Datos
                     cmd.Parameters.AddWithValue("@DiaSemana", h.DiaSemana);
                     cmd.Parameters.AddWithValue("@HoraInicio", h.HoraInicio);
                     cmd.Parameters.AddWithValue("@HoraFin", h.HoraFin);
-
-                    int filas = cmd.ExecuteNonQuery();
+                    int filas = await cmd.ExecuteNonQueryAsync();
                     return filas > 0;
                 }
             }
-            //Error 547 = violación de CHECK (día fuera de 0-6) o de FK (estilista inexistente),
-            //o que HoraInicio no sea menor que HoraFin
             catch (SqlException ex) when (ex.Number == 547)
             {
                 throw new Exception("Verifica el horario: el día debe estar entre 0 y 6, la hora de inicio debe ser antes que la hora fin, y la estilista debe existir.");
@@ -34,17 +31,17 @@ namespace SistemaAgenda.Datos
             }
         }
 
-        public List<HorarioEstilista> ObtenerTodos()
+        public async Task<List<HorarioEstilista>> ObtenerTodosAsync()
         {
             var lista = new List<HorarioEstilista>();
             try
             {
-                using (var con = ConexionDB.ObtenerConexion())
+                using (var con = await ConexionDB.ObtenerConexionAsync())
                 using (var cmd = new SqlCommand(
                     "SELECT id, id_Estilista, DiaSemana, HoraInicio, HoraFin FROM HorarioEstilista", con))
-                using (var reader = cmd.ExecuteReader())
+                using (var reader = await cmd.ExecuteReaderAsync())
                 {
-                    while (reader.Read())
+                    while (await reader.ReadAsync())
                     {
                         lista.Add(new HorarioEstilista
                         {
@@ -64,22 +61,19 @@ namespace SistemaAgenda.Datos
             return lista;
         }
 
-        // Trae solo los bloques de horario de una estilista específica.
-        // Pensado para que la capa de Negocios valide el día/hora de una cita nueva.
-        public List<HorarioEstilista> ObtenerPorEstilista(int idEstilista)
+        public async Task<List<HorarioEstilista>> ObtenerPorEstilistaAsync(int idEstilista)
         {
             var lista = new List<HorarioEstilista>();
             try
             {
-                using (var con = ConexionDB.ObtenerConexion())
+                using (var con = await ConexionDB.ObtenerConexionAsync())
                 using (var cmd = new SqlCommand(
                     "SELECT id, id_Estilista, DiaSemana, HoraInicio, HoraFin FROM HorarioEstilista WHERE id_Estilista = @IdEstilista", con))
                 {
                     cmd.Parameters.AddWithValue("@IdEstilista", idEstilista);
-                    //lee los registros uno por uno
-                    using (var reader = cmd.ExecuteReader())
+                    using (var reader = await cmd.ExecuteReaderAsync())
                     {
-                        while (reader.Read())
+                        while (await reader.ReadAsync())
                         {
                             lista.Add(new HorarioEstilista
                             {
@@ -100,11 +94,11 @@ namespace SistemaAgenda.Datos
             return lista;
         }
 
-        public bool Actualizar(HorarioEstilista h)
+        public async Task<bool> ActualizarAsync(HorarioEstilista h)
         {
             try
             {
-                using (var con = ConexionDB.ObtenerConexion())
+                using (var con = await ConexionDB.ObtenerConexionAsync())
                 using (var cmd = new SqlCommand(@"
                 UPDATE HorarioEstilista SET id_Estilista=@IdEstilista, DiaSemana=@DiaSemana,
                 HoraInicio=@HoraInicio, HoraFin=@HoraFin WHERE id=@Id", con))
@@ -114,13 +108,10 @@ namespace SistemaAgenda.Datos
                     cmd.Parameters.AddWithValue("@HoraInicio", h.HoraInicio);
                     cmd.Parameters.AddWithValue("@HoraFin", h.HoraFin);
                     cmd.Parameters.AddWithValue("@Id", h.Id);
-
-                    int filas = cmd.ExecuteNonQuery();
+                    int filas = await cmd.ExecuteNonQueryAsync();
                     return filas > 0;
                 }
             }
-            //Error 547 = violación de CHECK (día fuera de 0-6) o de FK (estilista inexistente),
-            //o que HoraInicio no sea menor que HoraFin
             catch (SqlException ex) when (ex.Number == 547)
             {
                 throw new Exception("Verifica el horario: el día debe estar entre 0 y 6, la hora de inicio debe ser antes que la hora fin, y la estilista debe existir.");
@@ -131,16 +122,15 @@ namespace SistemaAgenda.Datos
             }
         }
 
-        public bool Eliminar(int id)
+        public async Task<bool> EliminarAsync(int id)
         {
             try
             {
-                using (var con = ConexionDB.ObtenerConexion())
-                using (var cmd = new SqlCommand(
-                    "DELETE FROM HorarioEstilista WHERE id=@Id", con))
+                using (var con = await ConexionDB.ObtenerConexionAsync())
+                using (var cmd = new SqlCommand("DELETE FROM HorarioEstilista WHERE id=@Id", con))
                 {
                     cmd.Parameters.AddWithValue("@Id", id);
-                    int filas = cmd.ExecuteNonQuery();
+                    int filas = await cmd.ExecuteNonQueryAsync();
                     return filas > 0;
                 }
             }

@@ -8,7 +8,7 @@ namespace SistemaAgenda.Negocios
         public UsuariosBLL() : this(new UsuariosDAL()) { }
         public UsuariosBLL(IUsuariosDatos dal) { _dal = dal; }
 
-        public string Registrar(Usuarios u)
+        public async Task<string> RegistrarAsync(Usuarios u)
         {
             try
             {
@@ -16,7 +16,7 @@ namespace SistemaAgenda.Negocios
                     string.IsNullOrWhiteSpace(u.Contrasena))
                     return "ERROR: Todos los campos son obligatorios.";
 
-                bool ok = _dal.Insertar(u);
+                bool ok = await _dal.InsertarAsync(u);
                 return ok
                     ? "OK: Usuario registrado exitosamente."
                     : "ERROR: No se pudo guardar en la base de datos.";
@@ -26,11 +26,12 @@ namespace SistemaAgenda.Negocios
                 return "ERROR: " + ex.Message;
             }
         }
-        public List<Usuarios> ObtenerTodos()
+
+        public async Task<List<Usuarios>> ObtenerTodosAsync()
         {
             try
             {
-                return _dal.ObtenerTodos();
+                return await _dal.ObtenerTodosAsync();
             }
             catch (Exception ex)
             {
@@ -38,7 +39,7 @@ namespace SistemaAgenda.Negocios
             }
         }
 
-        public string Actualizar(Usuarios u)
+        public async Task<string> ActualizarAsync(Usuarios u)
         {
             try
             {
@@ -46,7 +47,7 @@ namespace SistemaAgenda.Negocios
                     string.IsNullOrWhiteSpace(u.Contrasena))
                     return "ERROR: Todos los campos son obligatorios.";
 
-                bool ok = _dal.Actualizar(u);
+                bool ok = await _dal.ActualizarAsync(u);
                 return ok
                     ? "OK: Usuario actualizado exitosamente."
                     : "ERROR: No se pudo actualizar en la base de datos.";
@@ -57,11 +58,11 @@ namespace SistemaAgenda.Negocios
             }
         }
 
-        public string Eliminar(int id)
+        public async Task<string> EliminarAsync(int id)
         {
             try
             {
-                bool ok = _dal.Eliminar(id);
+                bool ok = await _dal.EliminarAsync(id);
                 return ok
                     ? "OK: Usuario eliminado exitosamente."
                     : "ERROR: No se pudo eliminar.";
@@ -72,12 +73,11 @@ namespace SistemaAgenda.Negocios
             }
         }
 
-        // Valida usuario/contraseña
-        public bool ValidarCredenciales(string usuario, string contrasena)
+        public async Task<bool> ValidarCredencialesAsync(string usuario, string contrasena)
         {
             try
             {
-                Usuarios? u = _dal.ObtenerPorUsuario(usuario);
+                Usuarios? u = await _dal.ObtenerPorUsuarioAsync(usuario);
                 if (u == null)
                     return false;
 

@@ -2,9 +2,9 @@
 {
     public interface IPagosDatos
     {
-        bool Insertar(Pagos p);
-        List<Pagos> ObtenerTodos();
-        bool Actualizar(Pagos p);
-        bool Eliminar(int id);
+        Task<bool> InsertarAsync(Pagos p);
+        Task<List<Pagos>> ObtenerTodosAsync();
+        Task<bool> ActualizarAsync(Pagos p);
+        Task<bool> EliminarAsync(int id);
     }
 }

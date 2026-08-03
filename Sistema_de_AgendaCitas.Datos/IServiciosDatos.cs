@@ -2,9 +2,9 @@
 {
     public interface IServiciosDatos
     {
-        bool Insertar(Servicios s);
-        List<Servicios> ObtenerTodos();
-        bool Actualizar(Servicios s);
-        bool Eliminar(int id);
+        Task<bool> InsertarAsync(Servicios s);
+        Task<List<Servicios>> ObtenerTodosAsync();
+        Task<bool> ActualizarAsync(Servicios s);
+        Task<bool> EliminarAsync(int id);
     }
 }

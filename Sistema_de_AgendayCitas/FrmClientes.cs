@@ -5,7 +5,6 @@ namespace SistemaAgenda.UI
 {
     public partial class frmClientes : Form
     {
-        
         private ClientesBLL clientesBLL = new ClientesBLL();
         public frmClientes()
         {
@@ -20,17 +19,18 @@ namespace SistemaAgenda.UI
             txtNombre.Focus();
         }
 
-        private void CargarClientes()
+        // Ya no es evento, pero usa await -> async Task
+        private async Task CargarClientesAsync()
         {
             dgvClientes.DataSource = null;
-            dgvClientes.DataSource = clientesBLL.ObtenerTodos();
+            dgvClientes.DataSource = await clientesBLL.ObtenerTodosAsync();
         }
 
-        private void FrmClientes_Load(object sender, EventArgs e)
+        private async void FrmClientes_Load(object sender, EventArgs e)
         {
-            CargarClientes();
+            await CargarClientesAsync();
         }
-        private void btnAgregar_Click(object sender, EventArgs e)
+        private async void btnAgregar_Click(object sender, EventArgs e)
         {
             Clientes cliente = new Clientes();
 
@@ -38,11 +38,11 @@ namespace SistemaAgenda.UI
             cliente.Apellido = txtApellido.Text;
             cliente.Telefono = txtTelefono.Text;
             cliente.Correo = txtCorreo.Text;
-            MessageBox.Show(clientesBLL.Registrar(cliente));
+            MessageBox.Show(await clientesBLL.RegistrarAsync(cliente));
 
-            CargarClientes(); Limpiar();
+            await CargarClientesAsync(); Limpiar();
         }
-        private void btnEditar_Click(object sender, EventArgs e)
+        private async void btnEditar_Click(object sender, EventArgs e)
         {
             Clientes cliente = new Clientes();
 
@@ -58,25 +58,27 @@ namespace SistemaAgenda.UI
             cliente.Telefono = txtTelefono.Text;
             cliente.Correo = txtCorreo.Text;
 
-            MessageBox.Show(clientesBLL.Actualizar(cliente));
+            MessageBox.Show(await clientesBLL.ActualizarAsync(cliente));
 
-            CargarClientes(); Limpiar();
+            await CargarClientesAsync(); Limpiar();
         }
-        private void btnEliminar_Click(object sender, EventArgs e)
+        private async void btnEliminar_Click(object sender, EventArgs e)
         {
             if (dgvClientes.CurrentRow != null)
             {
                 int id = Convert.ToInt32(dgvClientes.CurrentRow.Cells["Id"].Value);
 
-                MessageBox.Show(clientesBLL.Eliminar(id));
+                MessageBox.Show(await clientesBLL.EliminarAsync(id));
 
-                CargarClientes(); Limpiar();
+                await CargarClientesAsync(); Limpiar();
             }
             else
             {
                 MessageBox.Show("Seleccione un cliente.");
             }
         }
+
+        // No toca base de datos: no cambia
         private void dgvClientes_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
@@ -88,7 +90,6 @@ namespace SistemaAgenda.UI
             }
         }
 
-        //Evita números en nombre/apellido
         private void txtNombre_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsLetter(e.KeyChar) && e.KeyChar != ' ' && e.KeyChar != (char)Keys.Back)
@@ -99,8 +100,6 @@ namespace SistemaAgenda.UI
             if (!char.IsLetter(e.KeyChar) && e.KeyChar != ' ' && e.KeyChar != (char)Keys.Back)
                 e.Handled = true;
         }
-
-        //Evita letras en teléfono
         private void txtTelefono_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsDigit(e.KeyChar) && e.KeyChar != '-' && e.KeyChar != (char)Keys.Back)

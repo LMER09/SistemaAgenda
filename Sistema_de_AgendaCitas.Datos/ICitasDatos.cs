@@ -2,9 +2,9 @@
 {
     public interface ICitasDatos
     {
-        bool Insertar(Citas c);
-        List<Citas> ObtenerTodos();
-        bool Actualizar(Citas c);
-        bool Eliminar(int id);
+        Task<bool> InsertarAsync(Citas c);
+        Task<List<Citas>> ObtenerTodosAsync();
+        Task<bool> ActualizarAsync(Citas c);
+        Task<bool> EliminarAsync(int id);
     }
 }

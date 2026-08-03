@@ -8,7 +8,7 @@ namespace SistemaAgenda.Negocios
         public ClientesBLL() : this(new ClientesDAL()) { }
         public ClientesBLL(IClientesDatos dal) { _dal = dal; }
 
-        public string Registrar(Clientes c)
+        public async Task<string> RegistrarAsync(Clientes c)
         {
             try
             {
@@ -22,7 +22,7 @@ namespace SistemaAgenda.Negocios
                 if (!c.Correo.Contains("@"))
                     return "ERROR: El correo no es válido.";
 
-                bool ok = _dal.Insertar(c);
+                bool ok = await _dal.InsertarAsync(c);
                 return ok
                     ? "OK: Cliente registrado exitosamente."
                     : "ERROR: No se pudo guardar en la base de datos.";
@@ -33,11 +33,11 @@ namespace SistemaAgenda.Negocios
             }
         }
 
-        public List<Clientes> ObtenerTodos()
+        public async Task<List<Clientes>> ObtenerTodosAsync()
         {
             try
             {
-                return _dal.ObtenerTodos();
+                return await _dal.ObtenerTodosAsync();
             }
             catch (Exception ex)
             {
@@ -45,7 +45,7 @@ namespace SistemaAgenda.Negocios
             }
         }
 
-        public string Actualizar(Clientes c)
+        public async Task<string> ActualizarAsync(Clientes c)
         {
             try
             {
@@ -56,7 +56,7 @@ namespace SistemaAgenda.Negocios
                     string.IsNullOrWhiteSpace(c.Cedula))
                     return "ERROR: Todos los campos son obligatorios.";
 
-                bool ok = _dal.Actualizar(c);
+                bool ok = await _dal.ActualizarAsync(c);
                 return ok
                     ? "OK: Cliente actualizado exitosamente."
                     : "ERROR: No se pudo actualizar en la base de datos.";
@@ -67,11 +67,11 @@ namespace SistemaAgenda.Negocios
             }
         }
 
-        public string Eliminar(int id)
+        public async Task<string> EliminarAsync(int id)
         {
             try
             {
-                bool ok = _dal.Eliminar(id);
+                bool ok = await _dal.EliminarAsync(id);
                 return ok
                     ? "OK: Cliente eliminado exitosamente."
                     : "ERROR: No se pudo eliminar.";

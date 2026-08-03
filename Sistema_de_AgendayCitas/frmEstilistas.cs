@@ -1,5 +1,4 @@
-﻿
-using SistemaAgenda.Negocios;
+﻿using SistemaAgenda.Negocios;
 using SistemaAgenda.Datos;
 
 namespace SistemaAgenda.UI
@@ -21,17 +20,19 @@ namespace SistemaAgenda.UI
             txtEspecialidad.Clear();
             txtNombre.Focus();
         }
-        private void CargarEstilistas()
+
+        private async Task CargarEstilistasAsync()
         {
             dgvEstilistas.DataSource = null;
-            dgvEstilistas.DataSource = estilistaBLL.ObtenerTodos();
-        }
-        private void FrmEstilistas_Load(object sender, EventArgs e)
-        {
-            CargarEstilistas();
+            dgvEstilistas.DataSource = await estilistaBLL.ObtenerTodosAsync();
         }
 
-        private void btnAgregar_Click(object sender, EventArgs e)
+        private async void FrmEstilistas_Load(object sender, EventArgs e)
+        {
+            await CargarEstilistasAsync();
+        }
+
+        private async void btnAgregar_Click(object sender, EventArgs e)
         {
             Estilista estilista = new Estilista();
 
@@ -41,12 +42,12 @@ namespace SistemaAgenda.UI
             estilista.Correo = txtCorreo.Text;
             estilista.Especialidad = txtEspecialidad.Text;
 
-            MessageBox.Show(estilistaBLL.Registrar(estilista));
+            MessageBox.Show(await estilistaBLL.RegistrarAsync(estilista));
 
-            CargarEstilistas(); Limpiar();
+            await CargarEstilistasAsync(); Limpiar();
         }
 
-        private void btnEditar_Click(object sender, EventArgs e)
+        private async void btnEditar_Click(object sender, EventArgs e)
         {
             if (dgvEstilistas.CurrentRow == null)
             {
@@ -62,20 +63,20 @@ namespace SistemaAgenda.UI
             estilista.Correo = txtCorreo.Text;
             estilista.Especialidad = txtEspecialidad.Text;
 
-            MessageBox.Show(estilistaBLL.Actualizar(estilista));
+            MessageBox.Show(await estilistaBLL.ActualizarAsync(estilista));
 
-            CargarEstilistas();  Limpiar();
+            await CargarEstilistasAsync(); Limpiar();
         }
 
-        private void btnEliminar_Click(object sender, EventArgs e)
+        private async void btnEliminar_Click(object sender, EventArgs e)
         {
             if (dgvEstilistas.CurrentRow != null)
             {
                 int id = Convert.ToInt32(dgvEstilistas.CurrentRow.Cells["Id"].Value);
 
-                MessageBox.Show(estilistaBLL.Eliminar(id));
+                MessageBox.Show(await estilistaBLL.EliminarAsync(id));
 
-                CargarEstilistas(); Limpiar();
+                await CargarEstilistasAsync(); Limpiar();
             }
             else
             {
@@ -95,7 +96,6 @@ namespace SistemaAgenda.UI
             }
         }
 
-        //Evita números en nombre/apellido
         private void txtNombre_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsLetter(e.KeyChar) && e.KeyChar != ' ' && e.KeyChar != (char)Keys.Back)
@@ -107,7 +107,7 @@ namespace SistemaAgenda.UI
             if (!char.IsLetter(e.KeyChar) && e.KeyChar != ' ' && e.KeyChar != (char)Keys.Back)
                 e.Handled = true;
         }
-        //Evita letras en teléfono
+
         private void txtTelefono_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsDigit(e.KeyChar) && e.KeyChar != '-' && e.KeyChar != (char)Keys.Back)

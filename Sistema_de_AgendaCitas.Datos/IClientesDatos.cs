@@ -2,9 +2,9 @@
 {
     public interface IClientesDatos
     {
-        bool Insertar(Clientes c);
-        List<Clientes> ObtenerTodos();
-        bool Actualizar(Clientes c);
-        bool Eliminar(int id);
+        Task<bool> InsertarAsync(Clientes c);
+        Task<List<Clientes>> ObtenerTodosAsync();
+        Task<bool> ActualizarAsync(Clientes c);
+        Task<bool> EliminarAsync(int id);
     }
 }

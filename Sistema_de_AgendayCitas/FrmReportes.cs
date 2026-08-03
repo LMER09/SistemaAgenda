@@ -12,12 +12,11 @@ namespace SistemaAgenda.UI
             InitializeComponent();
         }
 
-        private void CargarPagos()
+        private async Task CargarPagosAsync()
         {
-            var pagos = pagosBLL.ObtenerTodos();
+            var pagos = await pagosBLL.ObtenerTodosAsync();
 
             dgvPagos.DataSource = null;
-            // Muestra los pagos en la tabla
             dgvPagos.DataSource = pagos;
 
             decimal total = 0;
@@ -30,14 +29,14 @@ namespace SistemaAgenda.UI
             lblTotal.Text = $"RD$ {total:F2}";
         }
 
-        private void FrmReportes_Load(object sender, EventArgs e)
+        private async void FrmReportes_Load(object sender, EventArgs e)
         {
-            CargarPagos();
+            await CargarPagosAsync();
         }
 
-        private void btnCorteDia_Click(object sender, EventArgs e)
+        private async void btnCorteDia_Click(object sender, EventArgs e)
         {
-            List<Pagos> pagos = pagosBLL.ObtenerTodos();
+            List<Pagos> pagos = await pagosBLL.ObtenerTodosAsync();
 
             decimal total = 0;
 
