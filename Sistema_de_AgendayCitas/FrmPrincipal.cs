@@ -37,13 +37,10 @@ namespace SistemaAgenda.UI
         {
             AbrirFormulario(new frmEstilistas());
         }
-
-        private void btnNotificaciones_Click(object sender, EventArgs e)
-        {
-            new frmNotificaciones().Show();
-        }
         private void AbrirFormulario(Form formulario)
         {
+            // Cuando cierras el formulario hijo (agendaste, cobraste, etc.)
+            // el panel de resumen se refresca solo
             formulario.FormClosed += (s, e) => CargarResumen();
             formulario.Show();
         }
@@ -87,6 +84,11 @@ namespace SistemaAgenda.UI
                 lblResumenIngresosHoyValor.Text = "-";
                 lblResumenProximaCitaValor.Text = "Error: " + ex.Message;
             }
+        }
+
+        private void btnNotificaciones_Click(object sender, EventArgs e)
+        {
+            new frmNotificaciones().Show();
         }
     }
 }
