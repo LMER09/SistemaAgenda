@@ -5,11 +5,36 @@ namespace SistemaAgenda.UI
 {
     public partial class frmRegistrarClientes : Form
     {
-        
+
         private ClientesBLL clientesBLL = new ClientesBLL();
         public frmRegistrarClientes()
         {
+            HabilitarControles(true);
+
+            txtNombre.Clear();
+            txtApellido.Clear();
+            txtTelefono.Clear();
+            txtCorreo.Clear();
+
+
+            txtNombre.Focus();
             InitializeComponent();
+        }
+
+        private void HabilitarControles(bool habilitar)
+        {
+            txtNombre.Enabled = habilitar;
+            txtApellido.Enabled = habilitar;
+            txtTelefono.Enabled = habilitar;
+            txtCorreo.Enabled = habilitar;
+            txtCedula.Enabled = habilitar;
+
+
+            btnAgregar.Enabled = habilitar;
+            btnEditar.Enabled = habilitar;
+            btnEliminar.Enabled = habilitar;
+            btnLimpiar.Enabled = habilitar;
+            HabilitarControles(false);
         }
         private void Limpiar()
         {
@@ -18,6 +43,7 @@ namespace SistemaAgenda.UI
             txtTelefono.Clear();
             txtCorreo.Clear();
             txtNombre.Focus();
+            txtCedula.Clear();
         }
 
         private void CargarClientes()
@@ -25,7 +51,10 @@ namespace SistemaAgenda.UI
             dgvClientes.DataSource = null;
             dgvClientes.DataSource = clientesBLL.ObtenerTodos();
         }
-
+        private void frmRegistrarClientes_Load(object sender, EventArgs e)
+        {
+            HabilitarControles(false);
+        }
         private void FrmClientes_Load(object sender, EventArgs e)
         {
             CargarClientes();
@@ -109,6 +138,24 @@ namespace SistemaAgenda.UI
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
             Limpiar();
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnNuevo_Click(object sender, EventArgs e)
+        {
+            HabilitarControles(true);
+
+            txtNombre.Clear();
+            txtApellido.Clear();
+            txtTelefono.Clear();
+            txtCorreo.Clear();
+            txtCedula.Clear();
+
+            txtNombre.Focus();
         }
     }
 }

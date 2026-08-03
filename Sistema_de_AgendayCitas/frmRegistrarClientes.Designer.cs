@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmConsultarClientes));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmRegistrarClientes));
             lblNombre = new Label();
             lblApellido = new Label();
             lblTelefono = new Label();
@@ -44,6 +44,9 @@
             lblIngrese = new Label();
             btnLimpiar = new Button();
             picLogo = new PictureBox();
+            btnNuevo = new Button();
+            lblCedula = new Label();
+            txtCedula = new TextBox();
             ((System.ComponentModel.ISupportInitialize)dgvClientes).BeginInit();
             ((System.ComponentModel.ISupportInitialize)picLogo).BeginInit();
             SuspendLayout();
@@ -128,7 +131,7 @@
             btnAgregar.BackColor = Color.DeepPink;
             btnAgregar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnAgregar.ForeColor = Color.White;
-            btnAgregar.Location = new Point(37, 260);
+            btnAgregar.Location = new Point(148, 260);
             btnAgregar.Name = "btnAgregar";
             btnAgregar.Size = new Size(164, 43);
             btnAgregar.TabIndex = 8;
@@ -141,7 +144,7 @@
             btnEditar.BackColor = Color.DeepPink;
             btnEditar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnEditar.ForeColor = Color.White;
-            btnEditar.Location = new Point(207, 260);
+            btnEditar.Location = new Point(318, 260);
             btnEditar.Name = "btnEditar";
             btnEditar.Size = new Size(164, 43);
             btnEditar.TabIndex = 9;
@@ -154,7 +157,7 @@
             btnEliminar.BackColor = Color.DeepPink;
             btnEliminar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnEliminar.ForeColor = Color.White;
-            btnEliminar.Location = new Point(377, 260);
+            btnEliminar.Location = new Point(488, 260);
             btnEliminar.Name = "btnEliminar";
             btnEliminar.Size = new Size(164, 43);
             btnEliminar.TabIndex = 10;
@@ -188,9 +191,9 @@
             btnLimpiar.BackColor = Color.DeepPink;
             btnLimpiar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnLimpiar.ForeColor = Color.White;
-            btnLimpiar.Location = new Point(547, 260);
+            btnLimpiar.Location = new Point(658, 260);
             btnLimpiar.Name = "btnLimpiar";
-            btnLimpiar.Size = new Size(164, 43);
+            btnLimpiar.Size = new Size(131, 43);
             btnLimpiar.TabIndex = 13;
             btnLimpiar.Text = "\U0001f9f9 Limpiar";
             btnLimpiar.UseVisualStyleBackColor = false;
@@ -207,12 +210,47 @@
             picLogo.TabIndex = 17;
             picLogo.TabStop = false;
             // 
-            // frmClientes
+            // btnNuevo
+            // 
+            btnNuevo.BackColor = Color.DeepPink;
+            btnNuevo.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnNuevo.ForeColor = Color.White;
+            btnNuevo.Location = new Point(9, 260);
+            btnNuevo.Name = "btnNuevo";
+            btnNuevo.Size = new Size(133, 43);
+            btnNuevo.TabIndex = 18;
+            btnNuevo.Text = "Nuevo";
+            btnNuevo.UseVisualStyleBackColor = false;
+            btnNuevo.Click += btnNuevo_Click;
+            // 
+            // lblCedula
+            // 
+            lblCedula.AutoSize = true;
+            lblCedula.Location = new Point(51, 224);
+            lblCedula.Name = "lblCedula";
+            lblCedula.Size = new Size(60, 20);
+            lblCedula.TabIndex = 19;
+            lblCedula.Text = "Cedula:";
+            lblCedula.Click += label1_Click;
+            // 
+            // txtCedula
+            // 
+            txtCedula.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtCedula.Location = new Point(162, 221);
+            txtCedula.Name = "txtCedula";
+            txtCedula.PlaceholderText = "Ej: 001-1234567-8";
+            txtCedula.Size = new Size(357, 27);
+            txtCedula.TabIndex = 20;
+            // 
+            // frmRegistrarClientes
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLightLight;
             ClientSize = new Size(801, 535);
+            Controls.Add(txtCedula);
+            Controls.Add(lblCedula);
+            Controls.Add(btnNuevo);
             Controls.Add(picLogo);
             Controls.Add(btnLimpiar);
             Controls.Add(lblIngrese);
@@ -230,7 +268,7 @@
             Controls.Add(lblNombre);
             Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             FormBorderStyle = FormBorderStyle.FixedSingle;
-            Name = "frmConsultarClientes";
+            Name = "frmRegistrarClientes";
             Text = "Consulta de Clientes";
             TransparencyKey = Color.FromArgb(255, 224, 192);
             Load += FrmClientes_Load;
@@ -259,5 +297,8 @@
         private Label lblIngrese;
         private Button btnLimpiar;
         private PictureBox picLogo;
+        private Button btnNuevo;
+        private Label lblCedula;
+        private TextBox txtCedula;
     }
 }
