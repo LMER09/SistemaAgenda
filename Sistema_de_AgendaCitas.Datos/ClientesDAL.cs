@@ -11,7 +11,7 @@ namespace SistemaAgenda.Datos
                 using (var con = ConexionDB.ObtenerConexion())
                 using (var cmd = new SqlCommand(@"
                     INSERT INTO Clientes (Nombre, Apellido, Telefono, Correo, Cedula)
-                    VALUES (@Nombre, @Apellido, @Telefono, @Corre, @Cedula)", con))
+                    VALUES (@Nombre, @Apellido, @Telefono, @Correo, @Cedula)", con))
                 {
                     cmd.Parameters.AddWithValue("@Nombre", c.Nombre);
                     cmd.Parameters.AddWithValue("@Apellido", c.Apellido);
@@ -45,7 +45,7 @@ namespace SistemaAgenda.Datos
                             Apellido = reader.GetString(2),
                             Telefono = reader.GetString(3),
                             Correo = reader.GetString(4),
-                            Cedula = reader.GetString(5)
+                            Cedula = reader.IsDBNull(5) ? "" : reader.GetString(5)
                         });
                     }
                 }
