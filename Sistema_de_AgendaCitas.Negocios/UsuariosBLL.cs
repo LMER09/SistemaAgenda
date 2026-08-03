@@ -5,6 +5,7 @@ namespace SistemaAgenda.Negocios
     public class UsuariosBLL
     {
         private readonly UsuariosDAL _dal = new UsuariosDAL();
+        
 
         public string Registrar(Usuarios u)
         {
