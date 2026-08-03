@@ -24,8 +24,35 @@ namespace SistemaAgenda.UI
         public frmAgenda()
         {
             InitializeComponent();
-            // conecta el evento del recordatorio
-            _recordatorio.RecordatorioDisparado += (mensaje) => MessageBox.Show(mensaje, "Recordatorio");
+
+            // conecta el evento del recordatorio y envia un correo
+            _recordatorio.RecordatorioDisparado += (cita, mensaje) =>
+            {
+                if (cita == null || _listaClientes == null) return;
+
+                Clientes cliente = null;
+                for (int i = 0; i < _listaClientes.Count; i++)
+                {
+                    if (_listaClientes[i].Id == cita.Id_Clientes)
+                    {
+                        cliente = _listaClientes[i];
+                        break;
+                    }
+                }
+
+                if (cliente != null)
+                {
+                    try
+                    {
+                        _recordatorio.EnviarCorreo(cliente.Correo, cliente.Nombre, cita.Fecha);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("No se pudo enviar el correo: " + ex.Message);
+                    }
+                }
+            };
+
         }
 
         private void Limpiar()
