@@ -134,7 +134,7 @@ namespace SistemaAgenda.UI
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             if (dgvCitas.CurrentRow == null) { MessageBox.Show("Seleccione una cita."); return; }
-            MessageBox.Show(_citasBLL.CancelarCita((int) dgvCitas.CurrentRow.Cells["Id"].Value));
+            MessageBox.Show(_citasBLL.CancelarCita((int)dgvCitas.CurrentRow.Cells["Id"].Value));
             CargarCitas(); Limpiar();
         }
 
@@ -199,7 +199,7 @@ namespace SistemaAgenda.UI
             int idCliente = (int)dgvCitas.CurrentRow.Cells["Id_Clientes"].Value;
             int idServicio = (int)dgvCitas.CurrentRow.Cells["Id_Servicios"].Value;
             int idEstilista = (int)dgvCitas.CurrentRow.Cells["Id_Estilista"].Value;
-            
+
             if (_listaClientes != null)
             {
                 for (int i = 0; i < _listaClientes.Count; i++)
@@ -266,6 +266,11 @@ namespace SistemaAgenda.UI
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
             Limpiar();
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
         }
     }
 }

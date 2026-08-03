@@ -100,6 +100,7 @@
             groupBox1.TabIndex = 23;
             groupBox1.TabStop = false;
             groupBox1.Text = "Registrar Cita:";
+            groupBox1.Enter += groupBox1_Enter;
             // 
             // btnActualizarLista
             // 
