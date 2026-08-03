@@ -1,5 +1,4 @@
 ﻿using SistemaAgenda.Datos;
-using SistemaAgenda.Datos.SistemaAgenda.Datos;
 
 namespace SistemaAgenda.Negocios
 {
@@ -70,7 +69,6 @@ namespace SistemaAgenda.Negocios
                 return "ERROR: " + ex.Message;
             }
         }
-
         // Valida usuario/contraseña
         public bool ValidarCredenciales(string usuario, string contrasena)
         {
