@@ -21,6 +21,10 @@ namespace SistemaAgenda.Datos
                     return cmd.ExecuteNonQuery() > 0;
                 }
             }
+            catch (SqlException ex) when (ex.Number == 2627)
+            {
+                throw new Exception("Ese correo ya está registrado a otro cliente.");
+            }
             catch (Exception ex)
             {
                 throw new Exception("Error al insertar cliente: " + ex.Message);
@@ -72,6 +76,10 @@ namespace SistemaAgenda.Datos
                     cmd.Parameters.AddWithValue("@Id", c.Id);
                     return cmd.ExecuteNonQuery() > 0;
                 }
+            }
+            catch (SqlException ex) when (ex.Number == 2627)
+            {
+                throw new Exception("Ese correo ya está registrado a otro cliente.");
             }
             catch (Exception ex)
             {

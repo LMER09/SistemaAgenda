@@ -22,6 +22,10 @@ namespace SistemaAgenda.Datos
                     return cmd.ExecuteNonQuery() > 0;
                 }
             }
+            catch (SqlException ex) when (ex.Number == 2627)
+            {
+                throw new Exception("Ese correo ya está registrado a otra estilista.");
+            }
             catch (Exception ex)
             {
                 throw new Exception("Error al insertar estilista: " + ex.Message);
@@ -79,6 +83,10 @@ namespace SistemaAgenda.Datos
                     cmd.Parameters.AddWithValue("@Id", e.Id);
                     return cmd.ExecuteNonQuery() > 0;
                 }
+            }
+            catch (SqlException ex) when (ex.Number == 2627)
+            {
+                throw new Exception("Ese correo ya está registrado a otra estilista.");
             }
             catch (Exception ex)
             {
