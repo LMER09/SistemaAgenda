@@ -10,10 +10,15 @@ namespace SistemaAgenda.UI
             InitializeComponent();
         }
 
-        // Método para abrir cualquier formulario
+        // Metodo para abrir cualquier formulario.
+        // Se oculta el principal mientras la otra pantalla esta abierta,
+        // asi solo queda visible la que el usuario eligio, y el principal
+        // vuelve a aparecer automaticamente cuando esa pantalla se cierra.
         private void AbrirFormulario(Form formulario)
         {
+            this.Hide();
             formulario.ShowDialog();
+            this.Show();
         }
 
         private void frmPrincipal_Load(object sender, EventArgs e)
@@ -49,7 +54,7 @@ namespace SistemaAgenda.UI
 
         private void btnEstilistas_Click(object sender, EventArgs e)
         {
-            AbrirFormulario(new frmEstilistas());
+            AbrirFormulario(new frmRegistrarEstilistas());
         }
 
         // ======================================
@@ -63,11 +68,7 @@ namespace SistemaAgenda.UI
 
         private void verEstilistaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(
-                "Módulo de consulta de estilistas en desarrollo.",
-                "Sistema",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
+            AbrirFormulario(new frmConsultarEstilistas());
         }
 
         private void verServicioToolStripMenuItem_Click(object sender, EventArgs e)

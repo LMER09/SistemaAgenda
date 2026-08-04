@@ -1,15 +1,14 @@
 ﻿using SistemaAgenda.Negocios;
-using SistemaAgenda.Negocios;
 using SistemaAgenda.Datos;
 
 namespace SistemaAgenda.UI
 {
-    public partial class frmRegistrarClientes : Form
+    public partial class frmRegistrarEstilistas : Form
     {
-        private ClientesBLL clientesBLL = new ClientesBLL();
+        private EstilistaBLL estilistaBLL = new EstilistaBLL();
         private bool habilitado = false;
 
-        public frmRegistrarClientes()
+        public frmRegistrarEstilistas()
         {
             InitializeComponent();
             HabilitarControles(false);
@@ -26,6 +25,7 @@ namespace SistemaAgenda.UI
             txtTelefono.Enabled = habilitar;
             txtCorreo.Enabled = habilitar;
             txtCedula.Enabled = habilitar;
+            txtEspecialidad.Enabled = habilitar;
             btnAgregar.Enabled = habilitar;
 
             if (habilitar)
@@ -40,7 +40,7 @@ namespace SistemaAgenda.UI
             {
                 btnHabilitar.Text = "🔓 Habilitar campos";
                 btnHabilitar.BackColor = Color.DeepPink;
-                lblResultado.Text = "Los campos están deshabilitados. Presione \"Habilitar campos\" para ingresar un nuevo cliente.";
+                lblResultado.Text = "Los campos están deshabilitados. Presione \"Habilitar campos\" para ingresar un nuevo estilista.";
                 lblResultado.ForeColor = Color.DimGray;
             }
         }
@@ -62,22 +62,30 @@ namespace SistemaAgenda.UI
             txtTelefono.Clear();
             txtCorreo.Clear();
             txtCedula.Clear();
+            txtEspecialidad.Clear();
         }
 
-        private void frmRegistrarClientes_Load(object sender, EventArgs e)
+        private void FrmRegistrarEstilistas_Load(object sender, EventArgs e)
         {
             HabilitarControles(false);
         }
 
-        // Valida que los datos del cliente sean correctos antes de guardar
         private bool ValidarDatos()
         {
             if (string.IsNullOrWhiteSpace(txtNombre.Text) ||
                 string.IsNullOrWhiteSpace(txtApellido.Text) ||
                 string.IsNullOrWhiteSpace(txtTelefono.Text) ||
-                string.IsNullOrWhiteSpace(txtCorreo.Text))
+                string.IsNullOrWhiteSpace(txtCorreo.Text) ||
+                string.IsNullOrWhiteSpace(txtEspecialidad.Text))
             {
                 MostrarResultado("Debe completar todos los campos.", esExito: false);
+                return false;
+            }
+
+            if (!txtCorreo.Text.Contains("@") || !txtCorreo.Text.Contains("."))
+            {
+                MostrarResultado("Ingrese un correo válido.", esExito: false);
+                txtCorreo.Focus();
                 return false;
             }
 
@@ -92,13 +100,6 @@ namespace SistemaAgenda.UI
             {
                 MostrarResultado("Si ingresa cédula, debe tener el formato completo (000-0000000-0).", esExito: false);
                 txtCedula.Focus();
-                return false;
-            }
-
-            if (!txtCorreo.Text.Contains("@") || !txtCorreo.Text.Contains("."))
-            {
-                MostrarResultado("Ingrese un correo válido.", esExito: false);
-                txtCorreo.Focus();
                 return false;
             }
 
@@ -118,19 +119,20 @@ namespace SistemaAgenda.UI
             if (!ValidarDatos())
                 return;
 
-            Clientes cliente = new Clientes
+            Estilista estilista = new Estilista
             {
                 Nombre = txtNombre.Text,
                 Apellido = txtApellido.Text,
                 Telefono = txtTelefono.Text,
                 Correo = txtCorreo.Text,
-                Cedula = txtCedula.Text
+                Cedula = txtCedula.Text.Trim(),
+                Especialidad = txtEspecialidad.Text
             };
 
-            string resultado = clientesBLL.Registrar(cliente);
+            string resultado = estilistaBLL.Registrar(estilista);
             bool exito = resultado.StartsWith("OK");
 
-            MostrarResultado(exito ? "Cliente registrado exitosamente." : resultado, exito);
+            MostrarResultado(exito ? "Estilista registrado exitosamente." : resultado, exito);
 
             if (exito)
             {

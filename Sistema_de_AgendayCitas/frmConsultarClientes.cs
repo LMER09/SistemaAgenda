@@ -1,7 +1,7 @@
 ﻿using SistemaAgenda.Negocios;
 using SistemaAgenda.Datos;
 using System.Linq;
-  
+
 namespace SistemaAgenda.UI
 {
     public partial class frmConsultarClientes : Form
@@ -26,25 +26,23 @@ namespace SistemaAgenda.UI
             dgvClientes.DataSource = null;
             dgvClientes.DataSource = listaClientes;
 
-            // Ocultar la columna Id
+            dgvClientes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvClientes.Columns["Id"].Visible = false;
-
-            // Ajustar el ancho de las columnas
-            dgvClientes.Columns["Nombre"].Width = 110;
-            dgvClientes.Columns["Apellido"].Width = 110;
-            dgvClientes.Columns["Telefono"].Width = 110;
-            dgvClientes.Columns["Correo"].Width = 170;
-            dgvClientes.Columns["Cedula"].Width = 120;
         }
 
-        private void btnCerrar_Click(object sender, EventArgs e)
+        // Filtra la lista ya cargada por nombre, apellido o cedula.
+        // Se ejecuta al presionar el boton Buscar (no en cada tecla),
+        // como pidio el requerimiento: el usuario escribe y da clic en Buscar.
+        private void btnBuscar_Click(object sender, EventArgs e)
         {
-            Close();
-        }
+            string texto = txtBuscar.Text.Trim().ToLower();
 
-        private void lblBuscar_Click(object sender, EventArgs e)
-        {
-            string texto = txtBuscar.Text.ToLower();
+            if (string.IsNullOrWhiteSpace(texto))
+            {
+                dgvClientes.DataSource = null;
+                dgvClientes.DataSource = listaClientes;
+                return;
+            }
 
             var resultado = listaClientes.Where(c =>
                 c.Nombre.ToLower().Contains(texto) ||
@@ -54,41 +52,74 @@ namespace SistemaAgenda.UI
 
             dgvClientes.DataSource = null;
             dgvClientes.DataSource = resultado;
+
+            if (resultado.Count == 0)
+                MessageBox.Show($"No se encontró ningún cliente que coincida con \"{txtBuscar.Text}\".",
+                    "Sin resultados", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private void btnCerrar_Click_1(object sender, EventArgs e)
+        // Al seleccionar una fila, se cargan sus datos en los campos
+        // para poder editarla o confirmarla antes de eliminar.
+        private void dgvClientes_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                txtNombre.Text = dgvClientes.CurrentRow.Cells["Nombre"].Value.ToString();
+                txtApellido.Text = dgvClientes.CurrentRow.Cells["Apellido"].Value.ToString();
+                txtTelefono.Text = dgvClientes.CurrentRow.Cells["Telefono"].Value.ToString();
+                txtCorreo.Text = dgvClientes.CurrentRow.Cells["Correo"].Value.ToString();
+                txtCedula.Text = dgvClientes.CurrentRow.Cells["Cedula"].Value?.ToString() ?? "";
+            }
+        }
+
+        private void btnEditar_Click(object sender, EventArgs e)
+        {
+            if (dgvClientes.CurrentRow == null)
+            {
+                MessageBox.Show("Seleccione un cliente de la tabla para editar.");
+                return;
+            }
+
+            Clientes cliente = new Clientes
+            {
+                Id = Convert.ToInt32(dgvClientes.CurrentRow.Cells["Id"].Value),
+                Nombre = txtNombre.Text,
+                Apellido = txtApellido.Text,
+                Telefono = txtTelefono.Text,
+                Correo = txtCorreo.Text,
+                Cedula = txtCedula.Text
+            };
+
+            MessageBox.Show(clientesBLL.Actualizar(cliente));
+            CargarClientes();
+        }
+
+        private void btnEliminar_Click(object sender, EventArgs e)
+        {
+            if (dgvClientes.CurrentRow == null)
+            {
+                MessageBox.Show("Seleccione un cliente de la tabla para eliminar.");
+                return;
+            }
+
+            DialogResult respuesta = MessageBox.Show(
+                "¿Desea eliminar este cliente?",
+                "Confirmar",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (respuesta == DialogResult.No)
+                return;
+
+            int id = Convert.ToInt32(dgvClientes.CurrentRow.Cells["Id"].Value);
+            MessageBox.Show(clientesBLL.Eliminar(id));
+
+            CargarClientes();
+        }
+
+        private void btnCerrar_Click(object sender, EventArgs e)
         {
             Close();
-        }
-
-        private void txtBuscar_TextChanged(object sender, EventArgs e)
-        {
-            // Obtiene el texto escrito, elimina espacios al inicio y final
-            // y lo convierte a minúsculas para evitar diferencias entre mayúsculas y minúsculas.
-            string texto = txtBuscar.Text.Trim().ToLower();
-
-            // Filtra la lista de clientes y muestra únicamente
-            // los que coincidan con el texto ingresado.
-
-            // Busca coincidencias por nombre, apellido o cédula.
-            dgvClientes.DataSource = clientesBLL.ObtenerTodos()
-                .Where(c =>
-                    c.Nombre.ToLower().Contains(texto) ||
-                    c.Apellido.ToLower().Contains(texto) ||
-                    c.Cedula.ToLower().Contains(texto))
-
-                // Convierte el resultado nuevamente en una lista.
-                .ToList();
-        }
-
-        private void dgvClientes_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void picLogo_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

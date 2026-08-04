@@ -1,6 +1,6 @@
 ﻿namespace SistemaAgenda.UI
 {
-    partial class frmRegistrarClientes
+    partial class frmRegistrarEstilistas
     {
         /// <summary>
         /// Required designer variable.
@@ -28,17 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmRegistrarClientes));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmRegistrarEstilistas));
             lblNombre = new Label();
             lblApellido = new Label();
             lblTelefono = new Label();
             lblCorreo = new Label();
             lblCedula = new Label();
+            lblEspecialidad = new Label();
             txtNombre = new TextBox();
             txtApellido = new TextBox();
             txtTelefono = new TextBox();
             txtCorreo = new TextBox();
             txtCedula = new TextBox();
+            txtEspecialidad = new TextBox();
             btnHabilitar = new Button();
             btnAgregar = new Button();
             btnCerrar = new Button();
@@ -93,14 +95,23 @@
             lblCedula.TabIndex = 4;
             lblCedula.Text = "Cedula:";
             // 
+            // lblEspecialidad
+            // 
+            lblEspecialidad.AutoSize = true;
+            lblEspecialidad.Location = new Point(51, 259);
+            lblEspecialidad.Name = "lblEspecialidad";
+            lblEspecialidad.Size = new Size(97, 20);
+            lblEspecialidad.TabIndex = 5;
+            lblEspecialidad.Text = "Especialidad:";
+            // 
             // txtNombre
             // 
             txtNombre.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtNombre.Location = new Point(162, 87);
             txtNombre.Name = "txtNombre";
-            txtNombre.PlaceholderText = "Ej: Luzmairy";
+            txtNombre.PlaceholderText = "Ej: Maria";
             txtNombre.Size = new Size(357, 27);
-            txtNombre.TabIndex = 5;
+            txtNombre.TabIndex = 6;
             txtNombre.KeyPress += txtNombre_KeyPress;
             // 
             // txtApellido
@@ -108,9 +119,9 @@
             txtApellido.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtApellido.Location = new Point(162, 120);
             txtApellido.Name = "txtApellido";
-            txtApellido.PlaceholderText = "Ej: Rodriguez";
+            txtApellido.PlaceholderText = "Ej: Cedano";
             txtApellido.Size = new Size(357, 27);
-            txtApellido.TabIndex = 6;
+            txtApellido.TabIndex = 7;
             txtApellido.KeyPress += txtApellido_KeyPress;
             // 
             // txtTelefono
@@ -120,7 +131,7 @@
             txtTelefono.Name = "txtTelefono";
             txtTelefono.PlaceholderText = "Ej: 000-000-0000";
             txtTelefono.Size = new Size(357, 27);
-            txtTelefono.TabIndex = 7;
+            txtTelefono.TabIndex = 8;
             txtTelefono.TextChanged += txtTelefono_TextChanged;
             txtTelefono.KeyPress += txtTelefono_KeyPress;
             // 
@@ -129,9 +140,9 @@
             txtCorreo.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             txtCorreo.Location = new Point(162, 186);
             txtCorreo.Name = "txtCorreo";
-            txtCorreo.PlaceholderText = "Ej: luz17@gmail.com";
+            txtCorreo.PlaceholderText = "Ej: maria@gmail.com";
             txtCorreo.Size = new Size(357, 27);
-            txtCorreo.TabIndex = 8;
+            txtCorreo.TabIndex = 9;
             // 
             // txtCedula
             // 
@@ -140,19 +151,28 @@
             txtCedula.Name = "txtCedula";
             txtCedula.PlaceholderText = "Ej: 001-1234567-8";
             txtCedula.Size = new Size(357, 27);
-            txtCedula.TabIndex = 9;
+            txtCedula.TabIndex = 10;
             txtCedula.TextChanged += txtCedula_TextChanged;
             txtCedula.KeyPress += txtCedula_KeyPress;
+            // 
+            // txtEspecialidad
+            // 
+            txtEspecialidad.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtEspecialidad.Location = new Point(162, 252);
+            txtEspecialidad.Name = "txtEspecialidad";
+            txtEspecialidad.PlaceholderText = "Ej: Cortes de pelo";
+            txtEspecialidad.Size = new Size(357, 27);
+            txtEspecialidad.TabIndex = 11;
             // 
             // btnHabilitar
             // 
             btnHabilitar.BackColor = Color.DeepPink;
             btnHabilitar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnHabilitar.ForeColor = Color.White;
-            btnHabilitar.Location = new Point(51, 269);
+            btnHabilitar.Location = new Point(51, 302);
             btnHabilitar.Name = "btnHabilitar";
             btnHabilitar.Size = new Size(195, 43);
-            btnHabilitar.TabIndex = 10;
+            btnHabilitar.TabIndex = 12;
             btnHabilitar.Text = "🔓 Habilitar campos";
             btnHabilitar.UseVisualStyleBackColor = false;
             btnHabilitar.Click += btnHabilitar_Click;
@@ -162,10 +182,10 @@
             btnAgregar.BackColor = Color.DeepPink;
             btnAgregar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnAgregar.ForeColor = Color.White;
-            btnAgregar.Location = new Point(254, 269);
+            btnAgregar.Location = new Point(254, 302);
             btnAgregar.Name = "btnAgregar";
             btnAgregar.Size = new Size(195, 43);
-            btnAgregar.TabIndex = 11;
+            btnAgregar.TabIndex = 13;
             btnAgregar.Text = "➕ Agregar";
             btnAgregar.UseVisualStyleBackColor = false;
             btnAgregar.Click += btnAgregar_Click;
@@ -175,10 +195,10 @@
             btnCerrar.BackColor = Color.Gray;
             btnCerrar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnCerrar.ForeColor = Color.White;
-            btnCerrar.Location = new Point(457, 269);
+            btnCerrar.Location = new Point(457, 302);
             btnCerrar.Name = "btnCerrar";
             btnCerrar.Size = new Size(150, 43);
-            btnCerrar.TabIndex = 18;
+            btnCerrar.TabIndex = 14;
             btnCerrar.Text = "❌ Cerrar";
             btnCerrar.UseVisualStyleBackColor = false;
             btnCerrar.Click += btnCerrar_Click;
@@ -189,21 +209,21 @@
             lblIngrese.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblIngrese.Location = new Point(51, 47);
             lblIngrese.Name = "lblIngrese";
-            lblIngrese.Size = new Size(178, 23);
-            lblIngrese.TabIndex = 12;
-            lblIngrese.Text = "Ingrese nuevo cliente:";
+            lblIngrese.Size = new Size(191, 23);
+            lblIngrese.TabIndex = 15;
+            lblIngrese.Text = "Ingrese nuevo estilista:";
             // 
             // lblResultado
             // 
             lblResultado.AutoSize = true;
             lblResultado.Font = new Font("Segoe UI", 9.5F, FontStyle.Italic, GraphicsUnit.Point, 0);
             lblResultado.ForeColor = Color.DimGray;
-            lblResultado.Location = new Point(51, 335);
+            lblResultado.Location = new Point(51, 368);
             lblResultado.MaximumSize = new Size(680, 0);
             lblResultado.Name = "lblResultado";
-            lblResultado.Size = new Size(468, 20);
-            lblResultado.TabIndex = 13;
-            lblResultado.Text = "Los campos están deshabilitados. Presione \"Habilitar campos\" para ingresar un nuevo cliente.";
+            lblResultado.Size = new Size(480, 20);
+            lblResultado.TabIndex = 16;
+            lblResultado.Text = "Los campos están deshabilitados. Presione \"Habilitar campos\" para ingresar un nuevo estilista.";
             // 
             // picLogo
             // 
@@ -213,26 +233,28 @@
             picLogo.Name = "picLogo";
             picLogo.Size = new Size(242, 245);
             picLogo.SizeMode = PictureBoxSizeMode.Zoom;
-            picLogo.TabIndex = 14;
+            picLogo.TabIndex = 17;
             picLogo.TabStop = false;
             // 
-            // frmRegistrarClientes
+            // frmRegistrarEstilistas
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLightLight;
-            ClientSize = new Size(801, 400);
+            ClientSize = new Size(801, 430);
             Controls.Add(picLogo);
             Controls.Add(lblResultado);
             Controls.Add(lblIngrese);
             Controls.Add(btnCerrar);
             Controls.Add(btnAgregar);
             Controls.Add(btnHabilitar);
+            Controls.Add(txtEspecialidad);
             Controls.Add(txtCedula);
             Controls.Add(txtCorreo);
             Controls.Add(txtTelefono);
             Controls.Add(txtApellido);
             Controls.Add(txtNombre);
+            Controls.Add(lblEspecialidad);
             Controls.Add(lblCedula);
             Controls.Add(lblCorreo);
             Controls.Add(lblTelefono);
@@ -240,10 +262,10 @@
             Controls.Add(lblNombre);
             Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             FormBorderStyle = FormBorderStyle.FixedSingle;
-            Name = "frmRegistrarClientes";
-            Text = "Registro de Clientes";
+            Name = "frmRegistrarEstilistas";
+            Text = "Registro de Estilistas";
             TransparencyKey = Color.FromArgb(255, 224, 192);
-            Load += frmRegistrarClientes_Load;
+            Load += FrmRegistrarEstilistas_Load;
             ((System.ComponentModel.ISupportInitialize)picLogo).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -256,11 +278,13 @@
         private Label lblTelefono;
         private Label lblCorreo;
         private Label lblCedula;
+        private Label lblEspecialidad;
         private TextBox txtNombre;
         private TextBox txtApellido;
         private TextBox txtTelefono;
         private TextBox txtCorreo;
         private TextBox txtCedula;
+        private TextBox txtEspecialidad;
         private Button btnHabilitar;
         private Button btnAgregar;
         private Button btnCerrar;
