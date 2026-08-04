@@ -30,8 +30,6 @@ namespace SistemaAgenda.UI
             dgvEstilistas.Columns["Id"].Visible = false;
         }
 
-        // Filtra la lista ya cargada. Se ejecuta al presionar el boton Buscar,
-        // no en cada tecla, como pidio el requerimiento.
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             string texto = txtBuscar.Text.Trim().ToLower();
@@ -58,21 +56,8 @@ namespace SistemaAgenda.UI
                     "Sin resultados", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        // Al seleccionar una fila, se cargan sus datos en los campos
-        // para poder editarla o confirmarla antes de eliminar.
-        private void dgvEstilistas_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0)
-            {
-                txtNombre.Text = dgvEstilistas.CurrentRow.Cells["Nombre"].Value.ToString();
-                txtApellido.Text = dgvEstilistas.CurrentRow.Cells["Apellido"].Value.ToString();
-                txtTelefono.Text = dgvEstilistas.CurrentRow.Cells["Telefono"].Value.ToString();
-                txtCorreo.Text = dgvEstilistas.CurrentRow.Cells["Correo"].Value.ToString();
-                txtCedula.Text = dgvEstilistas.CurrentRow.Cells["Cedula"].Value?.ToString() ?? "";
-                txtEspecialidad.Text = dgvEstilistas.CurrentRow.Cells["Especialidad"].Value.ToString();
-            }
-        }
-
+        // Abre frmRegistrarEstilistas en modo edicion con el estilista seleccionado.
+        // Al cerrarse ese formulario, esta pantalla se refresca sola.
         private void btnEditar_Click(object sender, EventArgs e)
         {
             if (dgvEstilistas.CurrentRow == null)
@@ -81,18 +66,15 @@ namespace SistemaAgenda.UI
                 return;
             }
 
-            Estilista estilista = new Estilista
-            {
-                Id = Convert.ToInt32(dgvEstilistas.CurrentRow.Cells["Id"].Value),
-                Nombre = txtNombre.Text,
-                Apellido = txtApellido.Text,
-                Telefono = txtTelefono.Text,
-                Correo = txtCorreo.Text,
-                Cedula = txtCedula.Text.Trim(),
-                Especialidad = txtEspecialidad.Text
-            };
+            Estilista estilistaSeleccionado = (Estilista)dgvEstilistas.CurrentRow.DataBoundItem;
 
-            MessageBox.Show(estilistaBLL.Actualizar(estilista));
+            this.Hide();
+            using (frmRegistrarEstilistas frmEditar = new frmRegistrarEstilistas(estilistaSeleccionado))
+            {
+                frmEditar.ShowDialog();
+            }
+            this.Show();
+
             CargarEstilistas();
         }
 

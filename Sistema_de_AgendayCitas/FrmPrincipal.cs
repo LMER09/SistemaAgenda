@@ -57,6 +57,11 @@ namespace SistemaAgenda.UI
             AbrirFormulario(new frmRegistrarEstilistas());
         }
 
+        private void registrarPagoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AbrirFormulario(new frmRegistrarPago());
+        }
+
         // ======================================
         // CONSULTA
         // ======================================
@@ -92,6 +97,11 @@ namespace SistemaAgenda.UI
         private void reportesToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             AbrirFormulario(new frmReportes());
+        }
+
+        private void verPagosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AbrirFormulario(new frmConsultarPagos());
         }
 
         // ======================================

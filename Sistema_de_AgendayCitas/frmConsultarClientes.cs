@@ -30,9 +30,7 @@ namespace SistemaAgenda.UI
             dgvClientes.Columns["Id"].Visible = false;
         }
 
-        // Filtra la lista ya cargada por nombre, apellido o cedula.
-        // Se ejecuta al presionar el boton Buscar (no en cada tecla),
-        // como pidio el requerimiento: el usuario escribe y da clic en Buscar.
+        // Filtra la lista ya cargada. Se ejecuta al presionar el boton Buscar.
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             string texto = txtBuscar.Text.Trim().ToLower();
@@ -58,20 +56,9 @@ namespace SistemaAgenda.UI
                     "Sin resultados", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        // Al seleccionar una fila, se cargan sus datos en los campos
-        // para poder editarla o confirmarla antes de eliminar.
-        private void dgvClientes_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0)
-            {
-                txtNombre.Text = dgvClientes.CurrentRow.Cells["Nombre"].Value.ToString();
-                txtApellido.Text = dgvClientes.CurrentRow.Cells["Apellido"].Value.ToString();
-                txtTelefono.Text = dgvClientes.CurrentRow.Cells["Telefono"].Value.ToString();
-                txtCorreo.Text = dgvClientes.CurrentRow.Cells["Correo"].Value.ToString();
-                txtCedula.Text = dgvClientes.CurrentRow.Cells["Cedula"].Value?.ToString() ?? "";
-            }
-        }
-
+        // Abre frmRegistrarClientes en modo edicion con el cliente seleccionado.
+        // Al cerrarse ese formulario (guardado o cancelado), esta pantalla
+        // se refresca sola para mostrar el cambio.
         private void btnEditar_Click(object sender, EventArgs e)
         {
             if (dgvClientes.CurrentRow == null)
@@ -80,17 +67,15 @@ namespace SistemaAgenda.UI
                 return;
             }
 
-            Clientes cliente = new Clientes
-            {
-                Id = Convert.ToInt32(dgvClientes.CurrentRow.Cells["Id"].Value),
-                Nombre = txtNombre.Text,
-                Apellido = txtApellido.Text,
-                Telefono = txtTelefono.Text,
-                Correo = txtCorreo.Text,
-                Cedula = txtCedula.Text
-            };
+            Clientes clienteSeleccionado = (Clientes)dgvClientes.CurrentRow.DataBoundItem;
 
-            MessageBox.Show(clientesBLL.Actualizar(cliente));
+            this.Hide();
+            using (frmRegistrarClientes frmEditar = new frmRegistrarClientes(clienteSeleccionado))
+            {
+                frmEditar.ShowDialog();
+            }
+            this.Show();
+
             CargarClientes();
         }
 

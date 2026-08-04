@@ -8,14 +8,25 @@ namespace SistemaAgenda.UI
         private EstilistaBLL estilistaBLL = new EstilistaBLL();
         private bool habilitado = false;
 
+        // Si no es null, el formulario esta editando este estilista
+        // en vez de crear uno nuevo.
+        private Estilista? _estilistaEditando = null;
+        private bool ModoEdicion => _estilistaEditando != null;
+
+        // Constructor normal: registrar un estilista nuevo
         public frmRegistrarEstilistas()
         {
             InitializeComponent();
             HabilitarControles(false);
         }
 
-        // Alterna entre habilitado y deshabilitado con el mismo boton,
-        // y deja claro al usuario en que estado esta (texto + color).
+        // Constructor de edicion: recibe el estilista ya existente,
+        // desde frmConsultarEstilistas al presionar "Editar".
+        public frmRegistrarEstilistas(Estilista estilista) : this()
+        {
+            _estilistaEditando = estilista;
+        }
+
         private void HabilitarControles(bool habilitar)
         {
             habilitado = habilitar;
@@ -32,7 +43,9 @@ namespace SistemaAgenda.UI
             {
                 btnHabilitar.Text = "🔒 Deshabilitar campos";
                 btnHabilitar.BackColor = Color.Gray;
-                lblResultado.Text = "Los campos están habilitados. Puede ingresar los datos.";
+                lblResultado.Text = ModoEdicion
+                    ? "Modifique los datos y presione \"Guardar cambios\"."
+                    : "Los campos están habilitados. Puede ingresar los datos.";
                 lblResultado.ForeColor = Color.DarkGreen;
                 txtNombre.Focus();
             }
@@ -67,7 +80,25 @@ namespace SistemaAgenda.UI
 
         private void FrmRegistrarEstilistas_Load(object sender, EventArgs e)
         {
-            HabilitarControles(false);
+            if (ModoEdicion)
+            {
+                this.Text = "Editar Estilista";
+                lblIngrese.Text = "Editando estilista:";
+                btnAgregar.Text = "💾 Guardar cambios";
+
+                txtNombre.Text = _estilistaEditando!.Nombre;
+                txtApellido.Text = _estilistaEditando.Apellido;
+                txtTelefono.Text = _estilistaEditando.Telefono;
+                txtCorreo.Text = _estilistaEditando.Correo;
+                txtCedula.Text = _estilistaEditando.Cedula;
+                txtEspecialidad.Text = _estilistaEditando.Especialidad;
+
+                HabilitarControles(true);
+            }
+            else
+            {
+                HabilitarControles(false);
+            }
         }
 
         private bool ValidarDatos()
@@ -106,8 +137,6 @@ namespace SistemaAgenda.UI
             return true;
         }
 
-        // Muestra el resultado del registro directamente en el formulario
-        // (aqui ya no hay grid, asi que el label es la unica confirmacion visual)
         private void MostrarResultado(string mensaje, bool esExito)
         {
             lblResultado.Text = mensaje;
@@ -119,7 +148,35 @@ namespace SistemaAgenda.UI
             if (!ValidarDatos())
                 return;
 
-            Estilista estilista = new Estilista
+            if (ModoEdicion)
+            {
+                Estilista estilista = new Estilista
+                {
+                    Id = _estilistaEditando!.Id,
+                    Nombre = txtNombre.Text,
+                    Apellido = txtApellido.Text,
+                    Telefono = txtTelefono.Text,
+                    Correo = txtCorreo.Text,
+                    Cedula = txtCedula.Text.Trim(),
+                    Especialidad = txtEspecialidad.Text
+                };
+
+                string resultadoEdicion = estilistaBLL.Actualizar(estilista);
+                bool exitoEdicion = resultadoEdicion.StartsWith("OK");
+
+                if (exitoEdicion)
+                {
+                    MessageBox.Show("Estilista actualizado exitosamente.");
+                    Close();
+                }
+                else
+                {
+                    MostrarResultado(resultadoEdicion, esExito: false);
+                }
+                return;
+            }
+
+            Estilista nuevoEstilista = new Estilista
             {
                 Nombre = txtNombre.Text,
                 Apellido = txtApellido.Text,
@@ -129,7 +186,7 @@ namespace SistemaAgenda.UI
                 Especialidad = txtEspecialidad.Text
             };
 
-            string resultado = estilistaBLL.Registrar(estilista);
+            string resultado = estilistaBLL.Registrar(nuevoEstilista);
             bool exito = resultado.StartsWith("OK");
 
             MostrarResultado(exito ? "Estilista registrado exitosamente." : resultado, exito);

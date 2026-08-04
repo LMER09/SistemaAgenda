@@ -37,12 +37,14 @@
             serviciosToolStripMenuItem = new ToolStripMenuItem();
             estilistaToolStripMenuItem = new ToolStripMenuItem();
             agendarCitaToolStripMenuItem = new ToolStripMenuItem();
+            registrarPagoToolStripMenuItem = new ToolStripMenuItem();
             consultaToolStripMenuItem = new ToolStripMenuItem();
             verClienteToolStripMenuItem = new ToolStripMenuItem();
             verEstilistaToolStripMenuItem = new ToolStripMenuItem();
             verServicioToolStripMenuItem = new ToolStripMenuItem();
             reportesToolStripMenuItem = new ToolStripMenuItem();
             reportesToolStripMenuItem1 = new ToolStripMenuItem();
+            verPagosToolStripMenuItem = new ToolStripMenuItem();
             sistemaToolStripMenuItem = new ToolStripMenuItem();
             acercaDeToolStripMenuItem = new ToolStripMenuItem();
             salirToolStripMenuItem = new ToolStripMenuItem();
@@ -90,7 +92,7 @@
             // 
             // entradaToolStripMenuItem
             // 
-            entradaToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { clientesToolStripMenuItem, serviciosToolStripMenuItem, estilistaToolStripMenuItem, agendarCitaToolStripMenuItem });
+            entradaToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { clientesToolStripMenuItem, serviciosToolStripMenuItem, estilistaToolStripMenuItem, agendarCitaToolStripMenuItem, registrarPagoToolStripMenuItem });
             entradaToolStripMenuItem.Margin = new Padding(0, 0, 30, 0);
             entradaToolStripMenuItem.Name = "entradaToolStripMenuItem";
             entradaToolStripMenuItem.Size = new Size(93, 32);
@@ -124,9 +126,16 @@
             agendarCitaToolStripMenuItem.Text = "📅 Agendar Cita";
             agendarCitaToolStripMenuItem.Click += btnAgenda_Click;
             // 
+            // registrarPagoToolStripMenuItem
+            // 
+            registrarPagoToolStripMenuItem.Name = "registrarPagoToolStripMenuItem";
+            registrarPagoToolStripMenuItem.Size = new Size(244, 32);
+            registrarPagoToolStripMenuItem.Text = "💰 Registrar Pago";
+            registrarPagoToolStripMenuItem.Click += registrarPagoToolStripMenuItem_Click;
+            // 
             // consultaToolStripMenuItem
             // 
-            consultaToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { verClienteToolStripMenuItem, verEstilistaToolStripMenuItem, verServicioToolStripMenuItem, reportesToolStripMenuItem, reportesToolStripMenuItem1 });
+            consultaToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { verClienteToolStripMenuItem, verEstilistaToolStripMenuItem, verServicioToolStripMenuItem, reportesToolStripMenuItem, reportesToolStripMenuItem1, verPagosToolStripMenuItem });
             consultaToolStripMenuItem.Margin = new Padding(0, 0, 30, 0);
             consultaToolStripMenuItem.Name = "consultaToolStripMenuItem";
             consultaToolStripMenuItem.Size = new Size(102, 32);
@@ -166,6 +175,13 @@
             reportesToolStripMenuItem1.Size = new Size(285, 32);
             reportesToolStripMenuItem1.Text = "📊 Reportes";
             reportesToolStripMenuItem1.Click += reportesToolStripMenuItem1_Click;
+            // 
+            // verPagosToolStripMenuItem
+            // 
+            verPagosToolStripMenuItem.Name = "verPagosToolStripMenuItem";
+            verPagosToolStripMenuItem.Size = new Size(285, 32);
+            verPagosToolStripMenuItem.Text = "💵 Ver pagos";
+            verPagosToolStripMenuItem.Click += verPagosToolStripMenuItem_Click;
             // 
             // sistemaToolStripMenuItem
             // 
@@ -243,11 +259,13 @@
         private ToolStripMenuItem serviciosToolStripMenuItem;
         private ToolStripMenuItem estilistaToolStripMenuItem;
         private ToolStripMenuItem agendarCitaToolStripMenuItem;
+        private ToolStripMenuItem registrarPagoToolStripMenuItem;
         private ToolStripMenuItem verClienteToolStripMenuItem;
         private ToolStripMenuItem verEstilistaToolStripMenuItem;
         private ToolStripMenuItem verServicioToolStripMenuItem;
         private ToolStripMenuItem sistemaToolStripMenuItem;
         private ToolStripMenuItem reportesToolStripMenuItem;
+        private ToolStripMenuItem verPagosToolStripMenuItem;
         private ToolStripMenuItem acercaDeToolStripMenuItem;
         private ToolStripMenuItem salirToolStripMenuItem;
         private Label lblElija;

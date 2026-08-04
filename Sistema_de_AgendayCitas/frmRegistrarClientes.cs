@@ -1,5 +1,4 @@
 ﻿using SistemaAgenda.Negocios;
-using SistemaAgenda.Negocios;
 using SistemaAgenda.Datos;
 
 namespace SistemaAgenda.UI
@@ -9,10 +8,23 @@ namespace SistemaAgenda.UI
         private ClientesBLL clientesBLL = new ClientesBLL();
         private bool habilitado = false;
 
+        // Si no es null, el formulario esta editando este cliente
+        // en vez de crear uno nuevo.
+        private Clientes? _clienteEditando = null;
+        private bool ModoEdicion => _clienteEditando != null;
+
+        // Constructor normal: registrar un cliente nuevo
         public frmRegistrarClientes()
         {
             InitializeComponent();
             HabilitarControles(false);
+        }
+
+        // Constructor de edicion: recibe el cliente ya existente,
+        // desde frmConsultarClientes al presionar "Editar".
+        public frmRegistrarClientes(Clientes cliente) : this()
+        {
+            _clienteEditando = cliente;
         }
 
         // Alterna entre habilitado y deshabilitado con el mismo boton,
@@ -32,7 +44,9 @@ namespace SistemaAgenda.UI
             {
                 btnHabilitar.Text = "🔒 Deshabilitar campos";
                 btnHabilitar.BackColor = Color.Gray;
-                lblResultado.Text = "Los campos están habilitados. Puede ingresar los datos.";
+                lblResultado.Text = ModoEdicion
+                    ? "Modifique los datos y presione \"Guardar cambios\"."
+                    : "Los campos están habilitados. Puede ingresar los datos.";
                 lblResultado.ForeColor = Color.DarkGreen;
                 txtNombre.Focus();
             }
@@ -66,7 +80,28 @@ namespace SistemaAgenda.UI
 
         private void frmRegistrarClientes_Load(object sender, EventArgs e)
         {
-            HabilitarControles(false);
+            if (ModoEdicion)
+            {
+                // Cambia la pantalla a "modo editar": titulo, boton, y
+                // los campos ya cargados y habilitados de una vez, porque
+                // el usuario ya decidio editar (no tiene sentido pedirle
+                // un clic extra en "Habilitar").
+                this.Text = "Editar Cliente";
+                lblIngrese.Text = "Editando cliente:";
+                btnAgregar.Text = "💾 Guardar cambios";
+
+                txtNombre.Text = _clienteEditando!.Nombre;
+                txtApellido.Text = _clienteEditando.Apellido;
+                txtTelefono.Text = _clienteEditando.Telefono;
+                txtCorreo.Text = _clienteEditando.Correo;
+                txtCedula.Text = _clienteEditando.Cedula;
+
+                HabilitarControles(true);
+            }
+            else
+            {
+                HabilitarControles(false);
+            }
         }
 
         // Valida que los datos del cliente sean correctos antes de guardar
@@ -118,7 +153,35 @@ namespace SistemaAgenda.UI
             if (!ValidarDatos())
                 return;
 
-            Clientes cliente = new Clientes
+            if (ModoEdicion)
+            {
+                Clientes cliente = new Clientes
+                {
+                    Id = _clienteEditando!.Id,
+                    Nombre = txtNombre.Text,
+                    Apellido = txtApellido.Text,
+                    Telefono = txtTelefono.Text,
+                    Correo = txtCorreo.Text,
+                    Cedula = txtCedula.Text
+                };
+
+                string resultadoEdicion = clientesBLL.Actualizar(cliente);
+                bool exitoEdicion = resultadoEdicion.StartsWith("OK");
+
+                if (exitoEdicion)
+                {
+                    MessageBox.Show("Cliente actualizado exitosamente.");
+                    // Cierra y vuelve a Consultar, que se refresca sola al reaparecer.
+                    Close();
+                }
+                else
+                {
+                    MostrarResultado(resultadoEdicion, esExito: false);
+                }
+                return;
+            }
+
+            Clientes nuevoCliente = new Clientes
             {
                 Nombre = txtNombre.Text,
                 Apellido = txtApellido.Text,
@@ -127,7 +190,7 @@ namespace SistemaAgenda.UI
                 Cedula = txtCedula.Text
             };
 
-            string resultado = clientesBLL.Registrar(cliente);
+            string resultado = clientesBLL.Registrar(nuevoCliente);
             bool exito = resultado.StartsWith("OK");
 
             MostrarResultado(exito ? "Cliente registrado exitosamente." : resultado, exito);
