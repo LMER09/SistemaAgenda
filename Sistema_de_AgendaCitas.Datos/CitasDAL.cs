@@ -65,8 +65,8 @@ namespace SistemaAgenda.Datos
             }
             return lista;
         }
-        // Verifica si el estilista ya tiene una cita en la fecha y hora indicada
-        // Trae las citas de un estilista en una fecha/hora exacta, sin decidir nada de negocio
+        // TODO Verifica si el estilista ya tiene una cita en la fecha y hora indicada
+        // TODO Trae las citas de un estilista en una fecha/hora exacta, sin decidir nada de negocio
         public List<Citas> ObtenerPorEstilistaYFecha(int idEstilista, DateTime fecha)
         {
             var lista = new List<Citas>();
@@ -113,7 +113,7 @@ namespace SistemaAgenda.Datos
                 UPDATE Citas SET id_Clientes=@IdCliente, id_Servicios=@IdServicio,
                 id_Estilista=@IdEstilista, Fecha=@Fecha, Estado=@Estado, Deposito=@Deposito
                 WHERE id=@Id", con))
-                //Solo actualiza solo cita que seleccionamos WHERE id=@Id
+                //Solo actualiza, solo cita que seleccionamos WHERE id=@Id
                 {
                     cmd.Parameters.AddWithValue("@IdCliente", c.Id_Clientes);
                     cmd.Parameters.AddWithValue("@IdServicio", c.Id_Servicios);

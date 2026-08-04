@@ -5,7 +5,7 @@ using SistemaAgenda.Datos;
 namespace SistemaAgenda.Negocios
 {
     
-    // Clase abstracta qque representa un servicio del salon
+    // TODO Clase abstracta que representa un servicio del salon
     public abstract class Servicio
     {
 
@@ -23,26 +23,26 @@ namespace SistemaAgenda.Negocios
             _servicio = servicio;
         }
 
-        // ── MÉTODOS ABSTRACTOS ────────────────────────────────────────
+        // ─TODO MÉTODOS ABSTRACTOS ────────────────────────────────────────
         public abstract decimal ServicioCabello();
         public abstract decimal ServicioUnas();
         public abstract decimal ServicioSpa();
 
-        // ── MÉTODOS VIRTUALES ─────────────────────────────────────────
+        // TODO MÉTODOS VIRTUALES ─────────────────────────────────────────
         //Tienen implementación base pero pueden sobreescribirse
         public virtual decimal CalcularPrecio()=> _servicio.Precio;
         public virtual int CalcularDuracion() => _servicio.DuracionMinutos;
         
     }
 
-    //Clase nueva creada para implementar los metodos abstractos y la sobreescritura en los metodos virtuales.
+    //TODO Clase nueva creada para implementar los metodos abstractos y la sobreescritura en los metodos virtuales.
     public class Gestion_DeServicios : Servicio
     {
         public Gestion_DeServicios() { }
         public Gestion_DeServicios(Servicios s) : base(s) { }
 
-        // Implementación de los métodos abstractos
-        //Cada subtipo dentro del tipo tiene su propio multiplicador sobre el precio base,
+        //TODO Implementación de los métodos abstractos
+        //TODO Cada subtipo dentro del tipo tiene su propio multiplicador sobre el precio base,
 
         public override decimal ServicioCabello()
         {

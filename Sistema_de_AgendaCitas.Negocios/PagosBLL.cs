@@ -40,13 +40,13 @@ namespace SistemaAgenda.Negocios
 
                 // Verificar si la cita ya fue completada
                 if (cita.Estado == "Completada")
-                    return "ERROR: Esta cita ya fue completada y pagada.";
+                    return "ERROR: Cita completada y pagada.";
 
                 bool ok = _dal.Insertar(p);
 
                 if (ok)
                 {
-                    // Actualizar el estado de la cita a "Completada" cuando se hace el pago
+                    //TODO Actualizar el estado de la cita a "Completada" cuando se hace el pago
 
                     if (cita != null)
                     {
@@ -54,7 +54,8 @@ namespace SistemaAgenda.Negocios
                         citasDAL.Actualizar(cita);
                     }
 
-                    return "OK: Pago registrado y cita completada exitosamente.";
+                    return "OK: Pago registrado" +
+                        "Cita completada exitosamente.";
                 }
                 
                 return "ERROR: No se pudo guardar en la base de datos.";

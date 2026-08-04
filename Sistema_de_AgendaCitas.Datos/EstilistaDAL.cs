@@ -106,8 +106,8 @@ namespace SistemaAgenda.Datos
                     return cmd.ExecuteNonQuery() > 0;
                 }
             }
-            //Error 547 = violación de llave foránea: la estilista tiene citas
-            //en su historial, o tiene un horario laboral asociado
+            //TODO Error 547 = violación de llave foránea: la estilista tiene citas
+            //TODO en su historial, o tiene un horario laboral asociado
             catch (SqlException ex) when (ex.Number == 547)
             {
                 throw new Exception("No se puede eliminar la estilista: tiene citas u horario laboral registrados.");

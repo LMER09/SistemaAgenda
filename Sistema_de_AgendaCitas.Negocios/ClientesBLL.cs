@@ -14,7 +14,7 @@ namespace SistemaAgenda.Negocios
                     string.IsNullOrWhiteSpace(c.Apellido) ||
                     string.IsNullOrWhiteSpace(c.Telefono) ||
                     string.IsNullOrWhiteSpace(c.Correo))
-                    return "ERROR: Todos los campos son obligatorios.";
+                    return "ERROR: Todos los campos son obligatorios, excepto la cedula.";
 
                 if (!c.Correo.Contains("@"))
                     return "ERROR: El correo no es válido.";
@@ -50,7 +50,7 @@ namespace SistemaAgenda.Negocios
                     string.IsNullOrWhiteSpace(c.Apellido) ||
                     string.IsNullOrWhiteSpace(c.Telefono) ||
                     string.IsNullOrWhiteSpace(c.Correo))
-                    return "ERROR: Todos los campos son obligatorios.";
+                    return "ERROR: Todos los campos son obligatorios, excepto la cedula.";
 
                 bool ok = _dal.Actualizar(c);
                 return ok

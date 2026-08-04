@@ -7,7 +7,7 @@ namespace SistemaAgenda.Negocios
 {
     public class CitasBLL
     {
-        //Esto se hace hace para poder utilizar lis metodso de la capa datos
+        //Esto se hace para poder utilizar lista metodo de la capa datos
         private readonly CitasDAL _dal = new CitasDAL();
         private readonly HorarioEstilistaBLL _horarioBLL = new HorarioEstilistaBLL();
         public List<Citas> ObtenerTodos()
@@ -22,11 +22,11 @@ namespace SistemaAgenda.Negocios
             }
         }
 
-        // Métodos normales requeridos por el proyecto: agendarCita(), cancelarCita(), reprogramarCita()
+        //TODO Métodos normales requeridos por el proyecto: agendarCita(), cancelarCita(), reprogramarCita()
 
-        // ── VALIDAR DISPONIBILIDAD DEL ESTILISTA ─────────────────────
-        // Trae las citas crudas de ese estilista en esa fecha/hora (del DAL) y
-        // decide aquí qué estados cuentan como "ocupado" (regla de negocio)
+        // TODO VALIDAR DISPONIBILIDAD DEL ESTILISTA ─────────────────────
+        // Trae las citas de ese estilista en esa fecha/hora (del DAL) y
+        // decide aquí qué estados cuentan como "ocupado".
         private bool EstilistaDisponible(int idEstilista, DateTime fecha)
         {
             var citasEnEseHorario = _dal.ObtenerPorEstilistaYFecha(idEstilista, fecha);
@@ -41,7 +41,7 @@ namespace SistemaAgenda.Negocios
             return true;
         }
 
-        // ── VALIDAR HORARIO LABORAL ──────────────────────────────────
+        // TODO VALIDAR HORARIO LABORAL ──────────────────────────────────
         // Revisa que la fecha/hora de la cita caiga dentro de algún bloque
         // de horario registrado para esa estilista (tabla HorarioEstilista)
         private string? ValidarHorarioLaboral(int idEstilista, DateTime fecha)
@@ -88,11 +88,11 @@ namespace SistemaAgenda.Negocios
                 if (c.Fecha < DateTime.Now)
                     return "ERROR: La fecha no puede ser en el pasado.";
 
-                // Verificar disponibilidad del estilista
+                //TODO Verificar disponibilidad del estilista
                 if (!EstilistaDisponible(c.Id_Estilista, c.Fecha))
                     return "ERROR: El estilista ya tiene una cita asignada para esa fecha y hora.";
 
-                // Verificar que la fecha/hora caiga dentro del horario laboral de la estilista
+                //TODO Verificar que la fecha/hora caiga dentro del horario laboral de la estilista
                 string? errorHorario = ValidarHorarioLaboral(c.Id_Estilista, c.Fecha);
                 if (errorHorario != null)
                     return errorHorario;
