@@ -11,7 +11,7 @@ namespace SistemaAgenda.Datos
                 using (var con = ConexionDB.ObtenerConexion())
                 using (var cmd = new SqlCommand(@"
                     INSERT INTO Servicios (Tipo_DeServicio,Subtipo_DeServicio, Precio, DuracionMinutos)
-                    VALUES (@Tipo, @Precio, @Duracion)", con))
+                    VALUES (@Tipo, @Subtipo, @Precio, @Duracion)", con))
                 {
                     cmd.Parameters.AddWithValue("@Tipo", s.Tipo_DeServicio);
                     cmd.Parameters.AddWithValue("@Subtipo", s.Subtipo_DeServicio);
