@@ -35,8 +35,8 @@ namespace SistemaAgenda.UI
             txtApellido.Clear();
             txtTelefono.Clear();
             txtCorreo.Clear();
-            txtNombre.Focus();
             txtCedula.Clear();
+            txtNombre.Focus();
         }
 
         private void CargarClientes()
@@ -75,21 +75,6 @@ namespace SistemaAgenda.UI
             cliente.Correo = txtCorreo.Text;
             cliente.Cedula = txtCedula.Text;
 
-            // Validar que todos los campos estén llenos
-            if (string.IsNullOrWhiteSpace(txtNombre.Text) ||
-                string.IsNullOrWhiteSpace(txtApellido.Text) ||
-                string.IsNullOrWhiteSpace(txtTelefono.Text) ||
-                string.IsNullOrWhiteSpace(txtCorreo.Text) ||
-                string.IsNullOrWhiteSpace(txtCedula.Text))
-            {
-                MessageBox.Show("Debe completar todos los campos.",
-                                "Campos obligatorios",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Warning);
-                return;
-            }
-
-            MessageBox.Show(clientesBLL.Registrar(cliente));
             // Valida los datos antes de registrar
             if (!ValidarDatos())
                 return;
@@ -123,20 +108,19 @@ namespace SistemaAgenda.UI
         {
             if (dgvClientes.CurrentRow != null)
             {
-                int id = Convert.ToInt32(dgvClientes.CurrentRow.Cells["Id"].Value);
-
-                MessageBox.Show(clientesBLL.Eliminar(id));
-
-                CargarClientes(); Limpiar();
-
                 DialogResult respuesta = MessageBox.Show(
-              "¿Desea eliminar este cliente?",
-               "Confirmar",
+                    "¿Desea eliminar este cliente?",
+                    "Confirmar",
                 MessageBoxButtons.YesNo,
-                 MessageBoxIcon.Question);
+                MessageBoxIcon.Question);
 
                 if (respuesta == DialogResult.No)
                     return;
+
+                int id = Convert.ToInt32(dgvClientes.CurrentRow.Cells["Id"].Value);
+                MessageBox.Show(clientesBLL.Eliminar(id));
+
+                CargarClientes(); Limpiar();
             }
             else
             {
@@ -205,8 +189,7 @@ namespace SistemaAgenda.UI
             if (string.IsNullOrWhiteSpace(txtNombre.Text) ||
                 string.IsNullOrWhiteSpace(txtApellido.Text) ||
                 string.IsNullOrWhiteSpace(txtTelefono.Text) ||
-                string.IsNullOrWhiteSpace(txtCorreo.Text) ||
-                string.IsNullOrWhiteSpace(txtCedula.Text))
+                string.IsNullOrWhiteSpace(txtCorreo.Text))
             {
                 MessageBox.Show("Debe completar todos los campos.",
                                 "Campos obligatorios",
@@ -228,12 +211,12 @@ namespace SistemaAgenda.UI
             }
 
             // Verifica que la cédula tenga el formato completo (000-0000000-0)
-            if (txtCedula.Text.Length != 13)
+            if (!string.IsNullOrWhiteSpace(txtCedula.Text) && txtCedula.Text.Length != 13)
             {
-                MessageBox.Show("Ingrese una cédula válida.",
-                                "Cédula",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Warning);
+                MessageBox.Show("Si ingresa cédula, debe tener el formato completo (000-0000000-0).",
+                        "Cédula",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
 
                 txtCedula.Focus();
                 return false;
@@ -298,20 +281,6 @@ namespace SistemaAgenda.UI
                 e.KeyChar != (char)Keys.Back)
             {
                 e.Handled = true; // Bloquea cualquier letra o símbolo
-            }
-        }
-
-        private void txtCorreo_TextChanged(object sender, EventArgs e)
-        {
-            // Validar formato del correo
-            if (!txtCorreo.Text.Contains("@") || !txtCorreo.Text.Contains("."))
-            {
-                MessageBox.Show("Ingrese un correo válido.",
-                                "Correo",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Warning);
-                txtCorreo.Focus();
-                return;
             }
         }
     }

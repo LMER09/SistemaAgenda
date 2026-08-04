@@ -126,7 +126,6 @@
             txtCorreo.PlaceholderText = "Ej: luz17@gmail.com";
             txtCorreo.Size = new Size(357, 27);
             txtCorreo.TabIndex = 7;
-            txtCorreo.TextChanged += txtCorreo_TextChanged;
             // 
             // btnAgregar
             // 
