@@ -97,6 +97,8 @@ namespace SistemaAgenda.UI
             }
         }
 
+
+
         private void CargarCitas()
         {
             dgvCitas.DataSource = null;
@@ -109,14 +111,32 @@ namespace SistemaAgenda.UI
             DateTime fecha = dtpFecha.Value.Date;
             TimeSpan hora = dtpHora.Value.TimeOfDay;
             return fecha + hora;
+
+
         }
 
         private void btnAgendar_Click(object sender, EventArgs e)
         {
-            if (cmbClientes.SelectedIndex == -1) { MessageBox.Show("Debe seleccionar un cliente."); return; }
-            if (cmbServicios.SelectedIndex == -1) { MessageBox.Show("Debe seleccionar un servicio."); return; }
-            if (cmbEstilistas.SelectedIndex == -1) { MessageBox.Show("Debe seleccionar una estilista."); return; }
-            if (_listaClientes == null || _listaServicios == null || _listaEstilistas == null) return;
+            if (cmbClientes.SelectedIndex == -1)
+            {
+                MessageBox.Show("Debe seleccionar un cliente.");
+                return;
+            }
+
+            if (cmbServicios.SelectedIndex == -1)
+            {
+                MessageBox.Show("Debe seleccionar un servicio.");
+                return;
+            }
+
+            if (cmbEstilistas.SelectedIndex == -1)
+            {
+                MessageBox.Show("Debe seleccionar una estilista.");
+                return;
+            }
+
+            if (_listaClientes == null || _listaServicios == null || _listaEstilistas == null)
+                return;
 
             Clientes cliente = _listaClientes[cmbClientes.SelectedIndex];
             Servicios servicio = _listaServicios[cmbServicios.SelectedIndex];
@@ -126,10 +146,19 @@ namespace SistemaAgenda.UI
             nuevaCita.Id_Estilista = estilista.Id;
             nuevaCita.Deposito = new Gestion_DeServicios(servicio).CalcularPrecio() * 0.20m;
 
+           
+
             string resultado = _citasBLL.AgendarCita(nuevaCita);
+
             MessageBox.Show(resultado);
-            if (resultado.StartsWith("OK")) { CargarCitas(); Limpiar(); }
+
+            if (resultado.StartsWith("OK"))
+            {
+                CargarCitas();
+                Limpiar();
+            }
         }
+
 
         private void btnCancelar_Click(object sender, EventArgs e)
         {

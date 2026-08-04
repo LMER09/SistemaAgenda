@@ -4,7 +4,7 @@
     {
         public frmMenuClientes()
         {
-            
+            InitializeComponent();
         }
 
         private void btnRegistrar_Click(object sender, EventArgs e)

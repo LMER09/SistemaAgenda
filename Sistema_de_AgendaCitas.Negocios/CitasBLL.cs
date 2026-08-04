@@ -24,22 +24,40 @@ namespace SistemaAgenda.Negocios
         // Métodos normales requeridos por el proyecto: agendarCita(), cancelarCita(), reprogramarCita()
 
         // ── AGENDAR CITA ─────────────────────────────────────────────
+        // ── AGENDAR CITA ─────────────────────────────────────────────
         public string AgendarCita(Citas c)
         {
-
             try
             {
-                if (c.Id_Clientes <= 0) { return "ERROR: Debe seleccionar un cliente."; }
-                if (c.Id_Servicios <= 0) { return "ERROR: Debe seleccionar un servicio."; }
-                if (c.Fecha < DateTime.Now) { return "ERROR: La fecha no puede ser en el pasado."; }
+                if (c.Id_Clientes <= 0)
+                    return "ERROR: Debe seleccionar un cliente.";
+
+                if (c.Id_Servicios <= 0)
+                    return "ERROR: Debe seleccionar un servicio.";
+
+                if (c.Id_Estilista <= 0)
+                    return "ERROR: Debe seleccionar una estilista.";
+
+                if (c.Fecha < DateTime.Now)
+                    return "ERROR: La fecha no puede ser en el pasado.";
+
+                // Verificar disponibilidad del estilista
+                if (!_dal.EstilistaDisponible(c.Id_Estilista, c.Fecha))
+                    return "ERROR: El estilista ya tiene una cita asignada para esa fecha y hora.";
+
                 c.Estado = "Pendiente";
+
                 bool ok = _dal.Insertar(c);
-                return ok ? "OK: Cita agendada exitosamente." : "ERROR: No se pudo agendar la cita.";
+
+                return ok
+                    ? "OK: Cita agendada exitosamente."
+                    : "ERROR: No se pudo agendar la cita.";
             }
-            catch (Exception ex) { return "ERROR: " + ex.Message; }
-
+            catch (Exception ex)
+            {
+                return "ERROR: " + ex.Message;
+            }
         }
-
         // ── CANCELAR CITA ─────────────────────────────────────────────
         public string CancelarCita(int id)
         {
