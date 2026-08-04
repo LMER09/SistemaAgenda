@@ -41,28 +41,28 @@
             // lblBuscar
             // 
             lblBuscar.AutoSize = true;
-            lblBuscar.Location = new Point(38, 25);
+            lblBuscar.Location = new Point(35, 50);
             lblBuscar.Name = "lblBuscar";
-            lblBuscar.Size = new Size(54, 20);
+            lblBuscar.Size = new Size(59, 20);
             lblBuscar.TabIndex = 0;
             lblBuscar.Text = "Buscar:";
             // 
             // txtBuscar
             // 
             txtBuscar.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtBuscar.Location = new Point(100, 21);
+            txtBuscar.Location = new Point(117, 43);
             txtBuscar.Name = "txtBuscar";
             txtBuscar.PlaceholderText = "Nombre, apellido o cédula";
-            txtBuscar.Size = new Size(260, 27);
+            txtBuscar.Size = new Size(277, 27);
             txtBuscar.TabIndex = 1;
             // 
             // btnBuscar
             // 
             btnBuscar.BackColor = Color.DeepPink;
             btnBuscar.ForeColor = Color.White;
-            btnBuscar.Location = new Point(370, 20);
+            btnBuscar.Location = new Point(400, 30);
             btnBuscar.Name = "btnBuscar";
-            btnBuscar.Size = new Size(110, 29);
+            btnBuscar.Size = new Size(119, 45);
             btnBuscar.TabIndex = 2;
             btnBuscar.Text = "🔍 Buscar";
             btnBuscar.UseVisualStyleBackColor = false;
@@ -71,11 +71,10 @@
             // btnCerrar
             // 
             btnCerrar.BackColor = Color.DeepPink;
-            btnCerrar.FlatStyle = FlatStyle.Popup;
             btnCerrar.ForeColor = Color.White;
-            btnCerrar.Location = new Point(553, 20);
+            btnCerrar.Location = new Point(525, 30);
             btnCerrar.Name = "btnCerrar";
-            btnCerrar.Size = new Size(94, 29);
+            btnCerrar.Size = new Size(119, 45);
             btnCerrar.TabIndex = 3;
             btnCerrar.Text = "❌ Cerrar";
             btnCerrar.UseVisualStyleBackColor = false;
@@ -85,7 +84,7 @@
             // 
             dgvClientes.BackgroundColor = Color.LavenderBlush;
             dgvClientes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvClientes.Location = new Point(38, 65);
+            dgvClientes.Location = new Point(35, 82);
             dgvClientes.Name = "dgvClientes";
             dgvClientes.ReadOnly = true;
             dgvClientes.RowHeadersWidth = 51;
@@ -97,7 +96,7 @@
             btnEditar.BackColor = Color.DeepPink;
             btnEditar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnEditar.ForeColor = Color.White;
-            btnEditar.Location = new Point(38, 400);
+            btnEditar.Location = new Point(35, 408);
             btnEditar.Name = "btnEditar";
             btnEditar.Size = new Size(150, 43);
             btnEditar.TabIndex = 5;
@@ -110,7 +109,7 @@
             btnEliminar.BackColor = Color.DeepPink;
             btnEliminar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnEliminar.ForeColor = Color.White;
-            btnEliminar.Location = new Point(200, 400);
+            btnEliminar.Location = new Point(197, 408);
             btnEliminar.Name = "btnEliminar";
             btnEliminar.Size = new Size(150, 43);
             btnEliminar.TabIndex = 6;
@@ -123,7 +122,7 @@
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLightLight;
-            ClientSize = new Size(685, 465);
+            ClientSize = new Size(685, 472);
             Controls.Add(btnEliminar);
             Controls.Add(btnEditar);
             Controls.Add(dgvClientes);

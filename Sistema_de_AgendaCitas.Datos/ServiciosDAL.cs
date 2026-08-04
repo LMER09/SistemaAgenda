@@ -44,21 +44,13 @@ namespace SistemaAgenda.Datos
                         {
                             Id = reader.GetInt32(0),
 
-                            Tipo_DeServicio = reader.IsDBNull(1)
-                                ? ""
-                                : reader.GetString(1),
+                            Tipo_DeServicio = reader.IsDBNull(1) ? "": reader.GetString(1),
 
-                            Subtipo_DeServicio = reader.IsDBNull(2)
-                                ? ""
-                                : reader.GetString(2),
+                            Subtipo_DeServicio = reader.IsDBNull(2) ? "": reader.GetString(2),
 
-                            Precio = reader.IsDBNull(3)
-                                ? 0
-                                : reader.GetDecimal(3),
+                            Precio = reader.IsDBNull(3) ? 0 : reader.GetDecimal(3),
 
-                            DuracionMinutos = reader.IsDBNull(4)
-                                ? 0
-                                : reader.GetInt32(4)
+                            DuracionMinutos = reader.IsDBNull(4) ? 0: reader.GetInt32(4)
                         });
                     }
                 }

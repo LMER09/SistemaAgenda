@@ -28,28 +28,28 @@
             // lblBuscar
             // 
             lblBuscar.AutoSize = true;
-            lblBuscar.Location = new Point(38, 25);
+            lblBuscar.Location = new Point(38, 36);
             lblBuscar.Name = "lblBuscar";
-            lblBuscar.Size = new Size(54, 20);
+            lblBuscar.Size = new Size(59, 20);
             lblBuscar.TabIndex = 0;
             lblBuscar.Text = "Buscar:";
             // 
             // txtBuscar
             // 
             txtBuscar.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtBuscar.Location = new Point(100, 21);
+            txtBuscar.Location = new Point(103, 29);
             txtBuscar.Name = "txtBuscar";
             txtBuscar.PlaceholderText = "Nombre, apellido, especialidad o cédula";
-            txtBuscar.Size = new Size(280, 27);
+            txtBuscar.Size = new Size(314, 27);
             txtBuscar.TabIndex = 1;
             // 
             // btnBuscar
             // 
             btnBuscar.BackColor = Color.DeepPink;
             btnBuscar.ForeColor = Color.White;
-            btnBuscar.Location = new Point(390, 20);
+            btnBuscar.Location = new Point(423, 20);
             btnBuscar.Name = "btnBuscar";
-            btnBuscar.Size = new Size(110, 29);
+            btnBuscar.Size = new Size(119, 45);
             btnBuscar.TabIndex = 2;
             btnBuscar.Text = "🔍 Buscar";
             btnBuscar.UseVisualStyleBackColor = false;
@@ -58,11 +58,10 @@
             // btnCerrar
             // 
             btnCerrar.BackColor = Color.DeepPink;
-            btnCerrar.FlatStyle = FlatStyle.Popup;
             btnCerrar.ForeColor = Color.White;
-            btnCerrar.Location = new Point(573, 20);
+            btnCerrar.Location = new Point(548, 20);
             btnCerrar.Name = "btnCerrar";
-            btnCerrar.Size = new Size(94, 29);
+            btnCerrar.Size = new Size(119, 45);
             btnCerrar.TabIndex = 3;
             btnCerrar.Text = "❌ Cerrar";
             btnCerrar.UseVisualStyleBackColor = false;
@@ -72,7 +71,7 @@
             // 
             dgvEstilistas.BackgroundColor = Color.LavenderBlush;
             dgvEstilistas.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvEstilistas.Location = new Point(38, 65);
+            dgvEstilistas.Location = new Point(38, 71);
             dgvEstilistas.Name = "dgvEstilistas";
             dgvEstilistas.ReadOnly = true;
             dgvEstilistas.RowHeadersWidth = 51;

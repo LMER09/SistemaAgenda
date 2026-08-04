@@ -27,7 +27,7 @@
             // lblBuscar
             // 
             lblBuscar.AutoSize = true;
-            lblBuscar.Location = new Point(38, 25);
+            lblBuscar.Location = new Point(38, 37);
             lblBuscar.Name = "lblBuscar";
             lblBuscar.Size = new Size(59, 20);
             lblBuscar.TabIndex = 0;
@@ -36,19 +36,19 @@
             // txtBuscar
             // 
             txtBuscar.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtBuscar.Location = new Point(100, 21);
+            txtBuscar.Location = new Point(121, 30);
             txtBuscar.Name = "txtBuscar";
             txtBuscar.PlaceholderText = "Cliente, servicio o método de pago";
-            txtBuscar.Size = new Size(260, 27);
+            txtBuscar.Size = new Size(348, 27);
             txtBuscar.TabIndex = 1;
             // 
             // btnBuscar
             // 
             btnBuscar.BackColor = Color.DeepPink;
             btnBuscar.ForeColor = Color.White;
-            btnBuscar.Location = new Point(366, 17);
+            btnBuscar.Location = new Point(490, 21);
             btnBuscar.Name = "btnBuscar";
-            btnBuscar.Size = new Size(110, 37);
+            btnBuscar.Size = new Size(119, 45);
             btnBuscar.TabIndex = 2;
             btnBuscar.Text = "🔍 Buscar";
             btnBuscar.UseVisualStyleBackColor = false;
@@ -57,11 +57,10 @@
             // btnCerrar
             // 
             btnCerrar.BackColor = Color.DeepPink;
-            btnCerrar.FlatStyle = FlatStyle.Popup;
             btnCerrar.ForeColor = Color.White;
-            btnCerrar.Location = new Point(660, 20);
+            btnCerrar.Location = new Point(635, 21);
             btnCerrar.Name = "btnCerrar";
-            btnCerrar.Size = new Size(94, 29);
+            btnCerrar.Size = new Size(119, 45);
             btnCerrar.TabIndex = 3;
             btnCerrar.Text = "❌ Cerrar";
             btnCerrar.UseVisualStyleBackColor = false;

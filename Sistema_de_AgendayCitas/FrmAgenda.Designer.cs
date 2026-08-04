@@ -37,7 +37,6 @@
             lblClientes = new Label();
             lblPrecioServicio = new Label();
             groupBox2 = new GroupBox();
-            picLogo = new PictureBox();
             btnLimpiar = new Button();
             lblPuedeCambiar = new Label();
             btnPagar = new Button();
@@ -45,6 +44,7 @@
             lblMetodoPago = new Label();
             txtMonto = new TextBox();
             lblMonto = new Label();
+            picLogo = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)dgvCitas).BeginInit();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
@@ -267,17 +267,6 @@
             groupBox2.TabStop = false;
             groupBox2.Text = "Registre el pago de la cita seleccionada:";
             // 
-            // picLogo
-            // 
-            picLogo.BackColor = Color.Transparent;
-            picLogo.Image = (Image)resources.GetObject("picLogo.Image");
-            picLogo.Location = new Point(251, 168);
-            picLogo.Name = "picLogo";
-            picLogo.Size = new Size(127, 137);
-            picLogo.SizeMode = PictureBoxSizeMode.Zoom;
-            picLogo.TabIndex = 24;
-            picLogo.TabStop = false;
-            // 
             // btnLimpiar
             // 
             btnLimpiar.BackColor = Color.DeepPink;
@@ -353,6 +342,17 @@
             lblMonto.Size = new Size(59, 20);
             lblMonto.TabIndex = 16;
             lblMonto.Text = "Monto:";
+            // 
+            // picLogo
+            // 
+            picLogo.BackColor = Color.Transparent;
+            picLogo.Image = (Image)resources.GetObject("picLogo.Image");
+            picLogo.Location = new Point(247, 177);
+            picLogo.Name = "picLogo";
+            picLogo.Size = new Size(120, 127);
+            picLogo.SizeMode = PictureBoxSizeMode.Zoom;
+            picLogo.TabIndex = 24;
+            picLogo.TabStop = false;
             // 
             // frmAgenda
             // 
