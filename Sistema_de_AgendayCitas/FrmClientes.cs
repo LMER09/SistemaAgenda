@@ -19,7 +19,6 @@ namespace SistemaAgenda.UI
             txtNombre.Focus();
         }
 
-        // Ya no es evento, pero usa await -> async Task
         private async Task CargarClientesAsync()
         {
             dgvClientes.DataSource = null;
@@ -77,8 +76,6 @@ namespace SistemaAgenda.UI
                 MessageBox.Show("Seleccione un cliente.");
             }
         }
-
-        // No toca base de datos: no cambia
         private void dgvClientes_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
