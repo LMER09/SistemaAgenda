@@ -18,7 +18,14 @@ namespace SistemaAgenda.UI
 
         private void frmPrincipal_Load(object sender, EventArgs e)
         {
-
+            this.Hide();
+            using (FrmLogin login = new FrmLogin())
+            {
+                if (login.ShowDialog() == DialogResult.OK)
+                    this.Show();
+                else
+                    Application.Exit();
+            }
         }
 
         // ======================================

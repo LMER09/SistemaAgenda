@@ -41,10 +41,8 @@ namespace SistemaAgenda.UI
 
                 if (credencialesValidas)
                 {
-                    frmPrincipal principal = new frmPrincipal();
-                    principal.FormClosed += (s, args) => Application.Exit();
-                    principal.Show();
-                    this.Hide();
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
                 }
                 else
                 {
