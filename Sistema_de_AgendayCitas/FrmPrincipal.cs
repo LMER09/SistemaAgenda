@@ -49,7 +49,7 @@ namespace SistemaAgenda.UI
 
         private void btnServicios_Click(object sender, EventArgs e)
         {
-            AbrirFormulario(new frmServicios());
+            AbrirFormulario(new frmRegistrarServicios());
         }
 
         private void btnEstilistas_Click(object sender, EventArgs e)
@@ -60,6 +60,11 @@ namespace SistemaAgenda.UI
         private void registrarPagoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AbrirFormulario(new frmRegistrarPago());
+        }
+
+        private void registrarUsuarioToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AbrirFormulario(new frmRegistrarUsuarios());
         }
 
         // ======================================
@@ -78,11 +83,7 @@ namespace SistemaAgenda.UI
 
         private void verServicioToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(
-                "Módulo de consulta de servicios en desarrollo.",
-                "Sistema",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
+            AbrirFormulario(new frmConsultarServicios());
         }
 
         private void reportesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -104,6 +105,11 @@ namespace SistemaAgenda.UI
             AbrirFormulario(new frmConsultarPagos());
         }
 
+        private void verUsuariosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AbrirFormulario(new frmConsultarUsuarios());
+        }
+
         // ======================================
         // SISTEMA
         // ======================================
@@ -112,12 +118,12 @@ namespace SistemaAgenda.UI
         {
             MessageBox.Show(
      "Sistema de Agenda y Citas\n\n" +
-     "Versión 1.0\n\n" +
+     " Versión 1.0\n\n " +
      "Desarrollado por:\n" +
      "• Novaly Pujols\n" +
      "• Luzmairy Espiritusanto\n" +
      "• Juan Manuel Contreras\n" +
-     "• Mercy Báez 4\n\n" +
+     "• Mercy Báez \n\n" +
      "• Sebastian vargas\n\n" +
      "Proyecto Final\n" +
      "Ingeniería en Software\n\n" +

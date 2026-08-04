@@ -62,7 +62,7 @@
             lblApellido.AutoSize = true;
             lblApellido.Location = new Point(51, 127);
             lblApellido.Name = "lblApellido";
-            lblApellido.Size = new Size(66, 20);
+            lblApellido.Size = new Size(70, 20);
             lblApellido.TabIndex = 1;
             lblApellido.Text = "Apellido:";
             // 
@@ -149,7 +149,7 @@
             btnHabilitar.BackColor = Color.DeepPink;
             btnHabilitar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnHabilitar.ForeColor = Color.White;
-            btnHabilitar.Location = new Point(51, 269);
+            btnHabilitar.Location = new Point(51, 278);
             btnHabilitar.Name = "btnHabilitar";
             btnHabilitar.Size = new Size(195, 43);
             btnHabilitar.TabIndex = 10;
@@ -162,7 +162,7 @@
             btnAgregar.BackColor = Color.DeepPink;
             btnAgregar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnAgregar.ForeColor = Color.White;
-            btnAgregar.Location = new Point(254, 269);
+            btnAgregar.Location = new Point(254, 278);
             btnAgregar.Name = "btnAgregar";
             btnAgregar.Size = new Size(195, 43);
             btnAgregar.TabIndex = 11;
@@ -175,7 +175,7 @@
             btnCerrar.BackColor = Color.Gray;
             btnCerrar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnCerrar.ForeColor = Color.White;
-            btnCerrar.Location = new Point(457, 269);
+            btnCerrar.Location = new Point(457, 278);
             btnCerrar.Name = "btnCerrar";
             btnCerrar.Size = new Size(150, 43);
             btnCerrar.TabIndex = 18;
@@ -198,10 +198,10 @@
             lblResultado.AutoSize = true;
             lblResultado.Font = new Font("Segoe UI", 9.5F, FontStyle.Italic, GraphicsUnit.Point, 0);
             lblResultado.ForeColor = Color.DimGray;
-            lblResultado.Location = new Point(51, 335);
+            lblResultado.Location = new Point(51, 344);
             lblResultado.MaximumSize = new Size(680, 0);
             lblResultado.Name = "lblResultado";
-            lblResultado.Size = new Size(468, 20);
+            lblResultado.Size = new Size(655, 21);
             lblResultado.TabIndex = 13;
             lblResultado.Text = "Los campos están deshabilitados. Presione \"Habilitar campos\" para ingresar un nuevo cliente.";
             // 
