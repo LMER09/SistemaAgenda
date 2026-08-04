@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmRegistrarEstilistas));
             lblNombre = new Label();
             lblApellido = new Label();
             lblTelefono = new Label();
@@ -41,6 +40,18 @@
             txtCorreo = new TextBox();
             txtCedula = new TextBox();
             txtEspecialidad = new TextBox();
+            lblHorario = new Label();
+            chkDomingo = new CheckBox();
+            chkLunes = new CheckBox();
+            chkMartes = new CheckBox();
+            chkMiercoles = new CheckBox();
+            chkJueves = new CheckBox();
+            chkViernes = new CheckBox();
+            chkSabado = new CheckBox();
+            lblHoraInicio = new Label();
+            dtpHoraInicio = new DateTimePicker();
+            lblHoraFin = new Label();
+            dtpHoraFin = new DateTimePicker();
             btnHabilitar = new Button();
             btnAgregar = new Button();
             btnCerrar = new Button();
@@ -64,7 +75,7 @@
             lblApellido.AutoSize = true;
             lblApellido.Location = new Point(51, 127);
             lblApellido.Name = "lblApellido";
-            lblApellido.Size = new Size(66, 20);
+            lblApellido.Size = new Size(70, 20);
             lblApellido.TabIndex = 1;
             lblApellido.Text = "Apellido:";
             // 
@@ -164,15 +175,131 @@
             txtEspecialidad.Size = new Size(357, 27);
             txtEspecialidad.TabIndex = 11;
             // 
+            // lblHorario
+            // 
+            lblHorario.AutoSize = true;
+            lblHorario.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblHorario.Location = new Point(51, 304);
+            lblHorario.Name = "lblHorario";
+            lblHorario.Size = new Size(124, 21);
+            lblHorario.TabIndex = 12;
+            lblHorario.Text = "Horario laboral:";
+            // 
+            // chkDomingo
+            // 
+            chkDomingo.AutoSize = true;
+            chkDomingo.Location = new Point(54, 333);
+            chkDomingo.Name = "chkDomingo";
+            chkDomingo.Size = new Size(95, 24);
+            chkDomingo.TabIndex = 13;
+            chkDomingo.Text = "Domingo";
+            chkDomingo.UseVisualStyleBackColor = true;
+            // 
+            // chkLunes
+            // 
+            chkLunes.AutoSize = true;
+            chkLunes.Location = new Point(165, 333);
+            chkLunes.Name = "chkLunes";
+            chkLunes.Size = new Size(70, 24);
+            chkLunes.TabIndex = 14;
+            chkLunes.Text = "Lunes";
+            chkLunes.UseVisualStyleBackColor = true;
+            // 
+            // chkMartes
+            // 
+            chkMartes.AutoSize = true;
+            chkMartes.Location = new Point(253, 333);
+            chkMartes.Name = "chkMartes";
+            chkMartes.Size = new Size(78, 24);
+            chkMartes.TabIndex = 15;
+            chkMartes.Text = "Martes";
+            chkMartes.UseVisualStyleBackColor = true;
+            // 
+            // chkMiercoles
+            // 
+            chkMiercoles.AutoSize = true;
+            chkMiercoles.Location = new Point(353, 333);
+            chkMiercoles.Name = "chkMiercoles";
+            chkMiercoles.Size = new Size(97, 24);
+            chkMiercoles.TabIndex = 16;
+            chkMiercoles.Text = "Miércoles";
+            chkMiercoles.UseVisualStyleBackColor = true;
+            // 
+            // chkJueves
+            // 
+            chkJueves.AutoSize = true;
+            chkJueves.Location = new Point(474, 333);
+            chkJueves.Name = "chkJueves";
+            chkJueves.Size = new Size(76, 24);
+            chkJueves.TabIndex = 17;
+            chkJueves.Text = "Jueves";
+            chkJueves.UseVisualStyleBackColor = true;
+            // 
+            // chkViernes
+            // 
+            chkViernes.AutoSize = true;
+            chkViernes.Location = new Point(574, 333);
+            chkViernes.Name = "chkViernes";
+            chkViernes.Size = new Size(82, 24);
+            chkViernes.TabIndex = 18;
+            chkViernes.Text = "Viernes";
+            chkViernes.UseVisualStyleBackColor = true;
+            // 
+            // chkSabado
+            // 
+            chkSabado.AutoSize = true;
+            chkSabado.Location = new Point(698, 333);
+            chkSabado.Name = "chkSabado";
+            chkSabado.Size = new Size(82, 24);
+            chkSabado.TabIndex = 19;
+            chkSabado.Text = "Sábado";
+            chkSabado.UseVisualStyleBackColor = true;
+            // 
+            // lblHoraInicio
+            // 
+            lblHoraInicio.AutoSize = true;
+            lblHoraInicio.Location = new Point(51, 382);
+            lblHoraInicio.Name = "lblHoraInicio";
+            lblHoraInicio.Size = new Size(88, 20);
+            lblHoraInicio.TabIndex = 20;
+            lblHoraInicio.Text = "Hora inicio:";
+            // 
+            // dtpHoraInicio
+            // 
+            dtpHoraInicio.Format = DateTimePickerFormat.Time;
+            dtpHoraInicio.Location = new Point(145, 375);
+            dtpHoraInicio.Name = "dtpHoraInicio";
+            dtpHoraInicio.ShowUpDown = true;
+            dtpHoraInicio.Size = new Size(272, 27);
+            dtpHoraInicio.TabIndex = 21;
+            // 
+            // lblHoraFin
+            // 
+            lblHoraFin.AutoSize = true;
+            lblHoraFin.Location = new Point(434, 382);
+            lblHoraFin.Name = "lblHoraFin";
+            lblHoraFin.Size = new Size(69, 20);
+            lblHoraFin.TabIndex = 22;
+            lblHoraFin.Text = "Hora fin:";
+            // 
+            // dtpHoraFin
+            // 
+            dtpHoraFin.Format = DateTimePickerFormat.Time;
+            dtpHoraFin.Location = new Point(509, 377);
+            dtpHoraFin.Name = "dtpHoraFin";
+            dtpHoraFin.ShowUpDown = true;
+            dtpHoraFin.Size = new Size(271, 27);
+            dtpHoraFin.TabIndex = 23;
+            // 
             // btnHabilitar
             // 
             btnHabilitar.BackColor = Color.DeepPink;
             btnHabilitar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnHabilitar.ForeColor = Color.White;
-            btnHabilitar.Location = new Point(51, 302);
+            btnHabilitar.Location = new Point(51, 423);
             btnHabilitar.Name = "btnHabilitar";
-            btnHabilitar.Size = new Size(195, 43);
-            btnHabilitar.TabIndex = 12;
+            btnHabilitar.Size = new Size(262, 43);
+            btnHabilitar.TabIndex = 24;
             btnHabilitar.Text = "🔓 Habilitar campos";
             btnHabilitar.UseVisualStyleBackColor = false;
             btnHabilitar.Click += btnHabilitar_Click;
@@ -182,10 +309,10 @@
             btnAgregar.BackColor = Color.DeepPink;
             btnAgregar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnAgregar.ForeColor = Color.White;
-            btnAgregar.Location = new Point(254, 302);
+            btnAgregar.Location = new Point(317, 423);
             btnAgregar.Name = "btnAgregar";
-            btnAgregar.Size = new Size(195, 43);
-            btnAgregar.TabIndex = 13;
+            btnAgregar.Size = new Size(262, 43);
+            btnAgregar.TabIndex = 25;
             btnAgregar.Text = "➕ Agregar";
             btnAgregar.UseVisualStyleBackColor = false;
             btnAgregar.Click += btnAgregar_Click;
@@ -195,10 +322,10 @@
             btnCerrar.BackColor = Color.Gray;
             btnCerrar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnCerrar.ForeColor = Color.White;
-            btnCerrar.Location = new Point(457, 302);
+            btnCerrar.Location = new Point(585, 423);
             btnCerrar.Name = "btnCerrar";
-            btnCerrar.Size = new Size(150, 43);
-            btnCerrar.TabIndex = 14;
+            btnCerrar.Size = new Size(195, 43);
+            btnCerrar.TabIndex = 26;
             btnCerrar.Text = "❌ Cerrar";
             btnCerrar.UseVisualStyleBackColor = false;
             btnCerrar.Click += btnCerrar_Click;
@@ -207,10 +334,10 @@
             // 
             lblIngrese.AutoSize = true;
             lblIngrese.Font = new Font("Segoe UI Semibold", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblIngrese.Location = new Point(51, 47);
+            lblIngrese.Location = new Point(51, 34);
             lblIngrese.Name = "lblIngrese";
-            lblIngrese.Size = new Size(191, 23);
-            lblIngrese.TabIndex = 15;
+            lblIngrese.Size = new Size(184, 23);
+            lblIngrese.TabIndex = 27;
             lblIngrese.Text = "Ingrese nuevo estilista:";
             // 
             // lblResultado
@@ -218,22 +345,21 @@
             lblResultado.AutoSize = true;
             lblResultado.Font = new Font("Segoe UI", 9.5F, FontStyle.Italic, GraphicsUnit.Point, 0);
             lblResultado.ForeColor = Color.DimGray;
-            lblResultado.Location = new Point(51, 368);
-            lblResultado.MaximumSize = new Size(680, 0);
+            lblResultado.Location = new Point(51, 485);
+            lblResultado.MaximumSize = new Size(700, 0);
             lblResultado.Name = "lblResultado";
-            lblResultado.Size = new Size(480, 20);
-            lblResultado.TabIndex = 16;
+            lblResultado.Size = new Size(661, 21);
+            lblResultado.TabIndex = 28;
             lblResultado.Text = "Los campos están deshabilitados. Presione \"Habilitar campos\" para ingresar un nuevo estilista.";
             // 
             // picLogo
             // 
             picLogo.BackColor = Color.Transparent;
-            picLogo.Image = (Image)resources.GetObject("picLogo.Image");
-            picLogo.Location = new Point(538, 9);
+            picLogo.Location = new Point(538, 34);
             picLogo.Name = "picLogo";
             picLogo.Size = new Size(242, 245);
             picLogo.SizeMode = PictureBoxSizeMode.Zoom;
-            picLogo.TabIndex = 17;
+            picLogo.TabIndex = 29;
             picLogo.TabStop = false;
             // 
             // frmRegistrarEstilistas
@@ -241,13 +367,25 @@
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLightLight;
-            ClientSize = new Size(801, 430);
+            ClientSize = new Size(818, 536);
             Controls.Add(picLogo);
             Controls.Add(lblResultado);
             Controls.Add(lblIngrese);
             Controls.Add(btnCerrar);
             Controls.Add(btnAgregar);
             Controls.Add(btnHabilitar);
+            Controls.Add(dtpHoraFin);
+            Controls.Add(lblHoraFin);
+            Controls.Add(dtpHoraInicio);
+            Controls.Add(lblHoraInicio);
+            Controls.Add(chkSabado);
+            Controls.Add(chkViernes);
+            Controls.Add(chkJueves);
+            Controls.Add(chkMiercoles);
+            Controls.Add(chkMartes);
+            Controls.Add(chkLunes);
+            Controls.Add(chkDomingo);
+            Controls.Add(lblHorario);
             Controls.Add(txtEspecialidad);
             Controls.Add(txtCedula);
             Controls.Add(txtCorreo);
@@ -285,6 +423,18 @@
         private TextBox txtCorreo;
         private TextBox txtCedula;
         private TextBox txtEspecialidad;
+        private Label lblHorario;
+        private CheckBox chkDomingo;
+        private CheckBox chkLunes;
+        private CheckBox chkMartes;
+        private CheckBox chkMiercoles;
+        private CheckBox chkJueves;
+        private CheckBox chkViernes;
+        private CheckBox chkSabado;
+        private Label lblHoraInicio;
+        private DateTimePicker dtpHoraInicio;
+        private Label lblHoraFin;
+        private DateTimePicker dtpHoraFin;
         private Button btnHabilitar;
         private Button btnAgregar;
         private Button btnCerrar;

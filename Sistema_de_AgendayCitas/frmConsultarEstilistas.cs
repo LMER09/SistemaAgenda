@@ -1,13 +1,19 @@
 ﻿using SistemaAgenda.Negocios;
 using SistemaAgenda.Datos;
 using System.Linq;
+using System.Text;
 
 namespace SistemaAgenda.UI
 {
     public partial class frmConsultarEstilistas : Form
     {
         private EstilistaBLL estilistaBLL = new EstilistaBLL();
+        private HorarioEstilistaBLL horarioBLL = new HorarioEstilistaBLL();
         private List<Estilista> listaEstilistas = new List<Estilista>();
+
+        // Nombres de los dias en el mismo orden que DiaSemana (0=Domingo...6=Sabado)
+        private static readonly string[] NombresDias =
+            { "Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado" };
 
         public frmConsultarEstilistas()
         {
@@ -28,6 +34,8 @@ namespace SistemaAgenda.UI
 
             dgvEstilistas.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvEstilistas.Columns["Id"].Visible = false;
+
+            lblHorarioDetalle.Text = "Seleccione un estilista para ver su horario.";
         }
 
         private void btnBuscar_Click(object sender, EventArgs e)
@@ -54,6 +62,40 @@ namespace SistemaAgenda.UI
             if (resultado.Count == 0)
                 MessageBox.Show($"No se encontró ningún estilista que coincida con \"{txtBuscar.Text}\".",
                     "Sin resultados", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        // Al seleccionar una fila, muestra el horario laboral de esa estilista
+        // (todos los dias comparten la misma hora inicio/fin, por diseño del formulario de registro).
+        private void dgvEstilistas_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            Estilista estilistaSeleccionado = (Estilista)dgvEstilistas.CurrentRow.DataBoundItem;
+            MostrarHorario(estilistaSeleccionado.Id);
+        }
+
+        private void MostrarHorario(int idEstilista)
+        {
+            var horarios = horarioBLL.ObtenerPorEstilista(idEstilista);
+
+            if (horarios.Count == 0)
+            {
+                lblHorarioDetalle.Text = "Sin horario laboral registrado.";
+                lblHorarioDetalle.ForeColor = Color.Firebrick;
+                return;
+            }
+
+            var dias = horarios
+                .OrderBy(h => h.DiaSemana)
+                .Select(h => NombresDias[h.DiaSemana]);
+
+            string diasTexto = string.Join(", ", dias);
+
+            var primero = horarios[0];
+            string horaTexto = $"{DateTime.Today.Add(primero.HoraInicio):hh:mm tt} a {DateTime.Today.Add(primero.HoraFin):hh:mm tt}";
+
+            lblHorarioDetalle.Text = $"{diasTexto} — {horaTexto}";
+            lblHorarioDetalle.ForeColor = Color.DarkGreen;
         }
 
         // Abre frmRegistrarEstilistas en modo edicion con el estilista seleccionado.

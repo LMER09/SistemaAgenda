@@ -1,11 +1,13 @@
 ﻿using SistemaAgenda.Negocios;
 using SistemaAgenda.Datos;
+using System.Linq;
 
 namespace SistemaAgenda.UI
 {
     public partial class frmRegistrarEstilistas : Form
     {
         private EstilistaBLL estilistaBLL = new EstilistaBLL();
+        private HorarioEstilistaBLL horarioBLL = new HorarioEstilistaBLL();
         private bool habilitado = false;
 
         // Si no es null, el formulario esta editando este estilista
@@ -37,6 +39,17 @@ namespace SistemaAgenda.UI
             txtCorreo.Enabled = habilitar;
             txtCedula.Enabled = habilitar;
             txtEspecialidad.Enabled = habilitar;
+
+            chkDomingo.Enabled = habilitar;
+            chkLunes.Enabled = habilitar;
+            chkMartes.Enabled = habilitar;
+            chkMiercoles.Enabled = habilitar;
+            chkJueves.Enabled = habilitar;
+            chkViernes.Enabled = habilitar;
+            chkSabado.Enabled = habilitar;
+            dtpHoraInicio.Enabled = habilitar;
+            dtpHoraFin.Enabled = habilitar;
+
             btnAgregar.Enabled = habilitar;
 
             if (habilitar)
@@ -76,6 +89,16 @@ namespace SistemaAgenda.UI
             txtCorreo.Clear();
             txtCedula.Clear();
             txtEspecialidad.Clear();
+
+            chkDomingo.Checked = false;
+            chkLunes.Checked = false;
+            chkMartes.Checked = false;
+            chkMiercoles.Checked = false;
+            chkJueves.Checked = false;
+            chkViernes.Checked = false;
+            chkSabado.Checked = false;
+            dtpHoraInicio.Value = DateTime.Today.AddHours(9);   // 9:00 AM por defecto
+            dtpHoraFin.Value = DateTime.Today.AddHours(17);     // 5:00 PM por defecto
         }
 
         private void FrmRegistrarEstilistas_Load(object sender, EventArgs e)
@@ -93,12 +116,72 @@ namespace SistemaAgenda.UI
                 txtCedula.Text = _estilistaEditando.Cedula;
                 txtEspecialidad.Text = _estilistaEditando.Especialidad;
 
+                CargarHorarioExistente(_estilistaEditando.Id);
+
                 HabilitarControles(true);
             }
             else
             {
                 HabilitarControles(false);
             }
+        }
+
+        // Marca los dias que ya tenia guardados y pone la hora inicio/fin
+        // del primer bloque encontrado (todos comparten la misma hora,
+        // por como se diseño este formulario).
+        private void CargarHorarioExistente(int idEstilista)
+        {
+            var horarios = horarioBLL.ObtenerPorEstilista(idEstilista);
+            if (horarios.Count == 0) return;
+
+            foreach (var h in horarios)
+            {
+                switch (h.DiaSemana)
+                {
+                    case 0: chkDomingo.Checked = true; break;
+                    case 1: chkLunes.Checked = true; break;
+                    case 2: chkMartes.Checked = true; break;
+                    case 3: chkMiercoles.Checked = true; break;
+                    case 4: chkJueves.Checked = true; break;
+                    case 5: chkViernes.Checked = true; break;
+                    case 6: chkSabado.Checked = true; break;
+                }
+            }
+
+            var primero = horarios[0];
+            dtpHoraInicio.Value = DateTime.Today.Add(primero.HoraInicio);
+            dtpHoraFin.Value = DateTime.Today.Add(primero.HoraFin);
+        }
+
+        // Arma la lista de HorarioEstilista segun los checkboxes marcados
+        // y las dos horas elegidas (mismo horario para todos los dias marcados).
+        private List<HorarioEstilista> ArmarHorarioDesdeFormulario()
+        {
+            var dias = new List<(byte numero, CheckBox chk)>
+            {
+                (0, chkDomingo),
+                (1, chkLunes),
+                (2, chkMartes),
+                (3, chkMiercoles),
+                (4, chkJueves),
+                (5, chkViernes),
+                (6, chkSabado),
+            };
+
+            var lista = new List<HorarioEstilista>();
+            foreach (var (numero, chk) in dias)
+            {
+                if (chk.Checked)
+                {
+                    lista.Add(new HorarioEstilista
+                    {
+                        DiaSemana = numero,
+                        HoraInicio = dtpHoraInicio.Value.TimeOfDay,
+                        HoraFin = dtpHoraFin.Value.TimeOfDay
+                    });
+                }
+            }
+            return lista;
         }
 
         private bool ValidarDatos()
@@ -134,6 +217,21 @@ namespace SistemaAgenda.UI
                 return false;
             }
 
+            bool algunDiaMarcado = chkDomingo.Checked || chkLunes.Checked || chkMartes.Checked ||
+                                    chkMiercoles.Checked || chkJueves.Checked || chkViernes.Checked || chkSabado.Checked;
+
+            if (!algunDiaMarcado)
+            {
+                MostrarResultado("Debe marcar al menos un día de trabajo. Sin horario, no se le podrán agendar citas.", esExito: false);
+                return false;
+            }
+
+            if (dtpHoraInicio.Value.TimeOfDay >= dtpHoraFin.Value.TimeOfDay)
+            {
+                MostrarResultado("La hora de inicio debe ser antes que la hora de fin.", esExito: false);
+                return false;
+            }
+
             return true;
         }
 
@@ -164,15 +262,22 @@ namespace SistemaAgenda.UI
                 string resultadoEdicion = estilistaBLL.Actualizar(estilista);
                 bool exitoEdicion = resultadoEdicion.StartsWith("OK");
 
-                if (exitoEdicion)
-                {
-                    MessageBox.Show("Estilista actualizado exitosamente.");
-                    Close();
-                }
-                else
+                if (!exitoEdicion)
                 {
                     MostrarResultado(resultadoEdicion, esExito: false);
+                    return;
                 }
+
+                // Reemplaza el horario completo con lo que este marcado ahora en pantalla
+                string resultadoHorario = horarioBLL.GuardarHorarioCompleto(estilista.Id, ArmarHorarioDesdeFormulario());
+                if (!resultadoHorario.StartsWith("OK"))
+                {
+                    MostrarResultado("Estilista actualizada, pero hubo un problema con el horario: " + resultadoHorario, esExito: false);
+                    return;
+                }
+
+                MessageBox.Show("Estilista y horario actualizados exitosamente.");
+                Close();
                 return;
             }
 
@@ -189,9 +294,33 @@ namespace SistemaAgenda.UI
             string resultado = estilistaBLL.Registrar(nuevoEstilista);
             bool exito = resultado.StartsWith("OK");
 
-            MostrarResultado(exito ? "Estilista registrado exitosamente." : resultado, exito);
+            if (!exito)
+            {
+                MostrarResultado(resultado, esExito: false);
+                return;
+            }
 
-            if (exito)
+            // El Insertar no devuelve el Id nuevo, asi que lo buscamos
+            // por el correo, que ya es unico en la base de datos.
+            var estilistaCreada = estilistaBLL.ObtenerTodos()
+                .FirstOrDefault(es => es.Correo == nuevoEstilista.Correo);
+
+            if (estilistaCreada == null)
+            {
+                MostrarResultado("Estilista registrada, pero no se pudo asignar el horario automáticamente. Edítela para agregarlo.", esExito: false);
+                Limpiar();
+                return;
+            }
+
+            string resultadoHorarioNuevo = horarioBLL.GuardarHorarioCompleto(estilistaCreada.Id, ArmarHorarioDesdeFormulario());
+            bool exitoHorario = resultadoHorarioNuevo.StartsWith("OK");
+
+            MostrarResultado(exitoHorario
+                ? "Estilista y horario registrados exitosamente."
+                : "Estilista registrada, pero hubo un problema con el horario: " + resultadoHorarioNuevo,
+                exitoHorario);
+
+            if (exitoHorario)
             {
                 Limpiar();
                 txtNombre.Focus();

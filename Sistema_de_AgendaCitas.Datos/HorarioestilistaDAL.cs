@@ -4,6 +4,7 @@ namespace SistemaAgenda.Datos
 {
     public class HorarioEstilistaDAL
     {
+
         public bool Insertar(HorarioEstilista h)
         {
             try
@@ -147,6 +148,27 @@ namespace SistemaAgenda.Datos
             catch (Exception ex)
             {
                 throw new Exception("Error al eliminar horario: " + ex.Message);
+            }
+        }
+        // Borra todos los bloques de horario de una estilista de una sola vez.
+        // Se usa al editar: se borra el horario viejo completo y se vuelve a
+        // insertar el nuevo, en vez de tratar de "comparar" cual dia cambio.
+        public bool EliminarPorEstilista(int idEstilista)
+        {
+            try
+            {
+                using (var con = ConexionDB.ObtenerConexion())
+                using (var cmd = new SqlCommand(
+                    "DELETE FROM HorarioEstilista WHERE id_Estilista=@IdEstilista", con))
+                {
+                    cmd.Parameters.AddWithValue("@IdEstilista", idEstilista);
+                    cmd.ExecuteNonQuery();
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al eliminar el horario anterior: " + ex.Message);
             }
         }
     }
