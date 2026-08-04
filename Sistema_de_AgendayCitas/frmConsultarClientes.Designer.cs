@@ -45,19 +45,21 @@
             dgvClientes.Location = new Point(38, 226);
             dgvClientes.Name = "dgvClientes";
             dgvClientes.RowHeadersWidth = 51;
-            dgvClientes.Size = new Size(717, 284);
+            dgvClientes.Size = new Size(667, 284);
             dgvClientes.TabIndex = 11;
+            dgvClientes.CellContentClick += dgvClientes_CellContentClick;
             // 
             // picLogo
             // 
             picLogo.BackColor = Color.Transparent;
             picLogo.Image = (Image)resources.GetObject("picLogo.Image");
-            picLogo.Location = new Point(571, 9);
+            picLogo.Location = new Point(511, 12);
             picLogo.Name = "picLogo";
             picLogo.Size = new Size(209, 176);
             picLogo.SizeMode = PictureBoxSizeMode.Zoom;
             picLogo.TabIndex = 17;
             picLogo.TabStop = false;
+            picLogo.Click += picLogo_Click;
             // 
             // lblBuscar
             // 
@@ -75,6 +77,7 @@
             txtBuscar.Name = "txtBuscar";
             txtBuscar.Size = new Size(177, 27);
             txtBuscar.TabIndex = 19;
+            txtBuscar.TextChanged += txtBuscar_TextChanged;
             // 
             // btnCerrar
             // 
@@ -86,13 +89,14 @@
             btnCerrar.TabIndex = 20;
             btnCerrar.Text = "❌ Cerrar";
             btnCerrar.UseVisualStyleBackColor = false;
+            btnCerrar.Click += btnCerrar_Click_1;
             // 
             // frmConsultarClientes
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLightLight;
-            ClientSize = new Size(801, 535);
+            ClientSize = new Size(742, 523);
             Controls.Add(btnCerrar);
             Controls.Add(txtBuscar);
             Controls.Add(lblBuscar);

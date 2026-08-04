@@ -40,15 +40,15 @@
             btnAgregar = new Button();
             btnEditar = new Button();
             btnEliminar = new Button();
-            dgvClientes = new DataGridView();
             lblIngrese = new Label();
             btnLimpiar = new Button();
             picLogo = new PictureBox();
             btnNuevo = new Button();
             lblCedula = new Label();
             txtCedula = new TextBox();
-            ((System.ComponentModel.ISupportInitialize)dgvClientes).BeginInit();
+            dgvClientes = new DataGridView();
             ((System.ComponentModel.ISupportInitialize)picLogo).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvClientes).BeginInit();
             SuspendLayout();
             // 
             // lblNombre
@@ -115,6 +115,7 @@
             txtTelefono.PlaceholderText = "Ej: 000-000-0000";
             txtTelefono.Size = new Size(357, 27);
             txtTelefono.TabIndex = 6;
+            txtTelefono.TextChanged += txtTelefono_TextChanged;
             txtTelefono.KeyPress += txtTelefono_KeyPress;
             // 
             // txtCorreo
@@ -125,6 +126,7 @@
             txtCorreo.PlaceholderText = "Ej: luz17@gmail.com";
             txtCorreo.Size = new Size(357, 27);
             txtCorreo.TabIndex = 7;
+            txtCorreo.TextChanged += txtCorreo_TextChanged;
             // 
             // btnAgregar
             // 
@@ -164,17 +166,6 @@
             btnEliminar.Text = "🗑️ Eliminar";
             btnEliminar.UseVisualStyleBackColor = false;
             btnEliminar.Click += btnEliminar_Click;
-            // 
-            // dgvClientes
-            // 
-            dgvClientes.BackgroundColor = Color.LavenderBlush;
-            dgvClientes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvClientes.Location = new Point(24, 323);
-            dgvClientes.Name = "dgvClientes";
-            dgvClientes.RowHeadersWidth = 51;
-            dgvClientes.Size = new Size(756, 181);
-            dgvClientes.TabIndex = 11;
-            dgvClientes.CellClick += dgvClientes_CellClick;
             // 
             // lblIngrese
             // 
@@ -241,6 +232,18 @@
             txtCedula.PlaceholderText = "Ej: 001-1234567-8";
             txtCedula.Size = new Size(357, 27);
             txtCedula.TabIndex = 20;
+            txtCedula.TextChanged += txtCedula_TextChanged;
+            // 
+            // dgvClientes
+            // 
+            dgvClientes.BackgroundColor = Color.LavenderBlush;
+            dgvClientes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvClientes.Location = new Point(24, 323);
+            dgvClientes.Name = "dgvClientes";
+            dgvClientes.RowHeadersWidth = 51;
+            dgvClientes.Size = new Size(756, 181);
+            dgvClientes.TabIndex = 11;
+            dgvClientes.CellClick += dgvClientes_CellClick;
             // 
             // frmRegistrarClientes
             // 
@@ -272,8 +275,8 @@
             Text = "Consulta de Clientes";
             TransparencyKey = Color.FromArgb(255, 224, 192);
             Load += frmRegistrarClientes_Load;
-            ((System.ComponentModel.ISupportInitialize)dgvClientes).EndInit();
             ((System.ComponentModel.ISupportInitialize)picLogo).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvClientes).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -293,12 +296,12 @@
         private Button btnAgregar;
         private Button btnEditar;
         private Button btnEliminar;
-        private DataGridView dgvClientes;
         private Label lblIngrese;
         private Button btnLimpiar;
         private PictureBox picLogo;
         private Button btnNuevo;
         private Label lblCedula;
         private TextBox txtCedula;
+        private DataGridView dgvClientes;
     }
 }

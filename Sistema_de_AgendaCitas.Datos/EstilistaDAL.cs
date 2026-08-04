@@ -10,15 +10,18 @@ namespace SistemaAgenda.Datos
             {
                 using (var con = ConexionDB.ObtenerConexion())
                 using (var cmd = new SqlCommand(@"
-                    INSERT INTO Estilista (Nombre, Apellido, Telefono, Correo, Especialidad)
-                    VALUES (@Nombre, @Apellido, @Telefono, @Correo, @Especialidad, @Cedula)", con))
+    INSERT INTO Estilista
+    (Nombre, Apellido, Telefono, Correo, Cedula, Especialidad)
+    VALUES
+    (@Nombre, @Apellido, @Telefono, @Correo, @Cedula, @Especialidad)", con))
                 {
                     cmd.Parameters.AddWithValue("@Nombre", e.Nombre);
                     cmd.Parameters.AddWithValue("@Apellido", e.Apellido);
                     cmd.Parameters.AddWithValue("@Telefono", e.Telefono);
                     cmd.Parameters.AddWithValue("@Correo", e.Correo);
-                    cmd.Parameters.AddWithValue("@Especialidad", e.Especialidad);
                     cmd.Parameters.AddWithValue("@Cedula", e.Cedula);
+                    cmd.Parameters.AddWithValue("@Especialidad", e.Especialidad);
+
                     return cmd.ExecuteNonQuery() > 0;
                 }
             }
@@ -27,6 +30,8 @@ namespace SistemaAgenda.Datos
                 throw new Exception("Error al insertar estilista: " + ex.Message);
             }
         }
+
+       
 
         public List<Estilista> ObtenerTodos()
         {

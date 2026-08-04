@@ -34,6 +34,8 @@
             lblIngrese = new Label();
             btnLimpiar = new Button();
             picLogo = new PictureBox();
+            lblCedula = new Label();
+            txtCedula = new TextBox();
             ((System.ComponentModel.ISupportInitialize)dgvEstilistas).BeginInit();
             ((System.ComponentModel.ISupportInitialize)picLogo).BeginInit();
             SuspendLayout();
@@ -216,12 +218,33 @@
             picLogo.TabIndex = 16;
             picLogo.TabStop = false;
             // 
+            // lblCedula
+            // 
+            lblCedula.AutoSize = true;
+            lblCedula.Location = new Point(38, 254);
+            lblCedula.Name = "lblCedula";
+            lblCedula.Size = new Size(60, 20);
+            lblCedula.TabIndex = 20;
+            lblCedula.Text = "Cedula:";
+            lblCedula.Click += lblCedula_Click;
+            // 
+            // txtCedula
+            // 
+            txtCedula.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtCedula.Location = new Point(158, 251);
+            txtCedula.Name = "txtCedula";
+            txtCedula.PlaceholderText = "Ej: 001-1234567-8";
+            txtCedula.Size = new Size(357, 27);
+            txtCedula.TabIndex = 21;
+            // 
             // frmEstilistas
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLightLight;
             ClientSize = new Size(875, 591);
+            Controls.Add(txtCedula);
+            Controls.Add(lblCedula);
             Controls.Add(picLogo);
             Controls.Add(btnLimpiar);
             Controls.Add(lblIngrese);
@@ -268,5 +291,7 @@
         private Label lblIngrese;
         private Button btnLimpiar;
         private PictureBox picLogo;
+        private Label lblCedula;
+        private TextBox txtCedula;
     }
 }
