@@ -10,29 +10,17 @@ namespace SistemaAgenda.Negocios
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(e.Nombre))
-                    return "ERROR: El nombre es obligatorio.";
-
-                if (string.IsNullOrWhiteSpace(e.Apellido))
-                    return "ERROR: El apellido es obligatorio.";
-
-                if (string.IsNullOrWhiteSpace(e.Telefono))
-                    return "ERROR: El teléfono es obligatorio.";
-
-                if (string.IsNullOrWhiteSpace(e.Correo))
-                    return "ERROR: El correo es obligatorio.";
-
-                if (string.IsNullOrWhiteSpace(e.Cedula))
-                    return "ERROR: La cédula es obligatoria.";
-
-                if (string.IsNullOrWhiteSpace(e.Especialidad))
-                    return "ERROR: La especialidad es obligatoria.";
+                if (string.IsNullOrWhiteSpace(e.Nombre) ||
+                    string.IsNullOrWhiteSpace(e.Apellido) ||
+                    string.IsNullOrWhiteSpace(e.Telefono) ||
+                    string.IsNullOrWhiteSpace(e.Correo) ||
+                    string.IsNullOrWhiteSpace(e.Especialidad))
+                    return "ERROR: Todos los campos son obligatorios.";
 
                 if (!e.Correo.Contains("@"))
                     return "ERROR: El correo no es válido.";
 
                 bool ok = _dal.Insertar(e);
-
                 return ok
                     ? "OK: Estilista registrada exitosamente."
                     : "ERROR: No se pudo guardar en la base de datos.";
@@ -63,8 +51,7 @@ namespace SistemaAgenda.Negocios
                     string.IsNullOrWhiteSpace(e.Apellido) ||
                     string.IsNullOrWhiteSpace(e.Telefono) ||
                     string.IsNullOrWhiteSpace(e.Correo) ||
-                    string.IsNullOrWhiteSpace(e.Especialidad) ||
-                    string.IsNullOrWhiteSpace(e.Cedula))
+                    string.IsNullOrWhiteSpace(e.Especialidad))
                     return "ERROR: Todos los campos son obligatorios.";
 
                 bool ok = _dal.Actualizar(e);
@@ -91,8 +78,6 @@ namespace SistemaAgenda.Negocios
             {
                 return "ERROR: " + ex.Message;
             }
-       
-        
-      }
+        }
     }
 }
