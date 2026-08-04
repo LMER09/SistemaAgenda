@@ -65,7 +65,32 @@ namespace SistemaAgenda.Datos
             }
             return lista;
         }
+        // Verifica si el estilista ya tiene una cita en la fecha y hora indicada
+        public bool EstilistaDisponible(int idEstilista, DateTime fecha)
+        {
+            try
+            {
+                using (var con = ConexionDB.ObtenerConexion())
+                using (var cmd = new SqlCommand(@"
+            SELECT COUNT(*)
+            FROM Citas
+            WHERE id_Estilista = @IdEstilista
+              AND Fecha = @Fecha", con))
+                {
+                    cmd.Parameters.AddWithValue("@IdEstilista", idEstilista);
+                    cmd.Parameters.AddWithValue("@Fecha", fecha);
 
+                    int cantidad = (int)cmd.ExecuteScalar();
+
+                    //Si no hay citas, el estilista está disponible
+                    return cantidad == 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al verificar disponibilidad del estilista: " + ex.Message);
+            }
+        }
         public bool Actualizar(Citas c)
         {
             try

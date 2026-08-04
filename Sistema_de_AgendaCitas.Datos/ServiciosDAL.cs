@@ -17,6 +17,7 @@ namespace SistemaAgenda.Datos
                     cmd.Parameters.AddWithValue("@Subtipo", s.Subtipo_DeServicio);
                     cmd.Parameters.AddWithValue("@Precio", s.Precio);
                     cmd.Parameters.AddWithValue("@Duracion", s.DuracionMinutos);
+
                     return cmd.ExecuteNonQuery() > 0;
                 }
             }
@@ -29,11 +30,12 @@ namespace SistemaAgenda.Datos
         public List<Servicios> ObtenerTodos()
         {
             var lista = new List<Servicios>();
+
             try
             {
                 using (var con = ConexionDB.ObtenerConexion())
                 using (var cmd = new SqlCommand(
-                    "SELECT id, Tipo_DeServicio,Subtipo_DeServicio, Precio, DuracionMinutos FROM Servicios", con))
+                    "SELECT Id, Tipo_DeServicio, Subtipo_DeServicio, Precio, DuracionMinutos FROM Servicios", con))
                 using (var reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
@@ -41,10 +43,22 @@ namespace SistemaAgenda.Datos
                         lista.Add(new Servicios
                         {
                             Id = reader.GetInt32(0),
-                            Tipo_DeServicio = reader.GetString(1),
-                            Subtipo_DeServicio = reader.GetString(2),
-                            Precio = reader.GetDecimal(3),
-                            DuracionMinutos = reader.GetInt32(4)
+
+                            Tipo_DeServicio = reader.IsDBNull(1)
+                                ? ""
+                                : reader.GetString(1),
+
+                            Subtipo_DeServicio = reader.IsDBNull(2)
+                                ? ""
+                                : reader.GetString(2),
+
+                            Precio = reader.IsDBNull(3)
+                                ? 0
+                                : reader.GetDecimal(3),
+
+                            DuracionMinutos = reader.IsDBNull(4)
+                                ? 0
+                                : reader.GetInt32(4)
                         });
                     }
                 }
@@ -53,6 +67,7 @@ namespace SistemaAgenda.Datos
             {
                 throw new Exception("Error al obtener servicios: " + ex.Message);
             }
+
             return lista;
         }
 

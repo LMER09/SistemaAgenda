@@ -39,11 +39,61 @@ namespace SistemaAgenda.UI
             estilista.Apellido = txtApellido.Text;
             estilista.Telefono = txtTelefono.Text;
             estilista.Correo = txtCorreo.Text;
+            estilista.Cedula = txtCedula.Text.Trim();
             estilista.Especialidad = txtEspecialidad.Text;
 
             MessageBox.Show(estilistaBLL.Registrar(estilista));
 
             CargarEstilistas(); Limpiar();
+
+
+        }
+
+        private bool ValidarDatos()
+        {
+            if (string.IsNullOrWhiteSpace(txtNombre.Text))
+            {
+                MessageBox.Show("Debe ingresar el nombre.");
+                txtNombre.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtApellido.Text))
+            {
+                MessageBox.Show("Debe ingresar el apellido.");
+                txtApellido.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtTelefono.Text))
+            {
+                MessageBox.Show("Debe ingresar el teléfono.");
+                txtTelefono.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtCorreo.Text))
+            {
+                MessageBox.Show("Debe ingresar el correo.");
+                txtCorreo.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtCedula.Text))
+            {
+                MessageBox.Show("Debe ingresar la cédula.");
+                txtCedula.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtEspecialidad.Text))
+            {
+                MessageBox.Show("Debe ingresar la especialidad.");
+                txtEspecialidad.Focus();
+                return false;
+            }
+
+            return true;
         }
 
         private void btnEditar_Click(object sender, EventArgs e)
@@ -64,7 +114,7 @@ namespace SistemaAgenda.UI
 
             MessageBox.Show(estilistaBLL.Actualizar(estilista));
 
-            CargarEstilistas();  Limpiar();
+            CargarEstilistas(); Limpiar();
         }
 
         private void btnEliminar_Click(object sender, EventArgs e)
@@ -117,6 +167,11 @@ namespace SistemaAgenda.UI
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
             Limpiar();
+        }
+
+        private void lblCedula_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

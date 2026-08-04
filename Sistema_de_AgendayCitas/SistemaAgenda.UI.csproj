@@ -9,15 +9,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="frmMenuClientes.cs" />
+    <Compile Remove="frmMenuClientes.Designer.cs" />
+    <Compile Remove="frmMenuEstilista.Designer.cs" />
+    <Compile Remove="frmMenuEstilistas.cs" />
+    <Compile Remove="frmMenuEstilistas.Designer.cs" />
     <Compile Remove="frmRegistrarClientes %281%29.cs" />
     <Compile Remove="frmRegistrarClientes %282%29.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Remove="frmMenuClientes.resx" />
+    <EmbeddedResource Remove="frmMenuEstilista.resx" />
+    <EmbeddedResource Remove="frmMenuEstilistas.resx" />
     <EmbeddedResource Remove="frmRegistrarClientes %281%29.resx" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="frmConsultarEstilistascs" />
     <None Remove="j3uudtqg.1pn~" />
   </ItemGroup>
 
