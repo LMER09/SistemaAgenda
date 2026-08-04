@@ -11,9 +11,12 @@ namespace SistemaAgenda.UI
         {
             InitializeComponent();
         }
+
         private void Limpiar()
         {
             cmbTipo.SelectedIndex = -1;
+            cmbSubtipo.Items.Clear();
+            cmbSubtipo.SelectedIndex = -1;
             txtPrecio.Clear();
             txtDuracion.Clear();
             lblResultado.Text = "";
@@ -29,31 +32,53 @@ namespace SistemaAgenda.UI
         private void FrmServicios_Load(object sender, EventArgs e)
         {
             CargarServicios();
+        }
 
+        // Llena cmbSubtipo segun el tipo elegido en cmbTipo.
+        // Los valores deben coincidir exactamente con el CHECK de la base de datos.
+        private void cmbTipo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            cmbSubtipo.Items.Clear();
+
+            switch (cmbTipo.Text)
+            {
+                case "Cabello":
+                    cmbSubtipo.Items.AddRange(new object[] { "Corte", "Tinte", "Completo" });
+                    break;
+                case "Uñas":
+                    cmbSubtipo.Items.AddRange(new object[] { "Manicura", "Pedicura", "Completo" });
+                    break;
+                case "Spa":
+                    cmbSubtipo.Items.AddRange(new object[] { "Sencillo", "Premium", "Profesional" });
+                    break;
+            }
+
+            cmbSubtipo.SelectedIndex = -1;
         }
 
         private void btnAgregar_Click(object sender, EventArgs e)
         {
-            if (cmbTipo.SelectedIndex == -1 || txtPrecio.Text == "" || txtDuracion.Text == "")
+            if (cmbTipo.SelectedIndex == -1 || cmbSubtipo.SelectedIndex == -1 || txtPrecio.Text == "" || txtDuracion.Text == "")
             {
-                MessageBox.Show("Debe llenar los datos requeridos");
+                MessageBox.Show("Debe llenar los datos requeridos, incluyendo el subtipo");
                 return;
             }
             Servicios servicio = new Servicios();
             servicio.Tipo_DeServicio = cmbTipo.Text;
+            servicio.Subtipo_DeServicio = cmbSubtipo.Text;
             servicio.Precio = Convert.ToDecimal(txtPrecio.Text);
             servicio.DuracionMinutos = Convert.ToInt32(txtDuracion.Text);
 
             MessageBox.Show(serviciosBLL.Registrar(servicio));
 
-            CargarServicios();  Limpiar();
+            CargarServicios(); Limpiar();
         }
 
         private void btnEditar_Click(object sender, EventArgs e)
         {
-            if (cmbTipo.SelectedIndex == -1 || txtPrecio.Text == "" || txtDuracion.Text == "")
+            if (cmbTipo.SelectedIndex == -1 || cmbSubtipo.SelectedIndex == -1 || txtPrecio.Text == "" || txtDuracion.Text == "")
             {
-                MessageBox.Show("Seleccione la apocion que desea editar");
+                MessageBox.Show("Seleccione la opcion que desea editar, incluyendo el subtipo");
                 return;
             }
             if (dgvServicios.CurrentRow == null)
@@ -65,12 +90,13 @@ namespace SistemaAgenda.UI
             Servicios servicio = new Servicios();
             servicio.Id = Convert.ToInt32(dgvServicios.CurrentRow.Cells["Id"].Value);
             servicio.Tipo_DeServicio = cmbTipo.Text;
+            servicio.Subtipo_DeServicio = cmbSubtipo.Text;
             servicio.Precio = Convert.ToDecimal(txtPrecio.Text);
             servicio.DuracionMinutos = Convert.ToInt32(txtDuracion.Text);
 
             MessageBox.Show(serviciosBLL.Actualizar(servicio));
 
-            CargarServicios();  Limpiar();
+            CargarServicios(); Limpiar();
         }
         private void btnEliminar_Click(object sender, EventArgs e)
         {
@@ -79,6 +105,7 @@ namespace SistemaAgenda.UI
                 int id = Convert.ToInt32(dgvServicios.CurrentRow.Cells["Id"].Value);
                 MessageBox.Show(serviciosBLL.Eliminar(id));
                 CargarServicios();
+                Limpiar();
             }
             else
             {
@@ -88,9 +115,9 @@ namespace SistemaAgenda.UI
 
         private void btnCalcular_Click(object sender, EventArgs e)
         {
-            if (cmbTipo.SelectedIndex == -1 || txtPrecio.Text == "" || txtDuracion.Text == "")
+            if (cmbTipo.SelectedIndex == -1 || cmbSubtipo.SelectedIndex == -1 || txtPrecio.Text == "" || txtDuracion.Text == "")
             {
-                MessageBox.Show("Complete tipo, precio y duración primero" +
+                MessageBox.Show("Complete tipo, subtipo, precio y duración primero" +
                     " o seleccione el servicio que desea calcular");
                 return;
             }
@@ -98,6 +125,7 @@ namespace SistemaAgenda.UI
             Servicios baseServicio = new Servicios
             {
                 Tipo_DeServicio = cmbTipo.Text,
+                Subtipo_DeServicio = cmbSubtipo.Text,
                 Precio = Convert.ToDecimal(txtPrecio.Text),
                 DuracionMinutos = Convert.ToInt32(txtDuracion.Text)
             };
@@ -112,6 +140,15 @@ namespace SistemaAgenda.UI
             if (e.RowIndex >= 0)
             {
                 cmbTipo.Text = dgvServicios.CurrentRow.Cells["Tipo_DeServicio"].Value.ToString();
+
+                // Dispara cmbTipo_SelectedIndexChanged para llenar las opciones de subtipo
+                // correctas antes de intentar seleccionar el valor guardado.
+                cmbTipo_SelectedIndexChanged(sender, e);
+
+                var valorSubtipo = dgvServicios.CurrentRow.Cells["Subtipo_DeServicio"].Value?.ToString();
+                if (!string.IsNullOrEmpty(valorSubtipo) && cmbSubtipo.Items.Contains(valorSubtipo))
+                    cmbSubtipo.Text = valorSubtipo;
+
                 txtPrecio.Text = dgvServicios.CurrentRow.Cells["Precio"].Value.ToString();
                 txtDuracion.Text = dgvServicios.CurrentRow.Cells["DuracionMinutos"].Value.ToString();
             }

@@ -42,9 +42,38 @@ namespace SistemaAgenda.Negocios
         public Gestion_DeServicios(Servicios s) : base(s) { }
 
         // Implementación de los métodos abstractos
-        public override decimal ServicioCabello() => _servicio.Precio * 1.10m;
-        public override decimal ServicioUnas() => _servicio.Precio;
-        public override decimal ServicioSpa()=> _servicio.Precio * 1.15m;
+        //Cada subtipo dentro del tipo tiene su propio multiplicador sobre el precio base,
+
+        public override decimal ServicioCabello()
+        {
+            switch (_servicio.Subtipo_DeServicio)
+            {
+                case "Corte": return _servicio.Precio * 1.00m;
+                case "Tinte": return _servicio.Precio * 1.30m;
+                case "Completo": return _servicio.Precio * 1.50m;
+                default: return _servicio.Precio * 1.10m; // valor anterior, por si el subtipo viniera vacío
+            }
+        }
+        public override decimal ServicioUnas()
+        {
+            switch (_servicio.Subtipo_DeServicio)
+            {
+                case "Manicura": return _servicio.Precio * 1.00m;
+                case "Pedicura": return _servicio.Precio * 1.10m;
+                case "Completo": return _servicio.Precio * 1.80m;
+                default: return _servicio.Precio;
+            }
+        }
+        public override decimal ServicioSpa()
+        {
+            switch (_servicio.Subtipo_DeServicio)
+            {
+                case "Sencillo": return _servicio.Precio * 1.00m;
+                case "Premium": return _servicio.Precio * 1.30m;
+                case "Profesional": return _servicio.Precio * 1.50m;
+                default: return _servicio.Precio * 1.15m; // valor anterior, por si el subtipo viniera vacío
+            }
+        }
 
         // Sobreescritura: calcula precio final según tipo de servicio
         public override decimal CalcularPrecio()

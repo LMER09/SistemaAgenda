@@ -30,10 +30,12 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmServicios));
             lblTipo = new Label();
+            lblSubtipo = new Label();
             lblPrecio = new Label();
             lblDuracion = new Label();
             lblResultado = new Label();
             cmbTipo = new ComboBox();
+            cmbSubtipo = new ComboBox();
             txtPrecio = new TextBox();
             txtDuracion = new TextBox();
             btnAgregar = new Button();
@@ -57,22 +59,31 @@
             lblTipo.TabIndex = 0;
             lblTipo.Text = "Tipo de Servicio:";
             // 
+            // lblSubtipo
+            // 
+            lblSubtipo.AutoSize = true;
+            lblSubtipo.Location = new Point(40, 142);
+            lblSubtipo.Name = "lblSubtipo";
+            lblSubtipo.Size = new Size(90, 20);
+            lblSubtipo.TabIndex = 1;
+            lblSubtipo.Text = "Subtipo:";
+            // 
             // lblPrecio
             // 
             lblPrecio.AutoSize = true;
-            lblPrecio.Location = new Point(40, 142);
+            lblPrecio.Location = new Point(40, 175);
             lblPrecio.Name = "lblPrecio";
             lblPrecio.Size = new Size(56, 20);
-            lblPrecio.TabIndex = 1;
+            lblPrecio.TabIndex = 2;
             lblPrecio.Text = "Precio:";
             // 
             // lblDuracion
             // 
             lblDuracion.AutoSize = true;
-            lblDuracion.Location = new Point(40, 175);
+            lblDuracion.Location = new Point(40, 208);
             lblDuracion.Name = "lblDuracion";
             lblDuracion.Size = new Size(116, 20);
-            lblDuracion.TabIndex = 2;
+            lblDuracion.TabIndex = 3;
             lblDuracion.Text = "Duración (min):";
             // 
             // lblResultado
@@ -80,10 +91,10 @@
             lblResultado.AutoSize = true;
             lblResultado.Font = new Font("Segoe UI Black", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblResultado.ForeColor = Color.DeepPink;
-            lblResultado.Location = new Point(40, 227);
+            lblResultado.Location = new Point(40, 260);
             lblResultado.Name = "lblResultado";
             lblResultado.Size = new Size(156, 20);
-            lblResultado.TabIndex = 3;
+            lblResultado.TabIndex = 4;
             lblResultado.Text = "Calculo del servicio:";
             // 
             // cmbTipo
@@ -94,26 +105,36 @@
             cmbTipo.Location = new Point(179, 101);
             cmbTipo.Name = "cmbTipo";
             cmbTipo.Size = new Size(178, 28);
-            cmbTipo.TabIndex = 4;
+            cmbTipo.TabIndex = 5;
+            cmbTipo.SelectedIndexChanged += cmbTipo_SelectedIndexChanged;
+            // 
+            // cmbSubtipo
+            // 
+            cmbSubtipo.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbSubtipo.FormattingEnabled = true;
+            cmbSubtipo.Location = new Point(179, 135);
+            cmbSubtipo.Name = "cmbSubtipo";
+            cmbSubtipo.Size = new Size(178, 28);
+            cmbSubtipo.TabIndex = 6;
             // 
             // txtPrecio
             // 
             txtPrecio.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtPrecio.Location = new Point(179, 135);
+            txtPrecio.Location = new Point(179, 168);
             txtPrecio.Name = "txtPrecio";
             txtPrecio.PlaceholderText = "Ej: 300";
             txtPrecio.Size = new Size(178, 27);
-            txtPrecio.TabIndex = 5;
+            txtPrecio.TabIndex = 7;
             txtPrecio.KeyPress += txtPrecio_KeyPress;
             // 
             // txtDuracion
             // 
             txtDuracion.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtDuracion.Location = new Point(179, 168);
+            txtDuracion.Location = new Point(179, 201);
             txtDuracion.Name = "txtDuracion";
             txtDuracion.PlaceholderText = "Ej: 60";
             txtDuracion.Size = new Size(178, 27);
-            txtDuracion.TabIndex = 6;
+            txtDuracion.TabIndex = 8;
             txtDuracion.KeyPress += txtDuracion_KeyPress;
             // 
             // btnAgregar
@@ -121,10 +142,10 @@
             btnAgregar.BackColor = Color.DeepPink;
             btnAgregar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnAgregar.ForeColor = Color.White;
-            btnAgregar.Location = new Point(40, 290);
+            btnAgregar.Location = new Point(40, 323);
             btnAgregar.Name = "btnAgregar";
             btnAgregar.Size = new Size(164, 43);
-            btnAgregar.TabIndex = 7;
+            btnAgregar.TabIndex = 9;
             btnAgregar.Text = "➕Agregar";
             btnAgregar.UseVisualStyleBackColor = false;
             btnAgregar.Click += btnAgregar_Click;
@@ -134,10 +155,10 @@
             btnEditar.BackColor = Color.DeepPink;
             btnEditar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnEditar.ForeColor = Color.White;
-            btnEditar.Location = new Point(40, 339);
+            btnEditar.Location = new Point(40, 372);
             btnEditar.Name = "btnEditar";
             btnEditar.Size = new Size(164, 43);
-            btnEditar.TabIndex = 8;
+            btnEditar.TabIndex = 10;
             btnEditar.Text = "✏️ Editar";
             btnEditar.UseVisualStyleBackColor = false;
             btnEditar.Click += btnEditar_Click;
@@ -147,10 +168,10 @@
             btnEliminar.BackColor = Color.DeepPink;
             btnEliminar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnEliminar.ForeColor = Color.White;
-            btnEliminar.Location = new Point(226, 339);
+            btnEliminar.Location = new Point(226, 372);
             btnEliminar.Name = "btnEliminar";
             btnEliminar.Size = new Size(164, 43);
-            btnEliminar.TabIndex = 9;
+            btnEliminar.TabIndex = 11;
             btnEliminar.Text = "🗑️ Eliminar";
             btnEliminar.UseVisualStyleBackColor = false;
             btnEliminar.Click += btnEliminar_Click;
@@ -160,10 +181,10 @@
             btnCalcular.BackColor = Color.DeepPink;
             btnCalcular.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnCalcular.ForeColor = Color.White;
-            btnCalcular.Location = new Point(226, 290);
+            btnCalcular.Location = new Point(226, 323);
             btnCalcular.Name = "btnCalcular";
             btnCalcular.Size = new Size(164, 43);
-            btnCalcular.TabIndex = 10;
+            btnCalcular.TabIndex = 12;
             btnCalcular.Text = "💲 Calcular";
             btnCalcular.UseVisualStyleBackColor = false;
             btnCalcular.Click += btnCalcular_Click;
@@ -173,12 +194,12 @@
             dgvServicios.AllowUserToAddRows = false;
             dgvServicios.BackgroundColor = Color.LavenderBlush;
             dgvServicios.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvServicios.Location = new Point(40, 400);
+            dgvServicios.Location = new Point(40, 433);
             dgvServicios.Name = "dgvServicios";
             dgvServicios.ReadOnly = true;
             dgvServicios.RowHeadersWidth = 51;
             dgvServicios.Size = new Size(554, 182);
-            dgvServicios.TabIndex = 11;
+            dgvServicios.TabIndex = 13;
             dgvServicios.CellClick += dgvServicios_CellClick;
             // 
             // lblElijaS
@@ -188,7 +209,7 @@
             lblElijaS.Location = new Point(40, 39);
             lblElijaS.Name = "lblElijaS";
             lblElijaS.Size = new Size(365, 23);
-            lblElijaS.TabIndex = 12;
+            lblElijaS.TabIndex = 14;
             lblElijaS.Text = "Elija un servicio, precio y duracion del servicio:";
             // 
             // btnLimpiar
@@ -196,10 +217,10 @@
             btnLimpiar.BackColor = Color.DeepPink;
             btnLimpiar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnLimpiar.ForeColor = Color.White;
-            btnLimpiar.Location = new Point(409, 290);
+            btnLimpiar.Location = new Point(409, 323);
             btnLimpiar.Name = "btnLimpiar";
             btnLimpiar.Size = new Size(164, 43);
-            btnLimpiar.TabIndex = 13;
+            btnLimpiar.TabIndex = 15;
             btnLimpiar.Text = "\U0001f9f9Limpiar";
             btnLimpiar.UseVisualStyleBackColor = false;
             btnLimpiar.Click += btnLimpiar_Click;
@@ -220,7 +241,7 @@
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLightLight;
-            ClientSize = new Size(655, 594);
+            ClientSize = new Size(655, 627);
             Controls.Add(picLogo);
             Controls.Add(btnLimpiar);
             Controls.Add(lblElijaS);
@@ -231,10 +252,12 @@
             Controls.Add(btnAgregar);
             Controls.Add(txtDuracion);
             Controls.Add(txtPrecio);
+            Controls.Add(cmbSubtipo);
             Controls.Add(cmbTipo);
             Controls.Add(lblResultado);
             Controls.Add(lblDuracion);
             Controls.Add(lblPrecio);
+            Controls.Add(lblSubtipo);
             Controls.Add(lblTipo);
             Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             Name = "frmServicios";
@@ -249,10 +272,12 @@
         #endregion
 
         private Label lblTipo;
+        private Label lblSubtipo;
         private Label lblPrecio;
         private Label lblDuracion;
         private Label lblResultado;
         private ComboBox cmbTipo;
+        private ComboBox cmbSubtipo;
         private TextBox txtPrecio;
         private TextBox txtDuracion;
         private Button btnAgregar;
