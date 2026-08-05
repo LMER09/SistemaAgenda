@@ -1,16 +1,9 @@
 ﻿namespace SistemaAgenda.UI
 {
-    partial class frmConsultarClientes
+    partial class frmConsultarEstilistas
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -20,28 +13,24 @@
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             lblBuscar = new Label();
             txtBuscar = new TextBox();
             btnBuscar = new Button();
             btnCerrar = new Button();
-            dgvClientes = new DataGridView();
+            dgvEstilistas = new DataGridView();
             btnEditar = new Button();
             btnEliminar = new Button();
-            ((System.ComponentModel.ISupportInitialize)dgvClientes).BeginInit();
+            lblHorarioTitulo = new Label();
+            lblHorarioDetalle = new Label();
+            ((System.ComponentModel.ISupportInitialize)dgvEstilistas).BeginInit();
             SuspendLayout();
             // 
             // lblBuscar
             // 
             lblBuscar.AutoSize = true;
-            lblBuscar.Location = new Point(35, 46);
+            lblBuscar.Location = new Point(45, 38);
             lblBuscar.Name = "lblBuscar";
             lblBuscar.Size = new Size(59, 20);
             lblBuscar.TabIndex = 0;
@@ -50,17 +39,17 @@
             // txtBuscar
             // 
             txtBuscar.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtBuscar.Location = new Point(117, 39);
+            txtBuscar.Location = new Point(107, 34);
             txtBuscar.Name = "txtBuscar";
-            txtBuscar.PlaceholderText = "Nombre, apellido o cédula";
-            txtBuscar.Size = new Size(277, 27);
+            txtBuscar.PlaceholderText = "Nombre, apellido, especialidad o cédula";
+            txtBuscar.Size = new Size(280, 27);
             txtBuscar.TabIndex = 1;
             // 
             // btnBuscar
             // 
             btnBuscar.BackColor = Color.DeepPink;
             btnBuscar.ForeColor = Color.White;
-            btnBuscar.Location = new Point(400, 30);
+            btnBuscar.Location = new Point(411, 25);
             btnBuscar.Name = "btnBuscar";
             btnBuscar.Size = new Size(119, 45);
             btnBuscar.TabIndex = 2;
@@ -72,7 +61,7 @@
             // 
             btnCerrar.BackColor = Color.DeepPink;
             btnCerrar.ForeColor = Color.White;
-            btnCerrar.Location = new Point(525, 30);
+            btnCerrar.Location = new Point(548, 25);
             btnCerrar.Name = "btnCerrar";
             btnCerrar.Size = new Size(119, 45);
             btnCerrar.TabIndex = 3;
@@ -80,23 +69,24 @@
             btnCerrar.UseVisualStyleBackColor = false;
             btnCerrar.Click += btnCerrar_Click;
             // 
-            // dgvClientes
+            // dgvEstilistas
             // 
-            dgvClientes.BackgroundColor = Color.LavenderBlush;
-            dgvClientes.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvClientes.Location = new Point(35, 82);
-            dgvClientes.Name = "dgvClientes";
-            dgvClientes.ReadOnly = true;
-            dgvClientes.RowHeadersWidth = 51;
-            dgvClientes.Size = new Size(609, 320);
-            dgvClientes.TabIndex = 4;
+            dgvEstilistas.BackgroundColor = Color.LavenderBlush;
+            dgvEstilistas.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvEstilistas.Location = new Point(38, 84);
+            dgvEstilistas.Name = "dgvEstilistas";
+            dgvEstilistas.ReadOnly = true;
+            dgvEstilistas.RowHeadersWidth = 51;
+            dgvEstilistas.Size = new Size(629, 260);
+            dgvEstilistas.TabIndex = 4;
+            dgvEstilistas.CellClick += dgvEstilistas_CellClick;
             // 
             // btnEditar
             // 
             btnEditar.BackColor = Color.DeepPink;
             btnEditar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnEditar.ForeColor = Color.White;
-            btnEditar.Location = new Point(35, 417);
+            btnEditar.Location = new Point(38, 418);
             btnEditar.Name = "btnEditar";
             btnEditar.Size = new Size(150, 43);
             btnEditar.TabIndex = 5;
@@ -109,7 +99,7 @@
             btnEliminar.BackColor = Color.DeepPink;
             btnEliminar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnEliminar.ForeColor = Color.White;
-            btnEliminar.Location = new Point(197, 417);
+            btnEliminar.Location = new Point(200, 418);
             btnEliminar.Name = "btnEliminar";
             btnEliminar.Size = new Size(150, 43);
             btnEliminar.TabIndex = 6;
@@ -117,36 +107,62 @@
             btnEliminar.UseVisualStyleBackColor = false;
             btnEliminar.Click += btnEliminar_Click;
             // 
-            // frmConsultarClientes
+            // lblHorarioTitulo
+            // 
+            lblHorarioTitulo.AutoSize = true;
+            lblHorarioTitulo.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblHorarioTitulo.Location = new Point(38, 353);
+            lblHorarioTitulo.Name = "lblHorarioTitulo";
+            lblHorarioTitulo.Size = new Size(124, 21);
+            lblHorarioTitulo.TabIndex = 7;
+            lblHorarioTitulo.Text = "Horario laboral:";
+            // 
+            // lblHorarioDetalle
+            // 
+            lblHorarioDetalle.AutoSize = true;
+            lblHorarioDetalle.Font = new Font("Segoe UI", 9.5F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            lblHorarioDetalle.ForeColor = Color.DimGray;
+            lblHorarioDetalle.Location = new Point(38, 378);
+            lblHorarioDetalle.MaximumSize = new Size(629, 0);
+            lblHorarioDetalle.Name = "lblHorarioDetalle";
+            lblHorarioDetalle.Size = new Size(300, 21);
+            lblHorarioDetalle.TabIndex = 8;
+            lblHorarioDetalle.Text = "Seleccione un estilista para ver su horario.";
+            // 
+            // frmConsultarEstilistas
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLightLight;
-            ClientSize = new Size(685, 472);
+            ClientSize = new Size(705, 486);
+            Controls.Add(lblHorarioDetalle);
+            Controls.Add(lblHorarioTitulo);
             Controls.Add(btnEliminar);
             Controls.Add(btnEditar);
-            Controls.Add(dgvClientes);
+            Controls.Add(dgvEstilistas);
             Controls.Add(btnCerrar);
             Controls.Add(btnBuscar);
             Controls.Add(txtBuscar);
             Controls.Add(lblBuscar);
             Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             FormBorderStyle = FormBorderStyle.FixedSingle;
-            Name = "frmConsultarClientes";
-            Text = "Consulta de Clientes";
-            Load += frmConsultarClientes_Load;
-            ((System.ComponentModel.ISupportInitialize)dgvClientes).EndInit();
+            Name = "frmConsultarEstilistas";
+            Text = "Consulta de Estilistas";
+            Load += frmConsultarEstilistas_Load;
+            ((System.ComponentModel.ISupportInitialize)dgvEstilistas).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
 
-        #endregion
+
         private Label lblBuscar;
         private TextBox txtBuscar;
         private Button btnBuscar;
         private Button btnCerrar;
-        private DataGridView dgvClientes;
+        private DataGridView dgvEstilistas;
         private Button btnEditar;
         private Button btnEliminar;
+        private Label lblHorarioTitulo;
+        private Label lblHorarioDetalle;
     }
 }

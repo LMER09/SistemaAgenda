@@ -14,19 +14,12 @@ namespace SistemaAgenda.UI
 
         private void CargarPagos()
         {
-            var pagos = pagosBLL.ObtenerTodos();
+            // Solo los pagos de HOY, no todos los que ha tenido el sistema.
+            var pagosHoy = pagosBLL.ObtenerPorFecha(DateTime.Today);
 
             dgvPagos.DataSource = null;
-            // Muestra los pagos en la tabla
-            dgvPagos.DataSource = pagos;
-
-            decimal total = 0;
-
-            for (int i = 0; i < pagos.Count; i++)
-            {
-                total = total + pagos[i].Monto;
-            }
-
+            dgvPagos.DataSource = pagosHoy;
+            decimal total = pagosBLL.ObtenerTotal(pagosHoy);
             lblTotal.Text = $"RD$ {total:F2}";
         }
 
@@ -37,18 +30,14 @@ namespace SistemaAgenda.UI
 
         private void btnCorteDia_Click(object sender, EventArgs e)
         {
-            List<Pagos> pagos = pagosBLL.ObtenerTodos();
+            var pagosHoy = pagosBLL.ObtenerPorFecha(DateTime.Today);
 
-            decimal total = 0;
-
-            for (int i = 0; i < pagos.Count; i++)
-            {
-                total += pagos[i].Monto;
-            }
-
-            CorteDia corte = new CorteDia(total);
+            CorteDia corte = new CorteDia(DateTime.Today, pagosHoy);
             corte.Cerrar();
-            MessageBox.Show($"Corte del día generado.\nTotal: RD$ {total:F2}", "Corte del día");
+
+            MessageBox.Show(
+                $"Corte del día generado.\nTotal: RD$ {corte.TotalDelDia:F2}\nPagos: {corte.CantidadDePagos}",
+                "Corte del día");
         }
     }
 }

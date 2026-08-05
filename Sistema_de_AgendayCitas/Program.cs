@@ -13,7 +13,14 @@ namespace Sistema_de_AgendayCitas
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-            Application.Run(new FrmLogin());
+
+            Application.ThreadException += (sender, e) =>
+            {
+                MessageBox.Show("Ocurrió un error inesperado:\n" + e.Exception.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            };
+            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+            Application.Run(new frmPrincipal());
         }
     }
 }

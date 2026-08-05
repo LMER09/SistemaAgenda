@@ -5,153 +5,185 @@ namespace SistemaAgenda.UI
 {
     public partial class frmRegistrarClientes : Form
     {
-
         private ClientesBLL clientesBLL = new ClientesBLL();
+        private bool habilitado = false;
+
+        private Clientes? _clienteEditando = null;
+        private bool ModoEdicion => _clienteEditando != null;
         public frmRegistrarClientes()
         {
             InitializeComponent();
-
             HabilitarControles(false);
+        }
+
+        public frmRegistrarClientes(Clientes cliente) : this()
+        {
+            _clienteEditando = cliente;
         }
 
         private void HabilitarControles(bool habilitar)
         {
+            habilitado = habilitar;
+
             txtNombre.Enabled = habilitar;
             txtApellido.Enabled = habilitar;
             txtTelefono.Enabled = habilitar;
             txtCorreo.Enabled = habilitar;
             txtCedula.Enabled = habilitar;
-
-
             btnAgregar.Enabled = habilitar;
-            btnEditar.Enabled = habilitar;
-            btnEliminar.Enabled = habilitar;
-            btnLimpiar.Enabled = habilitar;
 
+            if (habilitar)
+            {
+                btnHabilitar.Text = "🔒 Deshabilitar campos";
+                btnHabilitar.BackColor = Color.Gray;
+                lblResultado.Text = ModoEdicion
+                    ? "Modifique los datos y presione \"Guardar cambios\"."
+                    : "Los campos están habilitados. Puede ingresar los datos.";
+                lblResultado.ForeColor = Color.DarkGreen;
+                txtNombre.Focus();
+            }
+            else
+            {
+                btnHabilitar.Text = "🔓 Habilitar campos";
+                btnHabilitar.BackColor = Color.DeepPink;
+                lblResultado.Text = "Los campos están deshabilitados. Presione \"Habilitar campos\" para ingresar un nuevo cliente.";
+                lblResultado.ForeColor = Color.DimGray;
+            }
         }
+
+        private void btnHabilitar_Click(object sender, EventArgs e)
+        {
+            HabilitarControles(!habilitado);
+        }
+
+        private void btnCerrar_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
         private void Limpiar()
         {
             txtNombre.Clear();
             txtApellido.Clear();
             txtTelefono.Clear();
             txtCorreo.Clear();
-            txtNombre.Focus();
             txtCedula.Clear();
-        }
-
-        private void CargarClientes()
-        {
-            dgvClientes.DataSource = null;
-            dgvClientes.DataSource = clientesBLL.ObtenerTodos();
-            // Ajusta automáticamente el ancho de todas las columnas
-            dgvClientes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
-            // Asigna un ancho mayor a la columna Cédula
-            dgvClientes.Columns["Cedula"].FillWeight = 120;
-            // Ocultar la columna Id
-            dgvClientes.Columns["Id"].Visible = false;
-
-            // Ajustar el ancho de las columnas
-            dgvClientes.Columns["Nombre"].Width = 110;
-            dgvClientes.Columns["Apellido"].Width = 110;
-            dgvClientes.Columns["Telefono"].Width = 110;
-            dgvClientes.Columns["Correo"].Width = 170;
-            dgvClientes.Columns["Cedula"].Width = 120;
         }
 
         private void frmRegistrarClientes_Load(object sender, EventArgs e)
         {
-            HabilitarControles(false);
-            CargarClientes();
+            if (ModoEdicion)
+            {
+                // Cambia la pantalla a "modo editar": titulo, boton, y los campos ya cargados y habilitados de una vez.
+                this.Text = "Editar Cliente";
+                lblIngrese.Text = "Editando cliente:";
+                btnAgregar.Text = "💾 Guardar cambios";
+
+                txtNombre.Text = _clienteEditando!.Nombre;
+                txtApellido.Text = _clienteEditando.Apellido;
+                txtTelefono.Text = _clienteEditando.Telefono;
+                txtCorreo.Text = _clienteEditando.Correo;
+                txtCedula.Text = _clienteEditando.Cedula;
+
+                HabilitarControles(true);
+            }
+            else
+            {
+                HabilitarControles(false);
+            }
+        }
+
+        // Valida que los datos del cliente sean correctos antes de guardar
+        private bool ValidarDatos()
+        {
+            if (string.IsNullOrWhiteSpace(txtNombre.Text) ||
+                string.IsNullOrWhiteSpace(txtApellido.Text) ||
+                string.IsNullOrWhiteSpace(txtTelefono.Text) ||
+                string.IsNullOrWhiteSpace(txtCorreo.Text))
+            {
+                MostrarResultado("Debe completar todos los campos.", esExito: false);
+                return false;
+            }
+
+            if (txtTelefono.Text.Length != 12)
+            {
+                MostrarResultado("Ingrese un teléfono válido (000-000-0000).", esExito: false);
+                txtTelefono.Focus();
+                return false;
+            }
+
+            if (!string.IsNullOrWhiteSpace(txtCedula.Text) && txtCedula.Text.Length != 13)
+            {
+                MostrarResultado("Si ingresa cédula, debe tener el formato completo (000-0000000-0).", esExito: false);
+                txtCedula.Focus();
+                return false;
+            }
+
+            if (!txtCorreo.Text.Contains("@") || !txtCorreo.Text.Contains("."))
+            {
+                MostrarResultado("Ingrese un correo válido.", esExito: false);
+                txtCorreo.Focus();
+                return false;
+            }
+
+            return true;
+        }
+        private void MostrarResultado(string mensaje, bool esExito)
+        {
+            lblResultado.Text = mensaje;
+            lblResultado.ForeColor = esExito ? Color.DarkGreen : Color.Firebrick;
         }
 
         private void btnAgregar_Click(object sender, EventArgs e)
         {
-            Clientes cliente = new Clientes();
-
-            cliente.Nombre = txtNombre.Text;
-            cliente.Apellido = txtApellido.Text;
-            cliente.Telefono = txtTelefono.Text;
-            cliente.Correo = txtCorreo.Text;
-            cliente.Cedula = txtCedula.Text;
-
-            // Validar que todos los campos estén llenos
-            if (string.IsNullOrWhiteSpace(txtNombre.Text) ||
-                string.IsNullOrWhiteSpace(txtApellido.Text) ||
-                string.IsNullOrWhiteSpace(txtTelefono.Text) ||
-                string.IsNullOrWhiteSpace(txtCorreo.Text) ||
-                string.IsNullOrWhiteSpace(txtCedula.Text))
-            {
-                MessageBox.Show("Debe completar todos los campos.",
-                                "Campos obligatorios",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Warning);
-                return;
-            }
-
-            MessageBox.Show(clientesBLL.Registrar(cliente));
-            // Valida los datos antes de registrar
             if (!ValidarDatos())
                 return;
 
-            MessageBox.Show(clientesBLL.Registrar(cliente));
-            CargarClientes(); Limpiar();
-        }
-
-        private void btnEditar_Click(object sender, EventArgs e)
-        {
-            Clientes cliente = new Clientes();
-
-            if (dgvClientes.CurrentRow == null)
+            if (ModoEdicion)
             {
-                MessageBox.Show("Seleccione un cliente.");
+                Clientes cliente = new Clientes
+                {
+                    Id = _clienteEditando!.Id,
+                    Nombre = txtNombre.Text,
+                    Apellido = txtApellido.Text,
+                    Telefono = txtTelefono.Text,
+                    Correo = txtCorreo.Text,
+                    Cedula = txtCedula.Text
+                };
+
+                string resultadoEdicion = clientesBLL.Actualizar(cliente);
+                bool exitoEdicion = resultadoEdicion.StartsWith("OK");
+
+                if (exitoEdicion)
+                {
+                    MessageBox.Show("Cliente actualizado exitosamente.");
+                    Close();
+                }
+                else
+                {
+                    MostrarResultado(resultadoEdicion, esExito: false);
+                }
                 return;
             }
 
-            cliente.Id = Convert.ToInt32(dgvClientes.CurrentRow.Cells["Id"].Value);
-            cliente.Nombre = txtNombre.Text;
-            cliente.Apellido = txtApellido.Text;
-            cliente.Telefono = txtTelefono.Text;
-            cliente.Correo = txtCorreo.Text;
-            cliente.Cedula = txtCedula.Text;
-
-            MessageBox.Show(clientesBLL.Actualizar(cliente));
-
-            CargarClientes(); Limpiar();
-        }
-        private void btnEliminar_Click(object sender, EventArgs e)
-        {
-            if (dgvClientes.CurrentRow != null)
+            Clientes nuevoCliente = new Clientes
             {
-                int id = Convert.ToInt32(dgvClientes.CurrentRow.Cells["Id"].Value);
+                Nombre = txtNombre.Text,
+                Apellido = txtApellido.Text,
+                Telefono = txtTelefono.Text,
+                Correo = txtCorreo.Text,
+                Cedula = txtCedula.Text
+            };
 
-                MessageBox.Show(clientesBLL.Eliminar(id));
+            string resultado = clientesBLL.Registrar(nuevoCliente);
+            bool exito = resultado.StartsWith("OK");
 
-                CargarClientes(); Limpiar();
+            MostrarResultado(exito ? "Cliente registrado exitosamente." : resultado, exito);
 
-                DialogResult respuesta = MessageBox.Show(
-              "¿Desea eliminar este cliente?",
-               "Confirmar",
-                MessageBoxButtons.YesNo,
-                 MessageBoxIcon.Question);
-
-                if (respuesta == DialogResult.No)
-                    return;
-            }
-            else
+            if (exito)
             {
-                MessageBox.Show("Seleccione un cliente.");
-            }
-        }
-        private void dgvClientes_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0)
-            {
-                txtNombre.Text = dgvClientes.CurrentRow.Cells["Nombre"].Value.ToString();
-                txtApellido.Text = dgvClientes.CurrentRow.Cells["Apellido"].Value.ToString();
-                txtTelefono.Text = dgvClientes.CurrentRow.Cells["Telefono"].Value.ToString();
-                txtCorreo.Text = dgvClientes.CurrentRow.Cells["Correo"].Value.ToString();
-                txtCedula.Text = dgvClientes.CurrentRow.Cells["Cedula"].Value?.ToString() ?? "";
+                Limpiar();
+                txtNombre.Focus();
             }
         }
 
@@ -166,7 +198,6 @@ namespace SistemaAgenda.UI
             if (!char.IsLetter(e.KeyChar) && e.KeyChar != ' ' && e.KeyChar != (char)Keys.Back)
                 e.Handled = true;
         }
-
 
         // Da formato automáticamente al teléfono: 000-000-0000
         private void txtTelefono_TextChanged(object sender, EventArgs e)
@@ -185,92 +216,10 @@ namespace SistemaAgenda.UI
             txtTelefono.Text = texto;
             txtTelefono.SelectionStart = txtTelefono.Text.Length;
         }
-        // Permite únicamente números y la tecla Retroceso
         private void txtTelefono_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!char.IsDigit(e.KeyChar) &&
-                e.KeyChar != (char)Keys.Back)
-            {
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back)
                 e.Handled = true;
-            }
-        }
-        private void btnLimpiar_Click(object sender, EventArgs e)
-        {
-            Limpiar();
-        }
-        // Valida que los datos del cliente sean correctos antes de guardar o editar
-        private bool ValidarDatos()
-        {
-            // Verifica que todos los campos estén completos
-            if (string.IsNullOrWhiteSpace(txtNombre.Text) ||
-                string.IsNullOrWhiteSpace(txtApellido.Text) ||
-                string.IsNullOrWhiteSpace(txtTelefono.Text) ||
-                string.IsNullOrWhiteSpace(txtCorreo.Text) ||
-                string.IsNullOrWhiteSpace(txtCedula.Text))
-            {
-                MessageBox.Show("Debe completar todos los campos.",
-                                "Campos obligatorios",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Warning);
-                return false;
-            }
-
-            // Verifica que el teléfono tenga el formato completo (000-000-0000)
-            if (txtTelefono.Text.Length != 12)
-            {
-                MessageBox.Show("Ingrese un teléfono válido.",
-                                "Teléfono",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Warning);
-
-                txtTelefono.Focus();
-                return false;
-            }
-
-            // Verifica que la cédula tenga el formato completo (000-0000000-0)
-            if (txtCedula.Text.Length != 13)
-            {
-                MessageBox.Show("Ingrese una cédula válida.",
-                                "Cédula",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Warning);
-
-                txtCedula.Focus();
-                return false;
-            }
-
-            // Verifica que el correo tenga un formato básico válido
-            if (!txtCorreo.Text.Contains("@") || !txtCorreo.Text.Contains("."))
-            {
-                MessageBox.Show("Ingrese un correo válido.",
-                                "Correo",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Warning);
-
-                txtCorreo.Focus();
-                return false;
-            }
-
-            return true;
-        }
-        
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnNuevo_Click(object sender, EventArgs e)
-        {
-            HabilitarControles(true);
-
-            txtNombre.Clear();
-            txtApellido.Clear();
-            txtTelefono.Clear();
-            txtCorreo.Clear();
-            txtCedula.Clear();
-
-            txtNombre.Focus();
         }
 
         // Formato automático de cédula: 000-0000000-0
@@ -290,29 +239,10 @@ namespace SistemaAgenda.UI
             txtCedula.Text = texto;
             txtCedula.SelectionStart = txtCedula.Text.Length;
         }
-        // Permite únicamente números y la tecla Retroceso
-        // Solo permite escribir números y la tecla Retroceso (Backspace)
         private void txtCedula_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!char.IsDigit(e.KeyChar) &&
-                e.KeyChar != (char)Keys.Back)
-            {
-                e.Handled = true; // Bloquea cualquier letra o símbolo
-            }
-        }
-
-        private void txtCorreo_TextChanged(object sender, EventArgs e)
-        {
-            // Validar formato del correo
-            if (!txtCorreo.Text.Contains("@") || !txtCorreo.Text.Contains("."))
-            {
-                MessageBox.Show("Ingrese un correo válido.",
-                                "Correo",
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Warning);
-                txtCorreo.Focus();
-                return;
-            }
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back)
+                e.Handled = true;
         }
     }
 }

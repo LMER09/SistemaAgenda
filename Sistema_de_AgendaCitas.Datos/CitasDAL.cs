@@ -2,7 +2,7 @@
 
 namespace SistemaAgenda.Datos
 {
-    public class CitasDAL
+    public class CitasDAL 
     {
         public bool Insertar(Citas c)
         {
@@ -65,31 +65,44 @@ namespace SistemaAgenda.Datos
             }
             return lista;
         }
-        // Verifica si el estilista ya tiene una cita en la fecha y hora indicada
-        public bool EstilistaDisponible(int idEstilista, DateTime fecha)
+        // TODO Verifica si el estilista ya tiene una cita en la fecha y hora indicada
+        // TODO Trae las citas de un estilista en una fecha/hora exacta, sin decidir nada de negocio
+        public List<Citas> ObtenerPorEstilistaYFecha(int idEstilista, DateTime fecha)
         {
+            var lista = new List<Citas>();
             try
             {
                 using (var con = ConexionDB.ObtenerConexion())
                 using (var cmd = new SqlCommand(@"
-            SELECT COUNT(*)
-            FROM Citas
-            WHERE id_Estilista = @IdEstilista
-              AND Fecha = @Fecha", con))
+                    SELECT id, id_Clientes, id_Servicios, id_Estilista, Fecha, Estado, Deposito
+                    FROM Citas
+                    WHERE id_Estilista = @IdEstilista AND Fecha = @Fecha", con))
                 {
                     cmd.Parameters.AddWithValue("@IdEstilista", idEstilista);
                     cmd.Parameters.AddWithValue("@Fecha", fecha);
-
-                    int cantidad = (int)cmd.ExecuteScalar();
-
-                    //Si no hay citas, el estilista está disponible
-                    return cantidad == 0;
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            lista.Add(new Citas
+                            {
+                                Id = reader.GetInt32(0),
+                                Id_Clientes = reader.GetInt32(1),
+                                Id_Servicios = reader.GetInt32(2),
+                                Id_Estilista = reader.GetInt32(3),
+                                Fecha = reader.GetDateTime(4),
+                                Estado = reader.GetString(5),
+                                Deposito = reader.GetDecimal(6)
+                            });
+                        }
+                    }
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception("Error al verificar disponibilidad del estilista: " + ex.Message);
+                throw new Exception("Error al obtener citas del estilista: " + ex.Message);
             }
+            return lista;
         }
         public bool Actualizar(Citas c)
         {
@@ -100,7 +113,7 @@ namespace SistemaAgenda.Datos
                 UPDATE Citas SET id_Clientes=@IdCliente, id_Servicios=@IdServicio,
                 id_Estilista=@IdEstilista, Fecha=@Fecha, Estado=@Estado, Deposito=@Deposito
                 WHERE id=@Id", con))
-                //Solo actualiza solo cita que seleccionamos WHERE id=@Id
+                //Solo actualiza, solo cita que seleccionamos WHERE id=@Id
                 {
                     cmd.Parameters.AddWithValue("@IdCliente", c.Id_Clientes);
                     cmd.Parameters.AddWithValue("@IdServicio", c.Id_Servicios);

@@ -5,7 +5,7 @@ using SistemaAgenda.Datos;
 namespace SistemaAgenda.Negocios
 {
     
-    // Clase abstracta qque representa un servicio del salon
+    // TODO Clase abstracta que representa un servicio del salon
     public abstract class Servicio
     {
 
@@ -23,28 +23,59 @@ namespace SistemaAgenda.Negocios
             _servicio = servicio;
         }
 
-        // ── MÉTODOS ABSTRACTOS ────────────────────────────────────────
+        // ─TODO MÉTODOS ABSTRACTOS ────────────────────────────────────────
         public abstract decimal ServicioCabello();
         public abstract decimal ServicioUnas();
         public abstract decimal ServicioSpa();
 
-        // ── MÉTODOS VIRTUALES ─────────────────────────────────────────
+        // TODO MÉTODOS VIRTUALES ─────────────────────────────────────────
         //Tienen implementación base pero pueden sobreescribirse
         public virtual decimal CalcularPrecio()=> _servicio.Precio;
         public virtual int CalcularDuracion() => _servicio.DuracionMinutos;
-        
+        //Nuevo metodo
+        public virtual decimal CalcularDeposito() => CalcularPrecio() * 0.20m;
+
     }
 
-    //Clase nueva creada para implementar los metodos abstractos y la sobreescritura en los metodos virtuales.
+    //TODO Clase nueva creada para implementar los metodos abstractos y la sobreescritura en los metodos virtuales.
     public class Gestion_DeServicios : Servicio
     {
         public Gestion_DeServicios() { }
         public Gestion_DeServicios(Servicios s) : base(s) { }
 
-        // Implementación de los métodos abstractos
-        public override decimal ServicioCabello() => _servicio.Precio * 1.10m;
-        public override decimal ServicioUnas() => _servicio.Precio;
-        public override decimal ServicioSpa()=> _servicio.Precio * 1.15m;
+        //TODO Implementación de los métodos abstractos
+        //TODO Cada subtipo dentro del tipo tiene su propio multiplicador sobre el precio base,
+
+        public override decimal ServicioCabello()
+        {
+            switch (_servicio.Subtipo_DeServicio)
+            {
+                case "Corte": return _servicio.Precio * 1.00m;
+                case "Tinte": return _servicio.Precio * 1.30m;
+                case "Completo": return _servicio.Precio * 1.50m;
+                default: return _servicio.Precio * 1.10m; // valor anterior, por si el subtipo viniera vacío
+            }
+        }
+        public override decimal ServicioUnas()
+        {
+            switch (_servicio.Subtipo_DeServicio)
+            {
+                case "Manicura": return _servicio.Precio * 1.00m;
+                case "Pedicura": return _servicio.Precio * 1.10m;
+                case "Completo": return _servicio.Precio * 1.80m;
+                default: return _servicio.Precio;
+            }
+        }
+        public override decimal ServicioSpa()
+        {
+            switch (_servicio.Subtipo_DeServicio)
+            {
+                case "Sencillo": return _servicio.Precio * 1.00m;
+                case "Premium": return _servicio.Precio * 1.30m;
+                case "Profesional": return _servicio.Precio * 1.50m;
+                default: return _servicio.Precio * 1.15m; // valor anterior, por si el subtipo viniera vacío
+            }
+        }
 
         // Sobreescritura: calcula precio final según tipo de servicio
         public override decimal CalcularPrecio()

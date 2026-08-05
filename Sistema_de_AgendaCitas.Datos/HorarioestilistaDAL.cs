@@ -4,6 +4,7 @@ namespace SistemaAgenda.Datos
 {
     public class HorarioEstilistaDAL
     {
+
         public bool Insertar(HorarioEstilista h)
         {
             try
@@ -64,8 +65,8 @@ namespace SistemaAgenda.Datos
             return lista;
         }
 
-        // Trae solo los bloques de horario de una estilista específica.
-        // Pensado para que la capa de Negocios valide el día/hora de una cita nueva.
+        // TODO Trae solo los bloques de horario de una estilista específica.
+        // TODO Valida el día/hora de una cita nueva.
         public List<HorarioEstilista> ObtenerPorEstilista(int idEstilista)
         {
             var lista = new List<HorarioEstilista>();
@@ -147,6 +148,25 @@ namespace SistemaAgenda.Datos
             catch (Exception ex)
             {
                 throw new Exception("Error al eliminar horario: " + ex.Message);
+            }
+        }
+        // Borra todos los bloques de horario
+        public bool EliminarPorEstilista(int idEstilista)
+        {
+            try
+            {
+                using (var con = ConexionDB.ObtenerConexion())
+                using (var cmd = new SqlCommand(
+                    "DELETE FROM HorarioEstilista WHERE id_Estilista=@IdEstilista", con))
+                {
+                    cmd.Parameters.AddWithValue("@IdEstilista", idEstilista);
+                    cmd.ExecuteNonQuery();
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al eliminar el horario anterior: " + ex.Message);
             }
         }
     }

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Forms;
+using SistemaAgenda.Negocios;
 
 namespace SistemaAgenda.UI
 {
@@ -9,16 +11,56 @@ namespace SistemaAgenda.UI
         {
             InitializeComponent();
         }
-
-        // Método para abrir cualquier formulario
         private void AbrirFormulario(Form formulario)
         {
+            this.Hide();
             formulario.ShowDialog();
+            this.Show();
+            CargarResumen();
         }
 
         private void frmPrincipal_Load(object sender, EventArgs e)
         {
+            this.Hide();
+            using (FrmLogin login = new FrmLogin())
+            {
+                if (login.ShowDialog() == DialogResult.OK)
+                {
+                    this.Show();
+                    CargarResumen();
+                }
+                else
+                {
+                    Application.Exit();
+                }
+            }
+        }
 
+        // Calcula y muestra el resumen del dia
+        private void CargarResumen()
+        {
+            var citasBLL = new CitasBLL();
+            var pagosBLL = new PagosBLL();
+
+            var citasHoy = citasBLL.ObtenerTodos()
+                .Where(c => c.Fecha.Date == DateTime.Today && c.Estado != "Cancelada")
+                .ToList();
+
+            var pagosHoy = pagosBLL.ObtenerTodos()
+                .Where(p => p.FechaPago.Date == DateTime.Today)
+                .ToList();
+
+            lblCitasHoy.Text = $"📅 Citas hoy: {citasHoy.Count}";
+            lblIngresosHoy.Text = $"💰 Ingresos hoy: RD$ {pagosHoy.Sum(p => p.Monto):F2}";
+
+            var proxima = citasHoy
+                .Where(c => c.Fecha >= DateTime.Now)
+                .OrderBy(c => c.Fecha)
+                .FirstOrDefault();
+
+            lblProximaCita.Text = proxima != null
+                ? $"⏰ Próxima cita: {proxima.Fecha:hh:mm tt}"
+                : "⏰ Próxima cita: ninguna";
         }
 
         // ======================================
@@ -27,7 +69,7 @@ namespace SistemaAgenda.UI
 
         private void btnAgenda_Click(object sender, EventArgs e)
         {
-            AbrirFormulario(new frmAgenda());
+            AbrirFormulario(new frmRegistrarCita());
         }
 
         private void btnClientes_Click(object sender, EventArgs e)
@@ -37,12 +79,22 @@ namespace SistemaAgenda.UI
 
         private void btnServicios_Click(object sender, EventArgs e)
         {
-            AbrirFormulario(new frmServicios());
+            AbrirFormulario(new frmRegistrarServicios());
         }
 
         private void btnEstilistas_Click(object sender, EventArgs e)
         {
-            AbrirFormulario(new frmEstilistas());
+            AbrirFormulario(new frmRegistrarEstilistas());
+        }
+
+        private void registrarPagoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AbrirFormulario(new frmRegistrarPago());
+        }
+
+        private void registrarUsuarioToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AbrirFormulario(new frmRegistrarUsuarios());
         }
 
         // ======================================
@@ -56,34 +108,32 @@ namespace SistemaAgenda.UI
 
         private void verEstilistaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(
-                "Módulo de consulta de estilistas en desarrollo.",
-                "Sistema",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
+            AbrirFormulario(new frmConsultarEstilistas());
         }
 
         private void verServicioToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(
-                "Módulo de consulta de servicios en desarrollo.",
-                "Sistema",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
+            AbrirFormulario(new frmConsultarServicios());
         }
 
         private void reportesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(
-                "Módulo de consulta de citas en desarrollo.",
-                "Sistema",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
+            AbrirFormulario(new frmConsultarCitas());
         }
 
         private void reportesToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             AbrirFormulario(new frmReportes());
+        }
+
+        private void verPagosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AbrirFormulario(new frmConsultarPagos());
+        }
+
+        private void verUsuariosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AbrirFormulario(new frmConsultarUsuarios());
         }
 
         // ======================================

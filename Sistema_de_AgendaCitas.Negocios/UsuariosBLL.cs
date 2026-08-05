@@ -60,6 +60,11 @@ namespace SistemaAgenda.Negocios
         {
             try
             {
+                int totalUsuarios = _dal.ObtenerTodos().Count;
+
+                if (totalUsuarios <= 1)
+                    return "ERROR: No se puede eliminar el último usuario del sistema.";
+
                 bool ok = _dal.Eliminar(id);
                 return ok
                     ? "OK: Usuario eliminado exitosamente."

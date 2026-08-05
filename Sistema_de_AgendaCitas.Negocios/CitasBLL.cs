@@ -7,8 +7,8 @@ namespace SistemaAgenda.Negocios
 {
     public class CitasBLL
     {
-        //Esto se hace hace para poder utilizar lis metodso de la capa datos
         private readonly CitasDAL _dal = new CitasDAL();
+        private readonly HorarioEstilistaBLL _horarioBLL = new HorarioEstilistaBLL();
         public List<Citas> ObtenerTodos()
         {
             try
@@ -21,9 +21,76 @@ namespace SistemaAgenda.Negocios
             }
         }
 
-        // Métodos normales requeridos por el proyecto: agendarCita(), cancelarCita(), reprogramarCita()
+        //TODO Métodos normales requeridos por el proyecto: agendarCita(), cancelarCita(), reprogramarCita()
+        // TODO VALIDAR DISPONIBILIDAD DEL ESTILISTA ─────────────────────
+        private bool EstilistaDisponible(int idEstilista, DateTime fecha)
+        {
+            var citasEnEseHorario = _dal.ObtenerPorEstilistaYFecha(idEstilista, fecha);
 
-        // ── AGENDAR CITA ─────────────────────────────────────────────
+            for (int i = 0; i < citasEnEseHorario.Count; i++)
+            {
+                Citas cita = citasEnEseHorario[i];
+                if (cita.Estado != "Cancelada" && cita.Estado != "Completada")
+                    return false;
+            }
+
+            return true;
+        }
+
+        // TODO VALIDAR HORARIO LABORAL ──────────────────────────────────
+        private string? ValidarHorarioLaboral(int idEstilista, DateTime fecha)
+        {
+            var horarios = _horarioBLL.ObtenerPorEstilista(idEstilista);
+
+            if (horarios.Count == 0)
+                return "ERROR: La estilista no tiene un horario laboral registrado.";
+
+            byte diaSemana = (byte)fecha.DayOfWeek; //0=domingo...6=sábado, igual que DiaSemana
+            TimeSpan horaCita = fecha.TimeOfDay;
+
+            bool dentroDeHorario = false;
+            for (int i = 0; i < horarios.Count; i++)
+            {
+                HorarioEstilista h = horarios[i];
+                if (h.DiaSemana == diaSemana && horaCita >= h.HoraInicio && horaCita < h.HoraFin)
+                {
+                    dentroDeHorario = true;
+                    break;
+                }
+            }
+
+            if (!dentroDeHorario)
+                return "ERROR: La estilista no trabaja en ese día u horario.";
+
+            return null;
+        }
+        public List<CitaVista> ObtenerVista()
+        {
+            var citas = ObtenerTodos();
+            var clientesBLL = new ClientesBLL();
+            var serviciosBLL = new ServiciosBLL();
+            var estilistaBLL = new EstilistaBLL();
+
+            var clientes = clientesBLL.ObtenerTodos();
+            var servicios = serviciosBLL.ObtenerTodos();
+            var estilistas = estilistaBLL.ObtenerTodos();
+
+            return citas.Select(c =>
+            {
+                var cliente = clientes.FirstOrDefault(cl => cl.Id == c.Id_Clientes);
+                var servicio = servicios.FirstOrDefault(s => s.Id == c.Id_Servicios);
+                var estilista = estilistas.FirstOrDefault(es => es.Id == c.Id_Estilista);
+
+                return new CitaVista
+                {
+                    CitaOriginal = c,
+                    Cliente = cliente != null ? $"{cliente.Nombre} {cliente.Apellido}" : "Cliente desconocido",
+                    Servicio = servicio != null ? $"{servicio.Tipo_DeServicio} - {servicio.Subtipo_DeServicio}" : "Servicio desconocido",
+                    Estilista = estilista != null ? $"{estilista.Nombre} {estilista.Apellido}" : "Estilista desconocida"
+                };
+            }).OrderBy(cv => cv.Fecha).ToList();
+        }
+
         // ── AGENDAR CITA ─────────────────────────────────────────────
         public string AgendarCita(Citas c)
         {
@@ -41,9 +108,14 @@ namespace SistemaAgenda.Negocios
                 if (c.Fecha < DateTime.Now)
                     return "ERROR: La fecha no puede ser en el pasado.";
 
-                // Verificar disponibilidad del estilista
-                if (!_dal.EstilistaDisponible(c.Id_Estilista, c.Fecha))
+                //TODO Verificar disponibilidad del estilista
+                if (!EstilistaDisponible(c.Id_Estilista, c.Fecha))
                     return "ERROR: El estilista ya tiene una cita asignada para esa fecha y hora.";
+
+                //TODO Verificar que la fecha/hora caiga dentro del horario laboral de la estilista
+                string? errorHorario = ValidarHorarioLaboral(c.Id_Estilista, c.Fecha);
+                if (errorHorario != null)
+                    return errorHorario;
 
                 c.Estado = "Pendiente";
 
@@ -122,6 +194,14 @@ namespace SistemaAgenda.Negocios
                     return "ERROR: No se puede reprogramar una cita que ya fue completada.";
                 if (cita.Estado == "Cancelada")
                     return "ERROR: No se puede reprogramar una cita cancelada.";
+
+                if (!EstilistaDisponible(cita.Id_Estilista, nuevaFecha))
+                    return "ERROR: El estilista ya tiene una cita asignada para esa fecha y hora.";
+
+                string? errorHorario = ValidarHorarioLaboral(cita.Id_Estilista, nuevaFecha);
+                if (errorHorario != null)
+                    return errorHorario;
+
                 cita.Fecha = nuevaFecha;
                 cita.Estado = "Reprogramada";
 
@@ -135,8 +215,62 @@ namespace SistemaAgenda.Negocios
                 return "ERROR: " + ex.Message;
             }
         }
-        
+
+        public string EditarCita(Citas citaEditada)
+        {
+            try
+            {
+                if (citaEditada.Id_Clientes <= 0)
+                    return "ERROR: Debe seleccionar un cliente.";
+
+                if (citaEditada.Id_Servicios <= 0)
+                    return "ERROR: Debe seleccionar un servicio.";
+
+                if (citaEditada.Id_Estilista <= 0)
+                    return "ERROR: Debe seleccionar una estilista.";
+
+                if (citaEditada.Fecha < DateTime.Now)
+                    return "ERROR: La fecha no puede ser en el pasado.";
+
+                var lista = _dal.ObtenerTodos();
+                Citas citaOriginal = lista.FirstOrDefault(c => c.Id == citaEditada.Id);
+
+                if (citaOriginal == null)
+                    return "ERROR: Cita no encontrada.";
+                if (citaOriginal.Estado == "Completada")
+                    return "ERROR: No se puede editar una cita que ya fue completada.";
+                if (citaOriginal.Estado == "Cancelada")
+                    return "ERROR: No se puede editar una cita cancelada.";
+
+                var citasEnEseHorario = _dal.ObtenerPorEstilistaYFecha(citaEditada.Id_Estilista, citaEditada.Fecha);
+                bool ocupado = citasEnEseHorario.Any(c =>
+                    c.Id != citaEditada.Id &&
+                    c.Estado != "Cancelada" &&
+                    c.Estado != "Completada");
+
+                if (ocupado)
+                    return "ERROR: El estilista ya tiene una cita asignada para esa fecha y hora.";
+
+                string? errorHorario = ValidarHorarioLaboral(citaEditada.Id_Estilista, citaEditada.Fecha);
+                if (errorHorario != null)
+                    return errorHorario;
+
+                citaOriginal.Id_Clientes = citaEditada.Id_Clientes;
+                citaOriginal.Id_Servicios = citaEditada.Id_Servicios;
+                citaOriginal.Id_Estilista = citaEditada.Id_Estilista;
+                citaOriginal.Fecha = citaEditada.Fecha;
+                citaOriginal.Estado = "Reprogramada";
+
+                bool ok = _dal.Actualizar(citaOriginal);
+                return ok
+                    ? "OK: Cita actualizada exitosamente."
+                    : "ERROR: No se pudo actualizar la cita.";
+            }
+            catch (Exception ex)
+            {
+                return "ERROR: " + ex.Message;
+            }
+        }
 
     }
-
 }

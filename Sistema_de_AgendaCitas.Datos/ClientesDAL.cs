@@ -21,6 +21,10 @@ namespace SistemaAgenda.Datos
                     return cmd.ExecuteNonQuery() > 0;
                 }
             }
+            catch (SqlException ex) when (ex.Number == 2627)
+            {
+                throw new Exception("Ese correo ya está registrado a otro cliente.");
+            }
             catch (Exception ex)
             {
                 throw new Exception("Error al insertar cliente: " + ex.Message);
@@ -73,6 +77,10 @@ namespace SistemaAgenda.Datos
                     return cmd.ExecuteNonQuery() > 0;
                 }
             }
+            catch (SqlException ex) when (ex.Number == 2627)
+            {
+                throw new Exception("Ese correo ya está registrado a otro cliente.");
+            }
             catch (Exception ex)
             {
                 throw new Exception("Error al actualizar cliente: " + ex.Message);
@@ -90,8 +98,8 @@ namespace SistemaAgenda.Datos
                     return cmd.ExecuteNonQuery() > 0;
                 }
             }
-            //Error 547 = violación de llave foránea: el cliente tiene citas
-            //en su historial (ya no se borran en cascada, así se conserva el historial)
+            //TODO Error 547 = violación de llave foránea: el cliente tiene citas
+            //TODO en su historial (ya no se borran en cascada, así se conserva el historial)
             catch (SqlException ex) when (ex.Number == 547)
             {
                 throw new Exception("No se puede eliminar el cliente: tiene citas registradas en su historial.");

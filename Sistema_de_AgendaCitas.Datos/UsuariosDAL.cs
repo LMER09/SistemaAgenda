@@ -24,7 +24,7 @@
                         return filas > 0;
                     }
                 }
-                //Error 2627 = violación de restricción UNIQUE: ese nombre de usuario ya existe
+                //TODO Error 2627 = violación de restricción UNIQUE: ese nombre de usuario ya existe
                 catch (SqlException ex) when (ex.Number == 2627)
                 {
                     throw new Exception("Ese nombre de usuario ya existe, elige otro.");
@@ -34,6 +34,8 @@
                     throw new Exception("Error al insertar usuario: " + ex.Message);
                 }
             }
+
+            //TODO el signo " ? " significa que puede devolver Null
             public Usuarios? ObtenerPorUsuario(string usuario)
             {
                 try

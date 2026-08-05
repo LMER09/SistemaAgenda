@@ -29,6 +29,27 @@ namespace SistemaAgenda.Negocios
                 return "ERROR: " + ex.Message;
             }
         }
+        public string GuardarHorarioCompleto(int idEstilista, List<HorarioEstilista> nuevoHorario)
+        {
+            try
+            {
+                _dal.EliminarPorEstilista(idEstilista);
+
+                foreach (var h in nuevoHorario)
+                {
+                    h.IdEstilista = idEstilista;
+                    bool ok = _dal.Insertar(h);
+                    if (!ok)
+                        return "ERROR: No se pudo guardar uno de los horarios.";
+                }
+
+                return "OK: Horario guardado exitosamente.";
+            }
+            catch (Exception ex)
+            {
+                return "ERROR: " + ex.Message;
+            }
+        }
         public List<HorarioEstilista> ObtenerTodos()
         {
             try
