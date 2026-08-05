@@ -2,7 +2,7 @@
 
 namespace SistemaAgenda.Datos
 {
-    public class PagosDAL
+    public class PagosDAL : IPagosDAL
     {
         public bool Insertar(Pagos p)
         {

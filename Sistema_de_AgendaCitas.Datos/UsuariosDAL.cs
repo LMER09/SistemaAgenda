@@ -3,8 +3,8 @@
 
     namespace SistemaAgenda.Datos
     {
-        public class UsuariosDAL
-        {
+        public class UsuariosDAL : IUsuariosDAL
+    {
             public bool Insertar(Usuarios u)
             {
                 try

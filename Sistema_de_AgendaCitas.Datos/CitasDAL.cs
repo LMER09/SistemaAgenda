@@ -2,7 +2,7 @@
 
 namespace SistemaAgenda.Datos
 {
-    public class CitasDAL 
+    public class CitasDAL : ICitasDAL
     {
         public bool Insertar(Citas c)
         {

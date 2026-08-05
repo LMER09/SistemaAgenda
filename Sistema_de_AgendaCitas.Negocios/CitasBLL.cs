@@ -7,8 +7,19 @@ namespace SistemaAgenda.Negocios
 {
     public class CitasBLL
     {
-        private readonly CitasDAL _dal = new CitasDAL();
-        private readonly HorarioEstilistaBLL _horarioBLL = new HorarioEstilistaBLL();
+        private readonly ICitasDAL _dal;
+        private readonly HorarioEstilistaBLL _horarioBLL;
+
+        public CitasBLL()
+            : this(new CitasDAL())
+        {
+        }
+
+        public CitasBLL(ICitasDAL dal)
+        {
+            _dal = dal;
+            _horarioBLL = new HorarioEstilistaBLL();
+        }
         public List<Citas> ObtenerTodos()
         {
             try
