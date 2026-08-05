@@ -4,7 +4,14 @@ namespace SistemaAgenda.Negocios
 {
     public class EstilistaBLL
     {
-        private readonly EstilistaDAL _dal = new EstilistaDAL();
+        private readonly IEstilistaDAL _dal;
+
+        public EstilistaBLL() : this(new EstilistaDAL()) { }
+
+        public EstilistaBLL(IEstilistaDAL dal)
+        {
+            _dal = dal;
+        }
 
         public string Registrar(Estilista e)
         {

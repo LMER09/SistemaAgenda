@@ -4,7 +4,18 @@ namespace SistemaAgenda.Negocios
 {
     public class PagosBLL
     {
-        private readonly PagosDAL _dal = new PagosDAL();
+        private readonly IPagosDAL _dal;
+        private readonly ICitasDAL _citasDal;
+
+        public PagosBLL() : this(new PagosDAL(), new CitasDAL()) { }
+
+        public PagosBLL(IPagosDAL dal) : this(dal, new CitasDAL()) { }
+
+        public PagosBLL(IPagosDAL dal, ICitasDAL citasDal)
+        {
+            _dal = dal;
+            _citasDal = citasDal;
+        }
 
         // ── REGISTRAR ────────────────────────────────────────────────
         public string Registrar(Pagos p)
@@ -20,8 +31,8 @@ namespace SistemaAgenda.Negocios
                 if (string.IsNullOrWhiteSpace(p.Metodo_DePago))
                     return "ERROR: El método de pago es obligatorio.";
 
-                CitasDAL citasDAL = new CitasDAL();
-                var citas = citasDAL.ObtenerTodos();
+
+                var citas = _citasDal.ObtenerTodos();
                 Citas cita = null;
 
                 for (int i = 0; i < citas.Count; i++)
@@ -46,7 +57,8 @@ namespace SistemaAgenda.Negocios
                 {
                     // Al registrar el pago, la cita pasa a Completada.
                     cita.Estado = "Completada";
-                    citasDAL.Actualizar(cita);
+                    cita.Estado = "Completada";
+                    _citasDal.Actualizar(cita);
 
                     return "OK: Pago registrado. Cita completada exitosamente.";
                 }

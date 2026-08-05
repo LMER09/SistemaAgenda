@@ -4,7 +4,14 @@ namespace SistemaAgenda.Negocios
 {
     public class ServiciosBLL
     {
-        private readonly ServiciosDAL _dal = new ServiciosDAL();
+        private readonly IServiciosDAL _dal;
+
+        public ServiciosBLL() : this(new ServiciosDAL()) { }
+
+        public ServiciosBLL(IServiciosDAL dal)
+        {
+            _dal = dal;
+        }
 
         public string Registrar(Servicios s)
         {

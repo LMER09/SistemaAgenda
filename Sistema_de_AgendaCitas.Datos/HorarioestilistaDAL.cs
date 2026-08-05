@@ -2,7 +2,7 @@
 
 namespace SistemaAgenda.Datos
 {
-    public class HorarioEstilistaDAL
+    public class HorarioEstilistaDAL : IHorarioEstilistaDAL
     {
 
         public bool Insertar(HorarioEstilista h)

@@ -4,7 +4,6 @@ namespace SistemaAgenda.Datos
 {
     public class ServiciosDAL : IServiciosDAL
     {
-    {
         public bool Insertar(Servicios s)
         {
             try
