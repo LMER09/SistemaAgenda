@@ -7,7 +7,6 @@ namespace SistemaAgenda.Negocios
 {
     public class CitasBLL
     {
-        //Esto se hace para poder utilizar lista metodo de la capa datos
         private readonly CitasDAL _dal = new CitasDAL();
         private readonly HorarioEstilistaBLL _horarioBLL = new HorarioEstilistaBLL();
         public List<Citas> ObtenerTodos()
@@ -25,8 +24,6 @@ namespace SistemaAgenda.Negocios
         //TODO Métodos normales requeridos por el proyecto: agendarCita(), cancelarCita(), reprogramarCita()
 
         // TODO VALIDAR DISPONIBILIDAD DEL ESTILISTA ─────────────────────
-        // Trae las citas de ese estilista en esa fecha/hora (del DAL) y
-        // decide aquí qué estados cuentan como "ocupado".
         private bool EstilistaDisponible(int idEstilista, DateTime fecha)
         {
             var citasEnEseHorario = _dal.ObtenerPorEstilistaYFecha(idEstilista, fecha);
@@ -42,8 +39,6 @@ namespace SistemaAgenda.Negocios
         }
 
         // TODO VALIDAR HORARIO LABORAL ──────────────────────────────────
-        // Revisa que la fecha/hora de la cita caiga dentro de algún bloque
-        // de horario registrado para esa estilista (tabla HorarioEstilista)
         private string? ValidarHorarioLaboral(int idEstilista, DateTime fecha)
         {
             var horarios = _horarioBLL.ObtenerPorEstilista(idEstilista);
@@ -69,6 +64,32 @@ namespace SistemaAgenda.Negocios
                 return "ERROR: La estilista no trabaja en ese día u horario.";
 
             return null;
+        }
+        public List<CitaVista> ObtenerVista()
+        {
+            var citas = ObtenerTodos();
+            var clientesBLL = new ClientesBLL();
+            var serviciosBLL = new ServiciosBLL();
+            var estilistaBLL = new EstilistaBLL();
+
+            var clientes = clientesBLL.ObtenerTodos();
+            var servicios = serviciosBLL.ObtenerTodos();
+            var estilistas = estilistaBLL.ObtenerTodos();
+
+            return citas.Select(c =>
+            {
+                var cliente = clientes.FirstOrDefault(cl => cl.Id == c.Id_Clientes);
+                var servicio = servicios.FirstOrDefault(s => s.Id == c.Id_Servicios);
+                var estilista = estilistas.FirstOrDefault(es => es.Id == c.Id_Estilista);
+
+                return new CitaVista
+                {
+                    CitaOriginal = c,
+                    Cliente = cliente != null ? $"{cliente.Nombre} {cliente.Apellido}" : "Cliente desconocido",
+                    Servicio = servicio != null ? $"{servicio.Tipo_DeServicio} - {servicio.Subtipo_DeServicio}" : "Servicio desconocido",
+                    Estilista = estilista != null ? $"{estilista.Nombre} {estilista.Apellido}" : "Estilista desconocida"
+                };
+            }).OrderBy(cv => cv.Fecha).ToList();
         }
 
         // ── AGENDAR CITA ─────────────────────────────────────────────
@@ -175,12 +196,9 @@ namespace SistemaAgenda.Negocios
                 if (cita.Estado == "Cancelada")
                     return "ERROR: No se puede reprogramar una cita cancelada.";
 
-                // Verificar que la estilista no tenga ya otra cita activa en la nueva fecha/hora
-                // (misma validacion que AgendarCita, antes le faltaba a Reprogramar)
                 if (!EstilistaDisponible(cita.Id_Estilista, nuevaFecha))
                     return "ERROR: El estilista ya tiene una cita asignada para esa fecha y hora.";
 
-                // Verificar que la nueva fecha/hora caiga dentro del horario laboral de la estilista
                 string? errorHorario = ValidarHorarioLaboral(cita.Id_Estilista, nuevaFecha);
                 if (errorHorario != null)
                     return errorHorario;
@@ -198,9 +216,6 @@ namespace SistemaAgenda.Negocios
                 return "ERROR: " + ex.Message;
             }
         }
-        // ── AGREGAR este método dentro de la clase CitasBLL, junto a          ──
-        // ── AgendarCita y ReprogramarCita. Este SI permite cambiar cliente,   ──
-        // ── servicio, estilista y fecha, todo a la vez (edicion completa).    ──
 
         public string EditarCita(Citas citaEditada)
         {
@@ -228,8 +243,6 @@ namespace SistemaAgenda.Negocios
                 if (citaOriginal.Estado == "Cancelada")
                     return "ERROR: No se puede editar una cita cancelada.";
 
-                // Misma validacion de doble reserva que AgendarCita, pero ignorando
-                // la propia cita que se esta editando (para no chocar consigo misma).
                 var citasEnEseHorario = _dal.ObtenerPorEstilistaYFecha(citaEditada.Id_Estilista, citaEditada.Fecha);
                 bool ocupado = citasEnEseHorario.Any(c =>
                     c.Id != citaEditada.Id &&

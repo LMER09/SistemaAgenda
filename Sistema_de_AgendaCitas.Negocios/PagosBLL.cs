@@ -116,5 +116,35 @@ namespace SistemaAgenda.Negocios
                 return "ERROR: " + ex.Message;
             }
         }
+        // esto funciona con lo nueva clase de PagoVista
+        public List<Vistas> ObtenerVista()
+        {
+            var pagos = ObtenerTodos();
+            var citasBLL = new CitasBLL();
+            var clientesBLL = new ClientesBLL();
+            var serviciosBLL = new ServiciosBLL();
+
+            var citas = citasBLL.ObtenerTodos();
+            var clientes = clientesBLL.ObtenerTodos();
+            var servicios = serviciosBLL.ObtenerTodos();
+
+            return pagos.Select(p =>
+            {
+                var cita = citas.FirstOrDefault(c => c.Id == p.Id_Citas);
+                var cliente = cita != null ? clientes.FirstOrDefault(c => c.Id == cita.Id_Clientes) : null;
+                var servicio = cita != null ? servicios.FirstOrDefault(s => s.Id == cita.Id_Servicios) : null;
+
+                return new Vistas
+                {
+                    Id = p.Id,
+                    Cliente = cliente != null ? $"{cliente.Nombre} {cliente.Apellido}" : "Cliente desconocido",
+                    Servicio = servicio != null ? servicio.Tipo_DeServicio : "Servicio desconocido",
+                    FechaCita = cita?.Fecha ?? DateTime.MinValue,
+                    Monto = p.Monto,
+                    MetodoDePago = p.Metodo_DePago,
+                    FechaPago = p.FechaPago
+                };
+            }).OrderByDescending(pv => pv.FechaPago).ToList();
+        }
     }
 }

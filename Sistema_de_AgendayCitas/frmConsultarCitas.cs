@@ -1,5 +1,5 @@
 ﻿using SistemaAgenda.Negocios;
-using SistemaAgenda.Datos;
+using SistemaAgenda.Negocios;
 using System.Linq;
 
 namespace SistemaAgenda.UI
@@ -8,25 +8,7 @@ namespace SistemaAgenda.UI
     {
         private readonly CitasBLL citasBLL = new CitasBLL();
         private readonly ClientesBLL clientesBLL = new ClientesBLL();
-        private readonly ServiciosBLL serviciosBLL = new ServiciosBLL();
-        private readonly EstilistaBLL estilistaBLL = new EstilistaBLL();
         private readonly RecordatorioCitas recordatorio = new RecordatorioCitas();
-
-        // Clase auxiliar solo para mostrar en la tabla -- no es una entidad de la
-        // base de datos, es una combinacion legible de Citas + Clientes + Servicios + Estilista.
-        // Guarda tambien la Citas original, para no tener que volver a buscarla
-        // al cancelar o reprogramar.
-        private class CitaVista
-        {
-            public Citas CitaOriginal { get; set; } = null!;
-            public int Id => CitaOriginal.Id;
-            public string Cliente { get; set; } = string.Empty;
-            public string Servicio { get; set; } = string.Empty;
-            public string Estilista { get; set; } = string.Empty;
-            public DateTime Fecha => CitaOriginal.Fecha;
-            public string Estado => CitaOriginal.Estado;
-            public decimal Deposito => CitaOriginal.Deposito;
-        }
 
         private List<CitaVista> _listaCitas = new List<CitaVista>();
 
@@ -39,6 +21,10 @@ namespace SistemaAgenda.UI
             recordatorio.RecordatorioDisparado += (cita, mensaje) =>
             {
                 if (cita == null) return;
+
+                // Guarda la notificacion en el historial, sin importar
+                // si el correo se logra enviar o no.
+                HistorialNotificaciones.Agregar(mensaje);
 
                 var clientes = clientesBLL.ObtenerTodos();
                 var cliente = clientes.FirstOrDefault(c => c.Id == cita.Id_Clientes);
@@ -67,25 +53,9 @@ namespace SistemaAgenda.UI
 
         private void CargarCitas()
         {
-            var citas = citasBLL.ObtenerTodos();
-            var clientes = clientesBLL.ObtenerTodos();
-            var servicios = serviciosBLL.ObtenerTodos();
-            var estilistas = estilistaBLL.ObtenerTodos();
-
-            _listaCitas = citas.Select(c =>
-            {
-                var cliente = clientes.FirstOrDefault(cl => cl.Id == c.Id_Clientes);
-                var servicio = servicios.FirstOrDefault(s => s.Id == c.Id_Servicios);
-                var estilista = estilistas.FirstOrDefault(es => es.Id == c.Id_Estilista);
-
-                return new CitaVista
-                {
-                    CitaOriginal = c,
-                    Cliente = cliente != null ? $"{cliente.Nombre} {cliente.Apellido}" : "Cliente desconocido",
-                    Servicio = servicio != null ? $"{servicio.Tipo_DeServicio} - {servicio.Subtipo_DeServicio}" : "Servicio desconocido",
-                    Estilista = estilista != null ? $"{estilista.Nombre} {estilista.Apellido}" : "Estilista desconocida"
-                };
-            }).OrderBy(cv => cv.Fecha).ToList();
+            // Toda la combinacion de Citas+Clientes+Servicios+Estilista ya la
+            // arma CitasBLL.ObtenerVista(); el formulario solo la muestra.
+            _listaCitas = citasBLL.ObtenerVista();
 
             MostrarEnTabla(_listaCitas);
             CargarCalendario();
@@ -219,7 +189,7 @@ namespace SistemaAgenda.UI
             CargarCitas();
         }
 
-        // Abre frmRegistrarCita en modo reprogramar con la cita seleccionada.
+        // Abre frmRegistrarCita en modo reprogramar/editar con la cita seleccionada.
         // Al cerrarse ese formulario, esta pantalla se refresca sola.
         private void btnReprogramar_Click(object sender, EventArgs e)
         {
@@ -230,8 +200,6 @@ namespace SistemaAgenda.UI
                 return;
             }
 
-            // Mismo bloqueo que ya tiene CitasBLL.ReprogramarCita, pero se avisa
-            // aqui de una vez para no dejar abrir el formulario innecesariamente.
             if (citaSeleccionada.Estado == "Cancelada")
             {
                 MessageBox.Show("Esta cita ya está cancelada, no se puede reprogramar.");

@@ -52,8 +52,13 @@
             salirToolStripMenuItem = new ToolStripMenuItem();
             lblElija = new Label();
             panel1 = new Panel();
+            grpResumen = new GroupBox();
+            lblCitasHoy = new Label();
+            lblIngresosHoy = new Label();
+            lblProximaCita = new Label();
             ((System.ComponentModel.ISupportInitialize)picLogo).BeginInit();
             menuStrip1.SuspendLayout();
+            grpResumen.SuspendLayout();
             SuspendLayout();
             // 
             // lblGestion
@@ -240,12 +245,60 @@
             panel1.Size = new Size(1200, 100);
             panel1.TabIndex = 10;
             // 
+            // grpResumen
+            // 
+            grpResumen.Controls.Add(lblCitasHoy);
+            grpResumen.Controls.Add(lblIngresosHoy);
+            grpResumen.Controls.Add(lblProximaCita);
+            grpResumen.Font = new Font("Segoe UI Semibold", 9.5F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            grpResumen.ForeColor = Color.MediumVioletRed;
+            grpResumen.Location = new Point(30, 70);
+            grpResumen.Name = "grpResumen";
+            grpResumen.Size = new Size(270, 180);
+            grpResumen.TabIndex = 11;
+            grpResumen.TabStop = false;
+            grpResumen.Text = "📊 Resumen de hoy";
+            // 
+            // lblCitasHoy
+            // 
+            lblCitasHoy.AutoSize = true;
+            lblCitasHoy.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblCitasHoy.ForeColor = Color.Black;
+            lblCitasHoy.Location = new Point(20, 45);
+            lblCitasHoy.Name = "lblCitasHoy";
+            lblCitasHoy.Size = new Size(120, 23);
+            lblCitasHoy.TabIndex = 0;
+            lblCitasHoy.Text = "📅 Citas hoy: 0";
+            // 
+            // lblIngresosHoy
+            // 
+            lblIngresosHoy.AutoSize = true;
+            lblIngresosHoy.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblIngresosHoy.ForeColor = Color.Black;
+            lblIngresosHoy.Location = new Point(20, 90);
+            lblIngresosHoy.Name = "lblIngresosHoy";
+            lblIngresosHoy.Size = new Size(200, 23);
+            lblIngresosHoy.TabIndex = 1;
+            lblIngresosHoy.Text = "💰 Ingresos hoy: RD$0.00";
+            // 
+            // lblProximaCita
+            // 
+            lblProximaCita.AutoSize = true;
+            lblProximaCita.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblProximaCita.ForeColor = Color.Black;
+            lblProximaCita.Location = new Point(20, 135);
+            lblProximaCita.Name = "lblProximaCita";
+            lblProximaCita.Size = new Size(180, 23);
+            lblProximaCita.TabIndex = 2;
+            lblProximaCita.Text = "⏰ Próxima cita: ninguna";
+            // 
             // frmPrincipal
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.WhiteSmoke;
             ClientSize = new Size(1155, 611);
+            Controls.Add(grpResumen);
             Controls.Add(panel1);
             Controls.Add(picLogo);
             Controls.Add(lblElija);
@@ -261,6 +314,8 @@
             ((System.ComponentModel.ISupportInitialize)picLogo).EndInit();
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
+            grpResumen.ResumeLayout(false);
+            grpResumen.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -289,5 +344,9 @@
         private Label lblElija;
         private ToolStripMenuItem reportesToolStripMenuItem1;
         private Panel panel1;
+        private GroupBox grpResumen;
+        private Label lblCitasHoy;
+        private Label lblIngresosHoy;
+        private Label lblProximaCita;
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Forms;
+using SistemaAgenda.Negocios;
 
 namespace SistemaAgenda.UI
 {
@@ -19,6 +21,10 @@ namespace SistemaAgenda.UI
             this.Hide();
             formulario.ShowDialog();
             this.Show();
+
+            // Cada vez que se vuelve al Principal (por ejemplo, tras agendar
+            // una cita o registrar un pago), se refresca el resumen del dia.
+            CargarResumen();
         }
 
         private void frmPrincipal_Load(object sender, EventArgs e)
@@ -27,10 +33,44 @@ namespace SistemaAgenda.UI
             using (FrmLogin login = new FrmLogin())
             {
                 if (login.ShowDialog() == DialogResult.OK)
+                {
                     this.Show();
+                    CargarResumen();
+                }
                 else
+                {
                     Application.Exit();
+                }
             }
+        }
+
+        // Calcula y muestra el resumen del dia: citas de hoy, ingresos de hoy,
+        // y la proxima cita pendiente. Se apoya en los mismos BLL que ya usan
+        // el resto de los formularios, no accede a la base de datos directo.
+        private void CargarResumen()
+        {
+            var citasBLL = new CitasBLL();
+            var pagosBLL = new PagosBLL();
+
+            var citasHoy = citasBLL.ObtenerTodos()
+                .Where(c => c.Fecha.Date == DateTime.Today && c.Estado != "Cancelada")
+                .ToList();
+
+            var pagosHoy = pagosBLL.ObtenerTodos()
+                .Where(p => p.FechaPago.Date == DateTime.Today)
+                .ToList();
+
+            lblCitasHoy.Text = $"📅 Citas hoy: {citasHoy.Count}";
+            lblIngresosHoy.Text = $"💰 Ingresos hoy: RD$ {pagosHoy.Sum(p => p.Monto):F2}";
+
+            var proxima = citasHoy
+                .Where(c => c.Fecha >= DateTime.Now)
+                .OrderBy(c => c.Fecha)
+                .FirstOrDefault();
+
+            lblProximaCita.Text = proxima != null
+                ? $"⏰ Próxima cita: {proxima.Fecha:hh:mm tt}"
+                : "⏰ Próxima cita: ninguna";
         }
 
         // ======================================
