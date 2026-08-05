@@ -9,8 +9,6 @@ namespace SistemaAgenda.Negocios
 
         public PagosBLL() : this(new PagosDAL(), new CitasDAL()) { }
 
-        public PagosBLL(IPagosDAL dal) : this(dal, new CitasDAL()) { }
-
         public PagosBLL(IPagosDAL dal, ICitasDAL citasDal)
         {
             _dal = dal;
