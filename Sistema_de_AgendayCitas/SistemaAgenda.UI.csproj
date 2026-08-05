@@ -31,6 +31,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.105.1" />
+    <PackageReference Include="iTextSharp" Version="5.5.13.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Sistema_de_AgendaCitas.Datos\SistemaAgenda.Datos.csproj" />
     <ProjectReference Include="..\Sistema_de_AgendaCitas.Negocios\SistemaAgenda.Negocios.csproj" />
   </ItemGroup>
