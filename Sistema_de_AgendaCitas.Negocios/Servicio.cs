@@ -32,7 +32,9 @@ namespace SistemaAgenda.Negocios
         //Tienen implementación base pero pueden sobreescribirse
         public virtual decimal CalcularPrecio()=> _servicio.Precio;
         public virtual int CalcularDuracion() => _servicio.DuracionMinutos;
-        
+        //Nuevo metodo
+        public virtual decimal CalcularDeposito() => CalcularPrecio() * 0.20m;
+
     }
 
     //TODO Clase nueva creada para implementar los metodos abstractos y la sobreescritura en los metodos virtuales.

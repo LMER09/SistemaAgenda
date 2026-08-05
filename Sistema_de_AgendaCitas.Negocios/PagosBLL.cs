@@ -6,6 +6,7 @@ namespace SistemaAgenda.Negocios
     {
         private readonly PagosDAL _dal = new PagosDAL();
 
+        // ── REGISTRAR ────────────────────────────────────────────────
         public string Registrar(Pagos p)
         {
             try
@@ -18,7 +19,6 @@ namespace SistemaAgenda.Negocios
 
                 if (string.IsNullOrWhiteSpace(p.Metodo_DePago))
                     return "ERROR: El método de pago es obligatorio.";
-
 
                 CitasDAL citasDAL = new CitasDAL();
                 var citas = citasDAL.ObtenerTodos();
@@ -37,8 +37,6 @@ namespace SistemaAgenda.Negocios
                     return "ERROR: Cita no encontrada.";
                 if (cita.Estado == "Cancelada")
                     return "ERROR: No se puede registrar un pago para una cita cancelada.";
-
-                // Verificar si la cita ya fue completada
                 if (cita.Estado == "Completada")
                     return "ERROR: Cita completada y pagada.";
 
@@ -46,18 +44,14 @@ namespace SistemaAgenda.Negocios
 
                 if (ok)
                 {
-                    //TODO Actualizar el estado de la cita a "Completada" cuando se hace el pago
+                    // Al registrar el pago, la cita pasa a Completada.
+                    // "cita" ya se valido que no es null unas lineas arriba.
+                    cita.Estado = "Completada";
+                    citasDAL.Actualizar(cita);
 
-                    if (cita != null)
-                    {
-                        cita.Estado = "Completada";
-                        citasDAL.Actualizar(cita);
-                    }
-
-                    return "OK: Pago registrado" +
-                        "Cita completada exitosamente.";
+                    return "OK: Pago registrado. Cita completada exitosamente.";
                 }
-                
+
                 return "ERROR: No se pudo guardar en la base de datos.";
             }
             catch (Exception ex)
@@ -66,18 +60,7 @@ namespace SistemaAgenda.Negocios
             }
         }
 
-        public List<Pagos> ObtenerTodos()
-        {
-            try
-            {
-                return _dal.ObtenerTodos();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error al obtener pagos: " + ex.Message);
-            }
-        }
-
+        // ── ACTUALIZAR ───────────────────────────────────────────────
         public string Actualizar(Pagos p)
         {
             try
@@ -102,6 +85,7 @@ namespace SistemaAgenda.Negocios
             }
         }
 
+        // ── ELIMINAR ─────────────────────────────────────────────────
         public string Eliminar(int id)
         {
             try
@@ -116,7 +100,52 @@ namespace SistemaAgenda.Negocios
                 return "ERROR: " + ex.Message;
             }
         }
-        // esto funciona con lo nueva clase de PagoVista
+
+        // ── OBTENER TODOS ────────────────────────────────────────────
+        public List<Pagos> ObtenerTodos()
+        {
+            try
+            {
+                return _dal.ObtenerTodos();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener pagos: " + ex.Message);
+            }
+        }
+
+        // ── REPORTES ─────────────────────────────────────────────────
+
+        // Trae solo los pagos de una fecha especifica, para no mezclar dias
+        // en el reporte/corte del dia.
+        public List<Pagos> ObtenerPorFecha(DateTime fecha)
+        {
+            var todos = ObtenerTodos();
+            var resultado = new List<Pagos>();
+
+            for (int i = 0; i < todos.Count; i++)
+            {
+                if (todos[i].FechaPago.Date == fecha.Date)
+                    resultado.Add(todos[i]);
+            }
+
+            return resultado;
+        }
+
+        // Suma el monto de una lista de pagos ya filtrada (por ejemplo, la
+        // de ObtenerPorFecha).
+        public decimal ObtenerTotal(List<Pagos> pagos)
+        {
+            decimal total = 0;
+            for (int i = 0; i < pagos.Count; i++)
+            {
+                total += pagos[i].Monto;
+            }
+            return total;
+        }
+
+        // Combina Pagos+Citas+Clientes+Servicios en una lista legible,
+        // pensada para mostrarse en frmConsultarPagos.
         public List<PagoVista> ObtenerVista()
         {
             var pagos = ObtenerTodos();
@@ -128,23 +157,58 @@ namespace SistemaAgenda.Negocios
             var clientes = clientesBLL.ObtenerTodos();
             var servicios = serviciosBLL.ObtenerTodos();
 
-            return pagos.Select(p =>
-            {
-                var cita = citas.FirstOrDefault(c => c.Id == p.Id_Citas);
-                var cliente = cita != null ? clientes.FirstOrDefault(c => c.Id == cita.Id_Clientes) : null;
-                var servicio = cita != null ? servicios.FirstOrDefault(s => s.Id == cita.Id_Servicios) : null;
+            var resultado = new List<PagoVista>();
 
-                return new PagoVista
+            for (int i = 0; i < pagos.Count; i++)
+            {
+                Pagos p = pagos[i];
+
+                Citas cita = null;
+                for (int j = 0; j < citas.Count; j++)
+                {
+                    if (citas[j].Id == p.Id_Citas)
+                    {
+                        cita = citas[j];
+                        break;
+                    }
+                }
+
+                Clientes cliente = null;
+                Servicios servicio = null;
+                if (cita != null)
+                {
+                    for (int j = 0; j < clientes.Count; j++)
+                    {
+                        if (clientes[j].Id == cita.Id_Clientes)
+                        {
+                            cliente = clientes[j];
+                            break;
+                        }
+                    }
+                    for (int j = 0; j < servicios.Count; j++)
+                    {
+                        if (servicios[j].Id == cita.Id_Servicios)
+                        {
+                            servicio = servicios[j];
+                            break;
+                        }
+                    }
+                }
+
+                resultado.Add(new PagoVista
                 {
                     Id = p.Id,
                     Cliente = cliente != null ? $"{cliente.Nombre} {cliente.Apellido}" : "Cliente desconocido",
                     Servicio = servicio != null ? servicio.Tipo_DeServicio : "Servicio desconocido",
-                    FechaCita = cita?.Fecha ?? DateTime.MinValue,
+                    FechaCita = cita != null ? cita.Fecha : DateTime.MinValue,
                     Monto = p.Monto,
                     MetodoDePago = p.Metodo_DePago,
                     FechaPago = p.FechaPago
-                };
-            }).OrderByDescending(pv => pv.FechaPago).ToList();
+                });
+            }
+            return resultado;
+
+          
         }
     }
 }

@@ -1,34 +1,53 @@
 ﻿using System;
 using System.IO;
+using System.Collections.Generic;
+using SistemaAgenda.Datos;
 
 namespace SistemaAgenda.Negocios
 {
-    // Destructor de CorteDia
-    // Aal cerrar el corte del día, genera un resumen de ingresos en un archivo de texto.
-   
+    // Genera el resumen de ingresos de UN dia especifico en un archivo de texto.
+    // Recibe la lista de pagos ya filtrada por fecha (PagosBLL.ObtenerPorFecha) asi que nunca mezcla pagos de dias distintos.
     public class CorteDia
     {
-        // Atributo que almacena el total de ingresos del día
-        private decimal _totalIngresos;
+        private readonly DateTime _fecha;
+        private readonly List<Pagos> _pagosDelDia;
 
-        // Constructor: recibe el total de ingresos calculado desde frmReportes
-        public CorteDia(decimal totalIngresos) => _totalIngresos = totalIngresos;
+        public CorteDia(DateTime fecha, List<Pagos> pagosDelDia)
+        {
+            _fecha = fecha.Date;
+            _pagosDelDia = pagosDelDia;
+        }
 
-        // Método Cerrar: genera el resumen del día al presionar el botón en frmReportes
+        public decimal TotalDelDia
+        {
+            get
+            {
+                decimal total = 0;
+                for (int i = 0; i < _pagosDelDia.Count; i++)
+                {
+                    total += _pagosDelDia[i].Monto;
+                }
+                return total;
+            }
+        }
+
+        public int CantidadDePagos => _pagosDelDia.Count;
+
+        // Genera el resumen del dia en un archivo con la fecha en el nombre,
+        // dentro de una carpeta fija "Reportes" (no en una ruta relativa suelta).
         public void Cerrar()
         {
-            File.AppendAllText("CorteDia.txt",
-                $"=== CORTE DEL DÍA ===\nFecha: {DateTime.Today:dd/MM/yyyy}\nTotal ingresos: RD${_totalIngresos:F2}\n\n");
-        }
+            string carpeta = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Reportes");
+            Directory.CreateDirectory(carpeta);
 
-        // Destructor: registra el resumen del día y libera el recurso asociado
-        // al archivo de texto una vez finalizada la escritura.
-        ~CorteDia()
-        { 
-            File.AppendAllText("CorteDia.txt",
-                 $"=== CORTE DEL DÍA ===\n" +
-                 $"Fecha: {DateTime.Today:dd/MM/yyyy}\n" +
-                 $"Total ingresos: RD${_totalIngresos:F2}");
+            string ruta = Path.Combine(carpeta, $"CorteDia_{_fecha:yyyy-MM-dd}.txt");
+
+            File.WriteAllText(ruta,
+                $"=== CORTE DEL DIA ===\n" +
+                $"Fecha: {_fecha:dd/MM/yyyy}\n" +
+                $"Total ingresos: RD${TotalDelDia:F2}\n" +
+                $"Cantidad de pagos: {CantidadDePagos}\n");
         }
+        ~CorteDia() { }
     }
 }

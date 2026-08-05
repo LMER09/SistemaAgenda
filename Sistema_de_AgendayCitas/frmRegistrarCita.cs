@@ -153,10 +153,11 @@ namespace SistemaAgenda.UI
             if (cmbServicios.SelectedIndex == -1) return;
 
             Servicios s = _listaServicios[cmbServicios.SelectedIndex];
-            decimal precioFinal = new Gestion_DeServicios(s).CalcularPrecio();
+            Servicio servicioCalculo = new Gestion_DeServicios(s);
+            decimal precioFinal = servicioCalculo.CalcularPrecio();
 
             lblPrecioServicio.Text = "Precio servicio: RD$ " + precioFinal.ToString("F2");
-            lblDeposito.Text = "Depósito requerido: RD$ " + (precioFinal * 0.20m).ToString("F2");
+            lblDeposito.Text = "Depósito requerido: RD$ " + servicioCalculo.CalcularDeposito().ToString("F2");
         }
 
         private bool ValidarSelecciones()
@@ -220,7 +221,7 @@ namespace SistemaAgenda.UI
 
             Citas nuevaCita = new Citas(cliente, servicio, ObtenerFechaHoraSeleccionada());
             nuevaCita.Id_Estilista = estilista.Id;
-            nuevaCita.Deposito = new Gestion_DeServicios(servicio).CalcularPrecio() * 0.20m;
+            nuevaCita.Deposito = new Gestion_DeServicios(servicio).CalcularDeposito();
 
             string resultado = citasBLL.AgendarCita(nuevaCita);
             bool exito = resultado.StartsWith("OK");
