@@ -8,7 +8,7 @@ using System;
 
 namespace SistemaAgenda.Datos
 {
-    //TODO Modelo que representa el horario laboral de una estilista para un día
+    //TODO Horario laboral para una estilista
     public class HorarioEstilista
     {
         public int Id { get; set; }

@@ -7,21 +7,13 @@ namespace SistemaAgenda.UI
     {
         private ServiciosBLL serviciosBLL = new ServiciosBLL();
         private bool habilitado = false;
-
-        // Si no es null, el formulario esta editando este servicio
-        // en vez de crear uno nuevo.
         private Servicios? _servicioEditando = null;
         private bool ModoEdicion => _servicioEditando != null;
-
-        // Constructor normal: registrar un servicio nuevo
         public frmRegistrarServicios()
         {
             InitializeComponent();
             HabilitarControles(false);
         }
-
-        // Constructor de edicion: recibe el servicio ya existente,
-        // desde frmConsultarServicios al presionar "Editar".
         public frmRegistrarServicios(Servicios servicio) : this()
         {
             _servicioEditando = servicio;
@@ -85,8 +77,7 @@ namespace SistemaAgenda.UI
                 btnAgregar.Text = "💾 Guardar cambios";
 
                 cmbTipo.Text = _servicioEditando!.Tipo_DeServicio;
-                // Dispara el llenado de cmbSubtipo con las opciones correctas
-                // antes de intentar seleccionar el valor guardado.
+                // Dispara el llenado de cmbSubtipo con las opciones correctas antes de intentar seleccionar el valor guardado.
                 cmbTipo_SelectedIndexChanged(sender, e);
                 if (cmbSubtipo.Items.Contains(_servicioEditando.Subtipo_DeServicio))
                     cmbSubtipo.Text = _servicioEditando.Subtipo_DeServicio;
@@ -103,7 +94,6 @@ namespace SistemaAgenda.UI
         }
 
         // Llena cmbSubtipo segun el tipo elegido en cmbTipo.
-        // Los valores deben coincidir exactamente con el CHECK de la base de datos.
         private void cmbTipo_SelectedIndexChanged(object sender, EventArgs e)
         {
             cmbSubtipo.Items.Clear();

@@ -22,7 +22,6 @@ namespace SistemaAgenda.Negocios
         }
 
         //TODO Métodos normales requeridos por el proyecto: agendarCita(), cancelarCita(), reprogramarCita()
-
         // TODO VALIDAR DISPONIBILIDAD DEL ESTILISTA ─────────────────────
         private bool EstilistaDisponible(int idEstilista, DateTime fecha)
         {
@@ -32,7 +31,7 @@ namespace SistemaAgenda.Negocios
             {
                 Citas cita = citasEnEseHorario[i];
                 if (cita.Estado != "Cancelada" && cita.Estado != "Completada")
-                    return false; //hay una cita activa que choca con ese horario
+                    return false;
             }
 
             return true;

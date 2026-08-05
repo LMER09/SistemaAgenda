@@ -55,7 +55,6 @@ namespace SistemaAgenda.UI
         }
 
         // Abre frmRegistrarServicios en modo edicion con el servicio seleccionado.
-        // Al cerrarse ese formulario, esta pantalla se refresca sola.
         private void btnEditar_Click(object sender, EventArgs e)
         {
             if (dgvServicios.CurrentRow == null)

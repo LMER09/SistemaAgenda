@@ -15,14 +15,12 @@ namespace SistemaAgenda.UI
         {
             InitializeComponent();
 
-            // Conecta el evento del recordatorio para enviar el correo al cliente
-            // cuando una cita esta proxima (misma logica que tenia el frmAgenda viejo).
+            // Conecta el evento del recordatorio para enviar el correo al cliente cuando una cita esta proxima
             recordatorio.RecordatorioDisparado += (cita, mensaje) =>
             {
                 if (cita == null) return;
 
-                // Guarda la notificacion en el historial, sin importar
-                // si el correo se logra enviar o no.
+                // Guarda la notificacion en el historial
                 HistorialNotificaciones.Agregar(mensaje);
 
                 var clientes = clientesBLL.ObtenerTodos();
@@ -45,15 +43,12 @@ namespace SistemaAgenda.UI
         private void frmConsultarCitas_Load(object sender, EventArgs e)
         {
             CargarCitas();
-            // Revisa aqui las citas proximas (envia recordatorio por correo si aplica),
-            // ya que este es el formulario donde se "vigilan" las citas.
+            // Revisa aqui las citas proximas
             recordatorio.RevisarCitasProximas(citasBLL.ObtenerTodos());
         }
 
         private void CargarCitas()
         {
-            // Toda la combinacion de Citas+Clientes+Servicios+Estilista ya la
-            // arma CitasBLL.ObtenerVista(); el formulario solo la muestra.
             _listaCitas = citasBLL.ObtenerVista();
 
             MostrarEnTabla(_listaCitas);
@@ -81,17 +76,25 @@ namespace SistemaAgenda.UI
         // (no canceladas), para que se vean de un vistazo.
         private void CargarCalendario()
         {
-            var fechasConCita = _listaCitas
-                .Where(cv => cv.Estado != "Cancelada")
-                .Select(cv => cv.Fecha.Date)
-                .Distinct()
-                .ToArray();
+            var fechasConCita = new List<DateTime>();
 
-            calCitas.BoldedDates = fechasConCita;
+            for (int i = 0; i < _listaCitas.Count; i++)
+            {
+                CitaVista cv = _listaCitas[i];
+
+                if (cv.Estado == "Cancelada")
+                    continue;
+
+                DateTime fecha = cv.Fecha.Date;
+
+                if (!fechasConCita.Contains(fecha))
+                    fechasConCita.Add(fecha);
+            }
+
+            calCitas.BoldedDates = fechasConCita.ToArray();
         }
 
-        // Al elegir un dia en el calendario, filtra la tabla para mostrar
-        // solo las citas de ese dia.
+        // Al elegir un dia en el calendario, filtra la tabla para mostrar solo las citas de ese dia.
         private void calCitas_DateChanged(object sender, DateRangeEventArgs e)
         {
             DateTime fechaSeleccionada = calCitas.SelectionStart.Date;
@@ -188,8 +191,7 @@ namespace SistemaAgenda.UI
             CargarCitas();
         }
 
-        // Abre frmRegistrarCita en modo reprogramar/editar con la cita seleccionada.
-        // Al cerrarse ese formulario, esta pantalla se refresca sola.
+        // Abre frmRegistrarCita en modo reprogramar/editar con la cita seleccionada
         private void btnReprogramar_Click(object sender, EventArgs e)
         {
             var citaSeleccionada = ObtenerCitaSeleccionada();

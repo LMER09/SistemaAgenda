@@ -45,7 +45,6 @@ namespace SistemaAgenda.Negocios
                 if (ok)
                 {
                     // Al registrar el pago, la cita pasa a Completada.
-                    // "cita" ya se valido que no es null unas lineas arriba.
                     cita.Estado = "Completada";
                     citasDAL.Actualizar(cita);
 
@@ -116,8 +115,7 @@ namespace SistemaAgenda.Negocios
 
         // ── REPORTES ─────────────────────────────────────────────────
 
-        // Trae solo los pagos de una fecha especifica, para no mezclar dias
-        // en el reporte/corte del dia.
+        // Trae solo los pagos de una fecha especifica, para no mezclar dias en el reporte/corte del dia.
         public List<Pagos> ObtenerPorFecha(DateTime fecha)
         {
             var todos = ObtenerTodos();
@@ -132,8 +130,7 @@ namespace SistemaAgenda.Negocios
             return resultado;
         }
 
-        // Suma el monto de una lista de pagos ya filtrada (por ejemplo, la
-        // de ObtenerPorFecha).
+        // Suma el monto de una lista de pagos
         public decimal ObtenerTotal(List<Pagos> pagos)
         {
             decimal total = 0;
@@ -144,8 +141,6 @@ namespace SistemaAgenda.Negocios
             return total;
         }
 
-        // Combina Pagos+Citas+Clientes+Servicios en una lista legible,
-        // pensada para mostrarse en frmConsultarPagos.
         public List<PagoVista> ObtenerVista()
         {
             var pagos = ObtenerTodos();

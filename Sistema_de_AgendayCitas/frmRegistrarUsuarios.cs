@@ -7,21 +7,13 @@ namespace SistemaAgenda.UI
     {
         private UsuariosBLL usuariosBLL = new UsuariosBLL();
         private bool habilitado = false;
-
-        // Si no es null, el formulario esta editando este usuario
-        // en vez de crear uno nuevo.
         private Usuarios? _usuarioEditando = null;
         private bool ModoEdicion => _usuarioEditando != null;
-
-        // Constructor normal: registrar un usuario nuevo
         public frmRegistrarUsuarios()
         {
             InitializeComponent();
             HabilitarControles(false);
         }
-
-        // Constructor de edicion: recibe el usuario ya existente,
-        // desde frmConsultarUsuarios al presionar "Editar".
         public frmRegistrarUsuarios(Usuarios usuario) : this()
         {
             _usuarioEditando = usuario;
@@ -85,7 +77,6 @@ namespace SistemaAgenda.UI
                 txtUsuario.Text = _usuarioEditando!.Usuario;
 
                 // La contraseña actual solo se pide si se va a cambiar la contraseña
-                // (campos Contrasena/ConfirmarContrasena se dejan en blanco a proposito).
                 lblContrasenaActual.Visible = true;
                 txtContrasenaActual.Visible = true;
                 lblAyudaContrasena.Visible = true;
@@ -110,15 +101,13 @@ namespace SistemaAgenda.UI
             }
 
             // Al crear un usuario nuevo, la contraseña es obligatoria.
-            // Al editar, es opcional (vacio = no cambiarla).
             if (!ModoEdicion && string.IsNullOrWhiteSpace(txtContrasena.Text))
             {
                 MostrarResultado("Debe ingresar una contraseña.", esExito: false);
                 return false;
             }
 
-            // Si escribio algo en contraseña (nuevo usuario, o editando y decidio cambiarla),
-            // debe coincidir con la confirmacion.
+            // Si escribio algo en contraseña (nuevo usuario, o editando y decidio cambiarla), debe coincidir con la confirmacion.
             if (!string.IsNullOrEmpty(txtContrasena.Text) || !string.IsNullOrEmpty(txtConfirmarContrasena.Text))
             {
                 if (txtContrasena.Text != txtConfirmarContrasena.Text)
@@ -128,8 +117,7 @@ namespace SistemaAgenda.UI
                     return false;
                 }
 
-                // Si esta editando y quiere cambiar la contraseña, primero debe
-                // confirmar la contraseña actual correctamente.
+                // Si esta editando y quiere cambiar la contraseña, primero debe confirmar la contraseña actual correctamente.
                 if (ModoEdicion)
                 {
                     if (txtContrasenaActual.Text != _usuarioEditando!.Contrasena)
@@ -162,8 +150,7 @@ namespace SistemaAgenda.UI
                     Id = _usuarioEditando!.Id,
                     Usuario = txtUsuario.Text,
                     // Si dejo la contraseña en blanco, se manda la misma que ya tenia
-                    // (no se pisa con vacio). Si escribio una nueva, ya se confirmo
-                    // la contraseña actual en ValidarDatos antes de llegar aqui.
+                    // Si escribio una nueva, ya se confirmo, la contraseña actual en ValidarDatos antes de llegar aqui.
                     Contrasena = string.IsNullOrEmpty(txtContrasena.Text)
                         ? _usuarioEditando.Contrasena
                         : txtContrasena.Text

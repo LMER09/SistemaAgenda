@@ -2,8 +2,6 @@
  
 namespace SistemaAgenda.Negocios
 {
-    // Combinacion legible de Pagos + Citas + Clientes + Servicios, pensada
-    // solo para mostrarse en pantalla. No es una entidad de la base de datos.
     public class PagoVista
     {
         public int Id { get; set; }

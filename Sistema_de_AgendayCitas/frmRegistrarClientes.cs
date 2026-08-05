@@ -8,27 +8,19 @@ namespace SistemaAgenda.UI
         private ClientesBLL clientesBLL = new ClientesBLL();
         private bool habilitado = false;
 
-        // Si no es null, el formulario esta editando este cliente
-        // en vez de crear uno nuevo.
         private Clientes? _clienteEditando = null;
         private bool ModoEdicion => _clienteEditando != null;
-
-        // Constructor normal: registrar un cliente nuevo
         public frmRegistrarClientes()
         {
             InitializeComponent();
             HabilitarControles(false);
         }
 
-        // Constructor de edicion: recibe el cliente ya existente,
-        // desde frmConsultarClientes al presionar "Editar".
         public frmRegistrarClientes(Clientes cliente) : this()
         {
             _clienteEditando = cliente;
         }
 
-        // Alterna entre habilitado y deshabilitado con el mismo boton,
-        // y deja claro al usuario en que estado esta (texto + color).
         private void HabilitarControles(bool habilitar)
         {
             habilitado = habilitar;
@@ -82,10 +74,7 @@ namespace SistemaAgenda.UI
         {
             if (ModoEdicion)
             {
-                // Cambia la pantalla a "modo editar": titulo, boton, y
-                // los campos ya cargados y habilitados de una vez, porque
-                // el usuario ya decidio editar (no tiene sentido pedirle
-                // un clic extra en "Habilitar").
+                // Cambia la pantalla a "modo editar": titulo, boton, y los campos ya cargados y habilitados de una vez.
                 this.Text = "Editar Cliente";
                 lblIngrese.Text = "Editando cliente:";
                 btnAgregar.Text = "💾 Guardar cambios";
@@ -139,9 +128,6 @@ namespace SistemaAgenda.UI
 
             return true;
         }
-
-        // Muestra el resultado del registro directamente en el formulario
-        // (aqui ya no hay grid, asi que el label es la unica confirmacion visual)
         private void MostrarResultado(string mensaje, bool esExito)
         {
             lblResultado.Text = mensaje;
@@ -171,7 +157,6 @@ namespace SistemaAgenda.UI
                 if (exitoEdicion)
                 {
                     MessageBox.Show("Cliente actualizado exitosamente.");
-                    // Cierra y vuelve a Consultar, que se refresca sola al reaparecer.
                     Close();
                 }
                 else

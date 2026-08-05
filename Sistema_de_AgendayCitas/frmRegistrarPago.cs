@@ -12,11 +12,9 @@ namespace SistemaAgenda.UI
         private readonly ServiciosBLL serviciosBLL = new ServiciosBLL();
 
         // Solo las citas que todavia pueden recibir un pago
-        // (no canceladas, no ya completadas/pagadas).
         private List<Citas> _citasPendientes = new List<Citas>();
         private List<Clientes> _listaClientes = new List<Clientes>();
         private List<Servicios> _listaServicios = new List<Servicios>();
-
         private bool habilitado = false;
 
         public frmRegistrarPago()
@@ -32,8 +30,7 @@ namespace SistemaAgenda.UI
         }
 
         // Arma el combo con texto legible: "Cliente - Servicio - Fecha",
-        // en vez de solo el numero de la cita, para que el usuario sepa
-        // cual esta eligiendo.
+        // en vez de solo el numero de la cita, para que el usuario sepa cual esta eligiendo.
         private void CargarCitasPendientes()
         {
             _listaClientes = clientesBLL.ObtenerTodos();
@@ -85,8 +82,6 @@ namespace SistemaAgenda.UI
 
         private void btnHabilitar_Click(object sender, EventArgs e)
         {
-            // Refresca la lista de citas pendientes cada vez que se habilita,
-            // por si se agendo o pago una cita desde otra pantalla mientras tanto.
             if (!habilitado)
                 CargarCitasPendientes();
 

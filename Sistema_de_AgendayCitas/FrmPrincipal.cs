@@ -11,19 +11,11 @@ namespace SistemaAgenda.UI
         {
             InitializeComponent();
         }
-
-        // Metodo para abrir cualquier formulario.
-        // Se oculta el principal mientras la otra pantalla esta abierta,
-        // asi solo queda visible la que el usuario eligio, y el principal
-        // vuelve a aparecer automaticamente cuando esa pantalla se cierra.
         private void AbrirFormulario(Form formulario)
         {
             this.Hide();
             formulario.ShowDialog();
             this.Show();
-
-            // Cada vez que se vuelve al Principal (por ejemplo, tras agendar
-            // una cita o registrar un pago), se refresca el resumen del dia.
             CargarResumen();
         }
 
@@ -44,9 +36,7 @@ namespace SistemaAgenda.UI
             }
         }
 
-        // Calcula y muestra el resumen del dia: citas de hoy, ingresos de hoy,
-        // y la proxima cita pendiente. Se apoya en los mismos BLL que ya usan
-        // el resto de los formularios, no accede a la base de datos directo.
+        // Calcula y muestra el resumen del dia
         private void CargarResumen()
         {
             var citasBLL = new CitasBLL();

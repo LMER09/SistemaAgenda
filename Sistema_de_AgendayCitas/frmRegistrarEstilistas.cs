@@ -9,21 +9,13 @@ namespace SistemaAgenda.UI
         private EstilistaBLL estilistaBLL = new EstilistaBLL();
         private HorarioEstilistaBLL horarioBLL = new HorarioEstilistaBLL();
         private bool habilitado = false;
-
-        // Si no es null, el formulario esta editando este estilista
-        // en vez de crear uno nuevo.
         private Estilista? _estilistaEditando = null;
         private bool ModoEdicion => _estilistaEditando != null;
-
-        // Constructor normal: registrar un estilista nuevo
         public frmRegistrarEstilistas()
         {
             InitializeComponent();
             HabilitarControles(false);
         }
-
-        // Constructor de edicion: recibe el estilista ya existente,
-        // desde frmConsultarEstilistas al presionar "Editar".
         public frmRegistrarEstilistas(Estilista estilista) : this()
         {
             _estilistaEditando = estilista;
@@ -97,8 +89,8 @@ namespace SistemaAgenda.UI
             chkJueves.Checked = false;
             chkViernes.Checked = false;
             chkSabado.Checked = false;
-            dtpHoraInicio.Value = DateTime.Today.AddHours(9);   // 9:00 AM por defecto
-            dtpHoraFin.Value = DateTime.Today.AddHours(17);     // 5:00 PM por defecto
+            dtpHoraInicio.Value = DateTime.Today.AddHours(9);   // por defecto
+            dtpHoraFin.Value = DateTime.Today.AddHours(17);     // por defecto
         }
 
         private void FrmRegistrarEstilistas_Load(object sender, EventArgs e)
@@ -125,10 +117,6 @@ namespace SistemaAgenda.UI
                 HabilitarControles(false);
             }
         }
-
-        // Marca los dias que ya tenia guardados y pone la hora inicio/fin
-        // del primer bloque encontrado (todos comparten la misma hora,
-        // por como se diseño este formulario).
         private void CargarHorarioExistente(int idEstilista)
         {
             var horarios = horarioBLL.ObtenerPorEstilista(idEstilista);
@@ -153,8 +141,7 @@ namespace SistemaAgenda.UI
             dtpHoraFin.Value = DateTime.Today.Add(primero.HoraFin);
         }
 
-        // Arma la lista de HorarioEstilista segun los checkboxes marcados
-        // y las dos horas elegidas (mismo horario para todos los dias marcados).
+        // Arma la lista de HorarioEstilista segun los checkboxes marcados y las dos horas elegidas.
         private List<HorarioEstilista> ArmarHorarioDesdeFormulario()
         {
             var dias = new List<(byte numero, CheckBox chk)>
@@ -300,8 +287,7 @@ namespace SistemaAgenda.UI
                 return;
             }
 
-            // El Insertar no devuelve el Id nuevo, asi que lo buscamos
-            // por el correo, que ya es unico en la base de datos.
+            // El Insertar no devuelve el Id nuevo, asi que lo buscamos por el correo, que ya es unico en la base de datos.
             var estilistaCreada = estilistaBLL.ObtenerTodos()
                 .FirstOrDefault(es => es.Correo == nuevoEstilista.Correo);
 

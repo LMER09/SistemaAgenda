@@ -63,9 +63,6 @@ namespace SistemaAgenda.UI
                 MessageBox.Show($"No se encontró ningún estilista que coincida con \"{txtBuscar.Text}\".",
                     "Sin resultados", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-
-        // Al seleccionar una fila, muestra el horario laboral de esa estilista
-        // (todos los dias comparten la misma hora inicio/fin, por diseño del formulario de registro).
         private void dgvEstilistas_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
@@ -99,7 +96,6 @@ namespace SistemaAgenda.UI
         }
 
         // Abre frmRegistrarEstilistas en modo edicion con el estilista seleccionado.
-        // Al cerrarse ese formulario, esta pantalla se refresca sola.
         private void btnEditar_Click(object sender, EventArgs e)
         {
             if (dgvEstilistas.CurrentRow == null)

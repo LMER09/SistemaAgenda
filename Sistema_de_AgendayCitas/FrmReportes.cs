@@ -19,8 +19,6 @@ namespace SistemaAgenda.UI
 
             dgvPagos.DataSource = null;
             dgvPagos.DataSource = pagosHoy;
-
-            // La suma ya no se hace aqui con un for manual, la calcula PagosBLL.
             decimal total = pagosBLL.ObtenerTotal(pagosHoy);
             lblTotal.Text = $"RD$ {total:F2}";
         }

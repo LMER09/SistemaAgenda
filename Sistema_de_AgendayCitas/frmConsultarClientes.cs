@@ -30,7 +30,6 @@ namespace SistemaAgenda.UI
             dgvClientes.Columns["Id"].Visible = false;
         }
 
-        // Filtra la lista ya cargada. Se ejecuta al presionar el boton Buscar.
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             string texto = txtBuscar.Text.Trim().ToLower();
@@ -55,10 +54,6 @@ namespace SistemaAgenda.UI
                 MessageBox.Show($"No se encontró ningún cliente que coincida con \"{txtBuscar.Text}\".",
                     "Sin resultados", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-
-        // Abre frmRegistrarClientes en modo edicion con el cliente seleccionado.
-        // Al cerrarse ese formulario (guardado o cancelado), esta pantalla
-        // se refresca sola para mostrar el cambio.
         private void btnEditar_Click(object sender, EventArgs e)
         {
             if (dgvClientes.CurrentRow == null)

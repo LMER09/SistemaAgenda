@@ -3,8 +3,7 @@ using SistemaAgenda.Datos;
 
 namespace SistemaAgenda.Negocios
 {
-    // Combinacion legible de Citas + Clientes + Servicios + Estilista, pensada
-    // solo para mostrarse en pantalla. Guarda tambien la Citas original,
+    // Solo para mostrarse en pantalla. Guarda tambien la Citas original,
     // para poder cancelarla o reprogramarla sin tener que volver a buscarla.
     public class CitaVista
     {

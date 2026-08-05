@@ -29,8 +29,7 @@ namespace SistemaAgenda.UI
             dgvUsuarios.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvUsuarios.Columns["Id"].Visible = false;
 
-            // La contraseña NUNCA se muestra en la tabla, ni siquiera hasheada,
-            // para no exponerla en pantalla a quien este consultando.
+            // La contraseña NUNCA se muestra en la tabla
             if (dgvUsuarios.Columns["Contrasena"] != null)
                 dgvUsuarios.Columns["Contrasena"].Visible = false;
         }
@@ -99,10 +98,9 @@ namespace SistemaAgenda.UI
                 return;
 
             int id = Convert.ToInt32(dgvUsuarios.CurrentRow.Cells["Id"].Value);
-            // UsuariosBLL.Eliminar ya bloquea el borrado si es el ultimo usuario
+            // UsuariosBLL.Eliminar bloquea el borrado si es el ultimo usuario
             // del sistema, y devuelve el mensaje de error correspondiente.
             MessageBox.Show(usuariosBLL.Eliminar(id));
-
             CargarUsuarios();
         }
 
