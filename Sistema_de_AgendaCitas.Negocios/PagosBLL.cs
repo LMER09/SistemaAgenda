@@ -117,7 +117,7 @@ namespace SistemaAgenda.Negocios
             }
         }
         // esto funciona con lo nueva clase de PagoVista
-        public List<Vistas> ObtenerVista()
+        public List<PagoVista> ObtenerVista()
         {
             var pagos = ObtenerTodos();
             var citasBLL = new CitasBLL();
@@ -134,7 +134,7 @@ namespace SistemaAgenda.Negocios
                 var cliente = cita != null ? clientes.FirstOrDefault(c => c.Id == cita.Id_Clientes) : null;
                 var servicio = cita != null ? servicios.FirstOrDefault(s => s.Id == cita.Id_Servicios) : null;
 
-                return new Vistas
+                return new PagoVista
                 {
                     Id = p.Id,
                     Cliente = cliente != null ? $"{cliente.Nombre} {cliente.Apellido}" : "Cliente desconocido",
