@@ -231,7 +231,6 @@
             lblElija.Size = new Size(333, 25);
             lblElija.TabIndex = 7;
             lblElija.Text = "Gestion de citas para salon de belleza";
-            lblElija.Click += lblElija_Click;
             // 
             // panel1
             // 

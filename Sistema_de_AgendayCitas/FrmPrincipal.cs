@@ -39,7 +39,7 @@ namespace SistemaAgenda.UI
 
         private void btnAgenda_Click(object sender, EventArgs e)
         {
-            AbrirFormulario(new frmAgenda());
+            AbrirFormulario(new frmRegistrarCita());
         }
 
         private void btnClientes_Click(object sender, EventArgs e)
@@ -88,11 +88,7 @@ namespace SistemaAgenda.UI
 
         private void reportesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(
-                "Módulo de consulta de citas en desarrollo.",
-                "Sistema",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
+            AbrirFormulario(new frmConsultarCitas());
         }
 
         private void reportesToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -118,12 +114,12 @@ namespace SistemaAgenda.UI
         {
             MessageBox.Show(
      "Sistema de Agenda y Citas\n\n" +
-     " Versión 1.0\n\n " +
+     "Versión 1.0\n\n" +
      "Desarrollado por:\n" +
      "• Novaly Pujols\n" +
      "• Luzmairy Espiritusanto\n" +
      "• Juan Manuel Contreras\n" +
-     "• Mercy Báez \n\n" +
+     "• Mercy Báez 4\n\n" +
      "• Sebastian vargas\n\n" +
      "Proyecto Final\n" +
      "Ingeniería en Software\n\n" +

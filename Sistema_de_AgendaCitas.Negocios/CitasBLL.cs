@@ -175,6 +175,11 @@ namespace SistemaAgenda.Negocios
                 if (cita.Estado == "Cancelada")
                     return "ERROR: No se puede reprogramar una cita cancelada.";
 
+                // Verificar que la estilista no tenga ya otra cita activa en la nueva fecha/hora
+                // (misma validacion que AgendarCita, antes le faltaba a Reprogramar)
+                if (!EstilistaDisponible(cita.Id_Estilista, nuevaFecha))
+                    return "ERROR: El estilista ya tiene una cita asignada para esa fecha y hora.";
+
                 // Verificar que la nueva fecha/hora caiga dentro del horario laboral de la estilista
                 string? errorHorario = ValidarHorarioLaboral(cita.Id_Estilista, nuevaFecha);
                 if (errorHorario != null)
@@ -193,8 +198,67 @@ namespace SistemaAgenda.Negocios
                 return "ERROR: " + ex.Message;
             }
         }
+        // ── AGREGAR este método dentro de la clase CitasBLL, junto a          ──
+        // ── AgendarCita y ReprogramarCita. Este SI permite cambiar cliente,   ──
+        // ── servicio, estilista y fecha, todo a la vez (edicion completa).    ──
 
+        public string EditarCita(Citas citaEditada)
+        {
+            try
+            {
+                if (citaEditada.Id_Clientes <= 0)
+                    return "ERROR: Debe seleccionar un cliente.";
+
+                if (citaEditada.Id_Servicios <= 0)
+                    return "ERROR: Debe seleccionar un servicio.";
+
+                if (citaEditada.Id_Estilista <= 0)
+                    return "ERROR: Debe seleccionar una estilista.";
+
+                if (citaEditada.Fecha < DateTime.Now)
+                    return "ERROR: La fecha no puede ser en el pasado.";
+
+                var lista = _dal.ObtenerTodos();
+                Citas citaOriginal = lista.FirstOrDefault(c => c.Id == citaEditada.Id);
+
+                if (citaOriginal == null)
+                    return "ERROR: Cita no encontrada.";
+                if (citaOriginal.Estado == "Completada")
+                    return "ERROR: No se puede editar una cita que ya fue completada.";
+                if (citaOriginal.Estado == "Cancelada")
+                    return "ERROR: No se puede editar una cita cancelada.";
+
+                // Misma validacion de doble reserva que AgendarCita, pero ignorando
+                // la propia cita que se esta editando (para no chocar consigo misma).
+                var citasEnEseHorario = _dal.ObtenerPorEstilistaYFecha(citaEditada.Id_Estilista, citaEditada.Fecha);
+                bool ocupado = citasEnEseHorario.Any(c =>
+                    c.Id != citaEditada.Id &&
+                    c.Estado != "Cancelada" &&
+                    c.Estado != "Completada");
+
+                if (ocupado)
+                    return "ERROR: El estilista ya tiene una cita asignada para esa fecha y hora.";
+
+                string? errorHorario = ValidarHorarioLaboral(citaEditada.Id_Estilista, citaEditada.Fecha);
+                if (errorHorario != null)
+                    return errorHorario;
+
+                citaOriginal.Id_Clientes = citaEditada.Id_Clientes;
+                citaOriginal.Id_Servicios = citaEditada.Id_Servicios;
+                citaOriginal.Id_Estilista = citaEditada.Id_Estilista;
+                citaOriginal.Fecha = citaEditada.Fecha;
+                citaOriginal.Estado = "Reprogramada";
+
+                bool ok = _dal.Actualizar(citaOriginal);
+                return ok
+                    ? "OK: Cita actualizada exitosamente."
+                    : "ERROR: No se pudo actualizar la cita.";
+            }
+            catch (Exception ex)
+            {
+                return "ERROR: " + ex.Message;
+            }
+        }
 
     }
-
 }

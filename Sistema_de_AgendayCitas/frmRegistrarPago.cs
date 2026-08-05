@@ -159,8 +159,8 @@ namespace SistemaAgenda.UI
                 e.Handled = true;
         }
 
-        // Al elegir la cita, se sugiere automaticamente el monto
-        // segun el precio calculado del servicio (igual que hacia frmAgenda).
+        // Al elegir la cita, se sugiere automaticamente el saldo pendiente:
+        // precio del servicio MENOS el deposito que ya se cobro al agendar.
         private void cmbCita_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cmbCita.SelectedIndex == -1) return;
@@ -171,13 +171,15 @@ namespace SistemaAgenda.UI
             if (servicio != null)
             {
                 decimal precioFinal = new Gestion_DeServicios(servicio).CalcularPrecio();
-                txtMonto.Text = precioFinal.ToString("F2");
+                decimal saldoPendiente = precioFinal - cita.Deposito;
+
+                txtMonto.Text = saldoPendiente.ToString("F2");
+
+                lblAyudaMonto.Text =
+                    $"Precio del servicio: RD${precioFinal:F2}   |   " +
+                    $"Depósito ya pagado: RD${cita.Deposito:F2}   |   " +
+                    $"Saldo pendiente sugerido: RD${saldoPendiente:F2}. Puede cambiarlo si el cliente pagó un monto distinto.";
             }
-        }
-
-        private void lblResultado_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

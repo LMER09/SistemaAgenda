@@ -31,6 +31,7 @@ namespace SistemaAgenda.UI
         {
             habilitado = habilitar;
 
+            txtContrasenaActual.Enabled = habilitar;
             txtUsuario.Enabled = habilitar;
             txtContrasena.Enabled = habilitar;
             txtConfirmarContrasena.Enabled = habilitar;
@@ -68,6 +69,7 @@ namespace SistemaAgenda.UI
         private void Limpiar()
         {
             txtUsuario.Clear();
+            txtContrasenaActual.Clear();
             txtContrasena.Clear();
             txtConfirmarContrasena.Clear();
         }
@@ -81,15 +83,19 @@ namespace SistemaAgenda.UI
                 btnAgregar.Text = "💾 Guardar cambios";
 
                 txtUsuario.Text = _usuarioEditando!.Usuario;
-                // La contraseña NUNCA se precarga, ni siquiera para editar.
-                // Se deja en blanco a proposito: si el usuario no escribe nada
-                // ahi, se entiende que quiere mantener la contraseña actual.
+
+                // La contraseña actual solo se pide si se va a cambiar la contraseña
+                // (campos Contrasena/ConfirmarContrasena se dejan en blanco a proposito).
+                lblContrasenaActual.Visible = true;
+                txtContrasenaActual.Visible = true;
                 lblAyudaContrasena.Visible = true;
 
                 HabilitarControles(true);
             }
             else
             {
+                lblContrasenaActual.Visible = false;
+                txtContrasenaActual.Visible = false;
                 lblAyudaContrasena.Visible = false;
                 HabilitarControles(false);
             }
@@ -121,6 +127,18 @@ namespace SistemaAgenda.UI
                     txtConfirmarContrasena.Focus();
                     return false;
                 }
+
+                // Si esta editando y quiere cambiar la contraseña, primero debe
+                // confirmar la contraseña actual correctamente.
+                if (ModoEdicion)
+                {
+                    if (txtContrasenaActual.Text != _usuarioEditando!.Contrasena)
+                    {
+                        MostrarResultado("La contraseña actual no es correcta.", esExito: false);
+                        txtContrasenaActual.Focus();
+                        return false;
+                    }
+                }
             }
 
             return true;
@@ -144,7 +162,8 @@ namespace SistemaAgenda.UI
                     Id = _usuarioEditando!.Id,
                     Usuario = txtUsuario.Text,
                     // Si dejo la contraseña en blanco, se manda la misma que ya tenia
-                    // (no se pisa con vacio). Si escribio una nueva, se usa esa.
+                    // (no se pisa con vacio). Si escribio una nueva, ya se confirmo
+                    // la contraseña actual en ValidarDatos antes de llegar aqui.
                     Contrasena = string.IsNullOrEmpty(txtContrasena.Text)
                         ? _usuarioEditando.Contrasena
                         : txtContrasena.Text
