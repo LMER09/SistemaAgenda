@@ -1,5 +1,4 @@
 ﻿using SistemaAgenda.Negocios;
-using SistemaAgenda.Negocios;
 using System.Linq;
 
 namespace SistemaAgenda.UI

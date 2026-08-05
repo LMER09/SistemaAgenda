@@ -6,7 +6,7 @@ namespace SistemaAgenda.UI
     public partial class frmConsultarPagos : Form
     {
         private readonly PagosBLL pagosBLL = new PagosBLL();
-        private List<Vistas> _listaPagos = new List<Vistas>();
+        private List<PagoVista> _listaPagos = new List<PagoVista>();
 
         public frmConsultarPagos()
         {
