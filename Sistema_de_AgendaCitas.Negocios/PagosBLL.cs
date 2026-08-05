@@ -142,7 +142,9 @@ namespace SistemaAgenda.Negocios
         }
 
         public List<PagoVista> ObtenerVista()
+
         {
+
             var pagos = ObtenerTodos();
             var citasBLL = new CitasBLL();
             var clientesBLL = new ClientesBLL();
@@ -188,7 +190,11 @@ namespace SistemaAgenda.Negocios
                             break;
                         }
                     }
+
+
+
                 }
+
 
                 resultado.Add(new PagoVista
                 {
@@ -205,5 +211,34 @@ namespace SistemaAgenda.Negocios
 
           
         }
+        public List<PagoVista> ObtenerReporte(DateTime desde, DateTime hasta)
+        {
+            List<PagoVista> todos = ObtenerVista();
+            List<PagoVista> reporte = new List<PagoVista>();
+
+            for (int i = 0; i < todos.Count; i++)
+            {
+                if (todos[i].FechaPago.Date >= desde.Date &&
+                    todos[i].FechaPago.Date <= hasta.Date)
+                {
+                    reporte.Add(todos[i]);
+                }
+            }
+
+            return reporte;
+        }
+
+        public decimal ObtenerTotalReporte(List<PagoVista> reporte)
+        {
+            decimal total = 0;
+
+            for (int i = 0; i < reporte.Count; i++)
+            {
+                total += reporte[i].Monto;
+            }
+
+            return total;
+        }
+
     }
 }
