@@ -2,14 +2,14 @@
 {
     public interface ICitasDAL
     {
-        bool Insertar(Citas c);
+        Task<bool> InsertarAsync(Citas c);
 
-        List<Citas> ObtenerTodos();
+        Task<List<Citas>> ObtenerTodosAsync();
 
-        List<Citas> ObtenerPorEstilistaYFecha(int idEstilista, DateTime fecha);
+        Task<List<Citas>> ObtenerPorEstilistaYFechaAsync(int idEstilista, DateTime fecha);
 
-        bool Actualizar(Citas c);
+        Task<bool> ActualizarAsync(Citas c);
 
-        bool Eliminar(int id);
+        Task<bool> EliminarAsync(int id);
     }
 }

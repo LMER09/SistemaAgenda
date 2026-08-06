@@ -13,16 +13,17 @@ namespace SistemaAgenda.Negocios
             _dal = dal;
         }
 
-
-        public string Registrar(Usuarios u)
+        public async Task<string> RegistrarAsync(Usuarios u)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(u.Usuario) ||
-                    string.IsNullOrWhiteSpace(u.Contrasena))
-                    return "ERROR: Todos los campos son obligatorios.";
+                if (string.IsNullOrWhiteSpace(u.Usuario))
+                    return "ERROR: El usuario es obligatorio.";
 
-                bool ok = _dal.Insertar(u);
+                if (string.IsNullOrWhiteSpace(u.Contrasena))
+                    return "ERROR: La contraseña es obligatoria.";
+
+                bool ok = await _dal.InsertarAsync(u);
                 return ok
                     ? "OK: Usuario registrado exitosamente."
                     : "ERROR: No se pudo guardar en la base de datos.";
@@ -32,11 +33,25 @@ namespace SistemaAgenda.Negocios
                 return "ERROR: " + ex.Message;
             }
         }
-        public List<Usuarios> ObtenerTodos()
+
+        // Se usa en el login para validar usuario/contraseña
+        public async Task<Usuarios?> ObtenerPorUsuarioAsync(string usuario)
         {
             try
             {
-                return _dal.ObtenerTodos();
+                return await _dal.ObtenerPorUsuarioAsync(usuario);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al buscar usuario: " + ex.Message);
+            }
+        }
+
+        public async Task<List<Usuarios>> ObtenerTodosAsync()
+        {
+            try
+            {
+                return await _dal.ObtenerTodosAsync();
             }
             catch (Exception ex)
             {
@@ -44,15 +59,17 @@ namespace SistemaAgenda.Negocios
             }
         }
 
-        public string Actualizar(Usuarios u)
+        public async Task<string> ActualizarAsync(Usuarios u)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(u.Usuario) ||
-                    string.IsNullOrWhiteSpace(u.Contrasena))
-                    return "ERROR: Todos los campos son obligatorios.";
+                if (string.IsNullOrWhiteSpace(u.Usuario))
+                    return "ERROR: El usuario es obligatorio.";
 
-                bool ok = _dal.Actualizar(u);
+                if (string.IsNullOrWhiteSpace(u.Contrasena))
+                    return "ERROR: La contraseña es obligatoria.";
+
+                bool ok = await _dal.ActualizarAsync(u);
                 return ok
                     ? "OK: Usuario actualizado exitosamente."
                     : "ERROR: No se pudo actualizar en la base de datos.";
@@ -63,16 +80,11 @@ namespace SistemaAgenda.Negocios
             }
         }
 
-        public string Eliminar(int id)
+        public async Task<string> EliminarAsync(int id)
         {
             try
             {
-                int totalUsuarios = _dal.ObtenerTodos().Count;
-
-                if (totalUsuarios <= 1)
-                    return "ERROR: No se puede eliminar el último usuario del sistema.";
-
-                bool ok = _dal.Eliminar(id);
+                bool ok = await _dal.EliminarAsync(id);
                 return ok
                     ? "OK: Usuario eliminado exitosamente."
                     : "ERROR: No se pudo eliminar.";
@@ -80,22 +92,6 @@ namespace SistemaAgenda.Negocios
             catch (Exception ex)
             {
                 return "ERROR: " + ex.Message;
-            }
-        }
-        // Valida usuario/contraseña
-        public bool ValidarCredenciales(string usuario, string contrasena)
-        {
-            try
-            {
-                Usuarios? u = _dal.ObtenerPorUsuario(usuario);
-                if (u == null)
-                    return false;
-
-                return u.Contrasena == contrasena;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error al validar credenciales: " + ex.Message);
             }
         }
     }

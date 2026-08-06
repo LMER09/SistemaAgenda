@@ -2,12 +2,12 @@
 {
     public interface IClientesDAL
     {
-        bool Insertar(Clientes cliente);
+        Task<bool> InsertarAsync(Clientes cliente);
 
-        List<Clientes> ObtenerTodos();
+        Task<List<Clientes>> ObtenerTodosAsync();
 
-        bool Actualizar(Clientes cliente);
+        Task<bool> ActualizarAsync(Clientes cliente);
 
-        bool Eliminar(int id);
+        Task<bool> EliminarAsync(int id);
     }
 }

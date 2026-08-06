@@ -13,7 +13,7 @@ namespace SistemaAgenda.Negocios
             _dal = dal;
         }
 
-        public string Registrar(Servicios s)
+        public async Task<string> RegistrarAsync(Servicios s)
         {
             try
             {
@@ -29,7 +29,7 @@ namespace SistemaAgenda.Negocios
                 if (string.IsNullOrWhiteSpace(s.Subtipo_DeServicio))
                     return "ERROR: El subtipo de servicio es obligatorio.";
 
-                bool ok = _dal.Insertar(s);
+                bool ok = await _dal.InsertarAsync(s);
                 return ok
                     ? "OK: Servicio registrado exitosamente."
                     : "ERROR: No se pudo guardar en la base de datos.";
@@ -40,11 +40,11 @@ namespace SistemaAgenda.Negocios
             }
         }
 
-        public List<Servicios> ObtenerTodos()
+        public async Task<List<Servicios>> ObtenerTodosAsync()
         {
             try
             {
-                return _dal.ObtenerTodos();
+                return await _dal.ObtenerTodosAsync();
             }
             catch (Exception ex)
             {
@@ -52,7 +52,7 @@ namespace SistemaAgenda.Negocios
             }
         }
 
-        public string Actualizar(Servicios s)
+        public async Task<string> ActualizarAsync(Servicios s)
         {
             try
             {
@@ -68,7 +68,7 @@ namespace SistemaAgenda.Negocios
                 if (string.IsNullOrWhiteSpace(s.Subtipo_DeServicio))
                     return "ERROR: El subtipo de servicio es obligatorio.";
 
-                bool ok = _dal.Actualizar(s);
+                bool ok = await _dal.ActualizarAsync(s);
                 return ok
                     ? "OK: Servicio actualizado exitosamente."
                     : "ERROR: No se pudo actualizar en la base de datos.";
@@ -78,11 +78,12 @@ namespace SistemaAgenda.Negocios
                 return "ERROR: " + ex.Message;
             }
         }
-        public string Eliminar(int id)
+
+        public async Task<string> EliminarAsync(int id)
         {
             try
             {
-                bool ok = _dal.Eliminar(id);
+                bool ok = await _dal.EliminarAsync(id);
                 return ok
                     ? "OK: Servicio eliminado exitosamente."
                     : "ERROR: No se pudo eliminar.";

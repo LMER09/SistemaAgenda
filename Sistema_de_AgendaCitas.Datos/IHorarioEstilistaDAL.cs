@@ -2,11 +2,16 @@
 {
     public interface IHorarioEstilistaDAL
     {
-        bool Insertar(HorarioEstilista h);
-        List<HorarioEstilista> ObtenerTodos();
-        List<HorarioEstilista> ObtenerPorEstilista(int idEstilista);
-        bool Actualizar(HorarioEstilista h);
-        bool Eliminar(int id);
-        bool EliminarPorEstilista(int idEstilista);
+        Task<bool> InsertarAsync(HorarioEstilista h);
+
+        Task<List<HorarioEstilista>> ObtenerTodosAsync();
+
+        Task<List<HorarioEstilista>> ObtenerPorEstilistaAsync(int idEstilista);
+
+        Task<bool> ActualizarAsync(HorarioEstilista h);
+
+        Task<bool> EliminarAsync(int id);
+
+        Task<bool> EliminarPorEstilistaAsync(int idEstilista);
     }
 }

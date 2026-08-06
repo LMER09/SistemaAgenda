@@ -2,14 +2,14 @@
 {
     public interface IUsuariosDAL
     {
-        bool Insertar(Usuarios usuario);
+        Task<bool> InsertarAsync(Usuarios usuario);
 
-        Usuarios? ObtenerPorUsuario(string usuario);
+        Task<Usuarios?> ObtenerPorUsuarioAsync(string usuario);
 
-        List<Usuarios> ObtenerTodos();
+        Task<List<Usuarios>> ObtenerTodosAsync();
 
-        bool Actualizar(Usuarios usuario);
+        Task<bool> ActualizarAsync(Usuarios usuario);
 
-        bool Eliminar(int id);
+        Task<bool> EliminarAsync(int id);
     }
 }

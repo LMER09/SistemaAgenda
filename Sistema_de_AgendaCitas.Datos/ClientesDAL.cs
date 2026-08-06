@@ -4,11 +4,11 @@ namespace SistemaAgenda.Datos
 {
     public class ClientesDAL : IClientesDAL
     {
-        public bool Insertar(Clientes c)
+        public async Task<bool> InsertarAsync(Clientes c)
         {
             try
             {
-                using (var con = ConexionDB.ObtenerConexion())
+                using (var con = await ConexionDB.ObtenerConexionAsync())
                 using (var cmd = new SqlCommand(@"
                     INSERT INTO Clientes (Nombre, Apellido, Telefono, Correo, Cedula)
                     VALUES (@Nombre, @Apellido, @Telefono, @Correo, @Cedula)", con))
@@ -18,7 +18,7 @@ namespace SistemaAgenda.Datos
                     cmd.Parameters.AddWithValue("@Telefono", c.Telefono);
                     cmd.Parameters.AddWithValue("@Correo", c.Correo);
                     cmd.Parameters.AddWithValue("@Cedula", c.Cedula);
-                    return cmd.ExecuteNonQuery() > 0;
+                    return await cmd.ExecuteNonQueryAsync() > 0;
                 }
             }
             catch (SqlException ex) when (ex.Number == 2627)
@@ -30,17 +30,18 @@ namespace SistemaAgenda.Datos
                 throw new Exception("Error al insertar cliente: " + ex.Message);
             }
         }
-        public List<Clientes> ObtenerTodos()
+
+        public async Task<List<Clientes>> ObtenerTodosAsync()
         {
             var lista = new List<Clientes>();
             try
             {
-                using (var con = ConexionDB.ObtenerConexion())
+                using (var con = await ConexionDB.ObtenerConexionAsync())
                 using (var cmd = new SqlCommand(
                     "SELECT id, Nombre, Apellido, Telefono, Correo, Cedula FROM Clientes", con))
-                using (var reader = cmd.ExecuteReader())
+                using (var reader = await cmd.ExecuteReaderAsync())
                 {
-                    while (reader.Read())
+                    while (await reader.ReadAsync())
                     {
                         lista.Add(new Clientes
                         {
@@ -59,11 +60,13 @@ namespace SistemaAgenda.Datos
                 throw new Exception("Error al obtener clientes: " + ex.Message);
             }
             return lista;
-        }public bool Actualizar(Clientes c)
+        }
+
+        public async Task<bool> ActualizarAsync(Clientes c)
         {
             try
             {
-                using (var con = ConexionDB.ObtenerConexion())
+                using (var con = await ConexionDB.ObtenerConexionAsync())
                 using (var cmd = new SqlCommand(@"
                     UPDATE Clientes SET Nombre=@Nombre, Apellido=@Apellido,
                     Telefono=@Telefono, Correo=@Correo, Cedula=@Cedula WHERE id=@Id", con))
@@ -74,7 +77,7 @@ namespace SistemaAgenda.Datos
                     cmd.Parameters.AddWithValue("@Correo", c.Correo);
                     cmd.Parameters.AddWithValue("@Cedula", c.Cedula);
                     cmd.Parameters.AddWithValue("@Id", c.Id);
-                    return cmd.ExecuteNonQuery() > 0;
+                    return await cmd.ExecuteNonQueryAsync() > 0;
                 }
             }
             catch (SqlException ex) when (ex.Number == 2627)
@@ -86,20 +89,21 @@ namespace SistemaAgenda.Datos
                 throw new Exception("Error al actualizar cliente: " + ex.Message);
             }
         }
-        public bool Eliminar(int id)
+
+        public async Task<bool> EliminarAsync(int id)
         {
             try
             {
-                using (var con = ConexionDB.ObtenerConexion())
+                using (var con = await ConexionDB.ObtenerConexionAsync())
                 using (var cmd = new SqlCommand(
                     "DELETE FROM Clientes WHERE id=@Id", con))
                 {
                     cmd.Parameters.AddWithValue("@Id", id);
-                    return cmd.ExecuteNonQuery() > 0;
+                    return await cmd.ExecuteNonQueryAsync() > 0;
                 }
             }
-            //TODO Error 547 = violación de llave foránea: el cliente tiene citas
-            //TODO en su historial (ya no se borran en cascada, así se conserva el historial)
+            //Error 547 = violación de llave foránea: el cliente tiene citas
+            //en su historial (ya no se borran en cascada, así se conserva el historial)
             catch (SqlException ex) when (ex.Number == 547)
             {
                 throw new Exception("No se puede eliminar el cliente: tiene citas registradas en su historial.");

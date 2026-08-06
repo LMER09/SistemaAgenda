@@ -13,7 +13,7 @@ namespace SistemaAgenda.Negocios
             _dal = dal;
         }
 
-        public string Registrar(Estilista e)
+        public async Task<string> RegistrarAsync(Estilista e)
         {
             try
             {
@@ -27,7 +27,7 @@ namespace SistemaAgenda.Negocios
                 if (!e.Correo.Contains("@"))
                     return "ERROR: El correo no es válido.";
 
-                bool ok = _dal.Insertar(e);
+                bool ok = await _dal.InsertarAsync(e);
                 return ok
                     ? "OK: Estilista registrada exitosamente."
                     : "ERROR: No se pudo guardar en la base de datos.";
@@ -38,11 +38,11 @@ namespace SistemaAgenda.Negocios
             }
         }
 
-        public List<Estilista> ObtenerTodos()
+        public async Task<List<Estilista>> ObtenerTodosAsync()
         {
             try
             {
-                return _dal.ObtenerTodos();
+                return await _dal.ObtenerTodosAsync();
             }
             catch (Exception ex)
             {
@@ -50,7 +50,7 @@ namespace SistemaAgenda.Negocios
             }
         }
 
-        public string Actualizar(Estilista e)
+        public async Task<string> ActualizarAsync(Estilista e)
         {
             try
             {
@@ -61,7 +61,7 @@ namespace SistemaAgenda.Negocios
                     string.IsNullOrWhiteSpace(e.Especialidad))
                     return "ERROR: Todos los campos son obligatorios, excepto la cedula.";
 
-                bool ok = _dal.Actualizar(e);
+                bool ok = await _dal.ActualizarAsync(e);
                 return ok
                     ? "OK: Estilista actualizada exitosamente."
                     : "ERROR: No se pudo actualizar en la base de datos.";
@@ -72,11 +72,11 @@ namespace SistemaAgenda.Negocios
             }
         }
 
-        public string Eliminar(int id)
+        public async Task<string> EliminarAsync(int id)
         {
             try
             {
-                bool ok = _dal.Eliminar(id);
+                bool ok = await _dal.EliminarAsync(id);
                 return ok
                     ? "OK: Estilista eliminada exitosamente."
                     : "ERROR: No se pudo eliminar.";

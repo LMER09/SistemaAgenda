@@ -2,12 +2,12 @@
 {
     public interface IPagosDAL
     {
-        bool Insertar(Pagos pago);
+        Task<bool> InsertarAsync(Pagos pago);
 
-        List<Pagos> ObtenerTodos();
+        Task<List<Pagos>> ObtenerTodosAsync();
 
-        bool Actualizar(Pagos pago);
+        Task<bool> ActualizarAsync(Pagos pago);
 
-        bool Eliminar(int id);
+        Task<bool> EliminarAsync(int id);
     }
 }

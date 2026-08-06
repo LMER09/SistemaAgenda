@@ -2,12 +2,12 @@
 {
     public interface IEstilistaDAL
     {
-        bool Insertar(Estilista estilista);
+        Task<bool> InsertarAsync(Estilista estilista);
 
-        List<Estilista> ObtenerTodos();
+        Task<List<Estilista>> ObtenerTodosAsync();
 
-        bool Actualizar(Estilista estilista);
+        Task<bool> ActualizarAsync(Estilista estilista);
 
-        bool Eliminar(int id);
+        Task<bool> EliminarAsync(int id);
     }
 }
