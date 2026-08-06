@@ -22,7 +22,7 @@ namespace SistemaAgenda.Datos
                     return filas > 0;
                 }
             }
-            //ERROR 547 = violación de CHECK (día fuera de 0-6) o de FK (estilista inexistente),
+            // TODO ERROR 547 = violación de CHECK día fuera de 0-6 o de FK estilista inexistente,
             // o que HoraInicio no sea menor que HoraFin
             catch (SqlException ex) when (ex.Number == 547)
             {
@@ -33,7 +33,6 @@ namespace SistemaAgenda.Datos
                 throw new Exception("Error al insertar horario: " + ex.Message);
             }
         }
-
         public async Task<List<HorarioEstilista>> ObtenerTodosAsync()
         {
             var lista = new List<HorarioEstilista>();
@@ -64,6 +63,56 @@ namespace SistemaAgenda.Datos
             return lista;
         }
 
+        public async Task<bool> ActualizarAsync(HorarioEstilista h)
+        {
+            try
+            {
+                using (var con = await ConexionDB.ObtenerConexionAsync())
+                using (var cmd = new SqlCommand(@"
+                UPDATE HorarioEstilista SET id_Estilista=@IdEstilista, DiaSemana=@DiaSemana,
+                HoraInicio=@HoraInicio, HoraFin=@HoraFin WHERE id=@Id", con))
+                {
+                    cmd.Parameters.AddWithValue("@IdEstilista", h.IdEstilista);
+                    cmd.Parameters.AddWithValue("@DiaSemana", h.DiaSemana);
+                    cmd.Parameters.AddWithValue("@HoraInicio", h.HoraInicio);
+                    cmd.Parameters.AddWithValue("@HoraFin", h.HoraFin);
+                    cmd.Parameters.AddWithValue("@Id", h.Id);
+
+                    int filas = await cmd.ExecuteNonQueryAsync();
+                    return filas > 0;
+                }
+            }
+            // TODO ERROR 547 = violación de CHECK (día fuera de 0-6) o de FK (estilista inexistente),
+            // o que HoraInicio no sea menor que HoraFin
+            catch (SqlException ex) when (ex.Number == 547)
+            {
+                throw new Exception("Verifica el horario: el día debe estar entre 0 y 6, la hora de inicio debe ser antes que la hora fin, y la estilista debe existir.");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al actualizar horario: " + ex.Message);
+            }
+        }
+        public async Task<bool> EliminarAsync(int id)
+        {
+            try
+            {
+                using (var con = await ConexionDB.ObtenerConexionAsync())
+                using (var cmd = new SqlCommand(
+                    "DELETE FROM HorarioEstilista WHERE id=@Id", con))
+                {
+                    cmd.Parameters.AddWithValue("@Id", id);
+                    int filas = await cmd.ExecuteNonQueryAsync();
+                    return filas > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al eliminar horario: " + ex.Message);
+            }
+        }
+
+        // TODO METODO NUEVO: ObtenerPorEstilistaAsync
         // Trae solo los bloques de horario de una estilista específica.
         // Se usa para validar el día/hora de una cita nueva.
         public async Task<List<HorarioEstilista>> ObtenerPorEstilistaAsync(int idEstilista)
@@ -100,93 +149,8 @@ namespace SistemaAgenda.Datos
             return lista;
         }
 
-        public async Task<bool> ActualizarAsync(HorarioEstilista h)
-        {
-            try
-            {
-                using (var con = await ConexionDB.ObtenerConexionAsync())
-                using (var cmd = new SqlCommand(@"
-                UPDATE HorarioEstilista SET id_Estilista=@IdEstilista, DiaSemana=@DiaSemana,
-                HoraInicio=@HoraInicio, HoraFin=@HoraFin WHERE id=@Id", con))
-                {
-                    cmd.Parameters.AddWithValue("@IdEstilista", h.IdEstilista);
-                    cmd.Parameters.AddWithValue("@DiaSemana", h.DiaSemana);
-                    cmd.Parameters.AddWithValue("@HoraInicio", h.HoraInicio);
-                    cmd.Parameters.AddWithValue("@HoraFin", h.HoraFin);
-                    cmd.Parameters.AddWithValue("@Id", h.Id);
-
-                    int filas = await cmd.ExecuteNonQueryAsync();
-                    return filas > 0;
-                }
-            }
-            //ERROR 547 = violación de CHECK (día fuera de 0-6) o de FK (estilista inexistente),
-            //o que HoraInicio no sea menor que HoraFin
-            catch (SqlException ex) when (ex.Number == 547)
-            {
-                throw new Exception("Verifica el horario: el día debe estar entre 0 y 6, la hora de inicio debe ser antes que la hora fin, y la estilista debe existir.");
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error al actualizar horario: " + ex.Message);
-            }
-        }
-
-        public async Task<bool> EliminarAsync(int id)
-        {
-            try
-            {
-                using (var con = await ConexionDB.ObtenerConexionAsync())
-                using (var cmd = new SqlCommand(
-                    "DELETE FROM HorarioEstilista WHERE id=@Id", con))
-                {
-                    cmd.Parameters.AddWithValue("@Id", id);
-                    int filas = await cmd.ExecuteNonQueryAsync();
-                    return filas > 0;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error al eliminar horario: " + ex.Message);
-            }
-        }
-        // TODO NUEVO METODO: ObtenerPorEstilista
-        // Trae solo los bloques de horario de una estilista específica.
-        // Valida el día/hora de una cita nueva.
-        public List<HorarioEstilista> ObtenerPorEstilista(int idEstilista)
-        {
-            var lista = new List<HorarioEstilista>();
-            try
-            {
-                using (var con = ConexionDB.ObtenerConexion())
-                using (var cmd = new SqlCommand(
-                    "SELECT id, id_Estilista, DiaSemana, HoraInicio, HoraFin FROM HorarioEstilista WHERE id_Estilista = @IdEstilista", con))
-                {
-                    cmd.Parameters.AddWithValue("@IdEstilista", idEstilista);
-                    //lee los registros uno por uno
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            lista.Add(new HorarioEstilista
-                            {
-                                Id = reader.GetInt32(0),
-                                IdEstilista = reader.GetInt32(1),
-                                DiaSemana = reader.GetByte(2),
-                                HoraInicio = reader.GetTimeSpan(3),
-                                HoraFin = reader.GetTimeSpan(4)
-                            });
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error al obtener horario de la estilista: " + ex.Message);
-            }
-            return lista;
-        }
-
-        // Borra todos los bloques de horario de una estilista (se usa antes de reinsertar su horario completo)
+        // TODO METODO NUEVO: EliminarPorEstilistaAsync
+        // Borra todos los bloques de horario de una estilista.
         public async Task<bool> EliminarPorEstilistaAsync(int idEstilista)
         {
             try

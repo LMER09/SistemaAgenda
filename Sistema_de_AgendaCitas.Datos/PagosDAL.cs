@@ -24,7 +24,6 @@ namespace SistemaAgenda.Datos
                 throw new Exception("Error al insertar pago: " + ex.Message);
             }
         }
-
         public async Task<List<Pagos>> ObtenerTodosAsync()
         {
             var lista = new List<Pagos>();
@@ -54,7 +53,6 @@ namespace SistemaAgenda.Datos
             }
             return lista;
         }
-
         public async Task<bool> ActualizarAsync(Pagos p)
         {
             try
@@ -76,7 +74,6 @@ namespace SistemaAgenda.Datos
                 throw new Exception("Error al actualizar pago: " + ex.Message);
             }
         }
-
         public async Task<bool> EliminarAsync(int id)
         {
             try

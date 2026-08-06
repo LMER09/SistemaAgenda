@@ -17,7 +17,7 @@ namespace SistemaAgenda.Datos
                     cmd.Parameters.AddWithValue("@Apellido", c.Apellido);
                     cmd.Parameters.AddWithValue("@Telefono", c.Telefono);
                     cmd.Parameters.AddWithValue("@Correo", c.Correo);
-                    // Si la cedula viene vacia, se guarda como NULL (no como texto vacio),
+                    // TODO Si la cedula viene vacia, se guarda como NULL
                     // para que el indice unico de la base de datos no choque entre clientes sin cedula.
                     cmd.Parameters.AddWithValue("@Cedula", string.IsNullOrWhiteSpace(c.Cedula) ? (object)DBNull.Value : c.Cedula);
                     return await cmd.ExecuteNonQueryAsync() > 0;
@@ -32,7 +32,6 @@ namespace SistemaAgenda.Datos
                 throw new Exception("Error al insertar cliente: " + ex.Message);
             }
         }
-
         public async Task<List<Clientes>> ObtenerTodosAsync()
         {
             var lista = new List<Clientes>();
@@ -63,7 +62,6 @@ namespace SistemaAgenda.Datos
             }
             return lista;
         }
-
         public async Task<bool> ActualizarAsync(Clientes c)
         {
             try
@@ -91,7 +89,6 @@ namespace SistemaAgenda.Datos
                 throw new Exception("Error al actualizar cliente: " + ex.Message);
             }
         }
-
         public async Task<bool> EliminarAsync(int id)
         {
             try
@@ -104,8 +101,7 @@ namespace SistemaAgenda.Datos
                     return await cmd.ExecuteNonQueryAsync() > 0;
                 }
             }
-            //Error 547 = violación de llave foránea: el cliente tiene citas
-            //en su historial (ya no se borran en cascada, así se conserva el historial)
+            //TODO ERROR 547 = violación de llave foránea: el cliente tiene citas en su historial.
             catch (SqlException ex) when (ex.Number == 547)
             {
                 throw new Exception("No se puede eliminar el cliente: " +

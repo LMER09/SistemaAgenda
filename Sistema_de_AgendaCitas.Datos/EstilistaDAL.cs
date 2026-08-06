@@ -31,7 +31,6 @@ namespace SistemaAgenda.Datos
                 throw new Exception("Error al insertar estilista: " + ex.Message);
             }
         }
-
         public async Task<List<Estilista>> ObtenerTodosAsync()
         {
             var lista = new List<Estilista>();
@@ -63,7 +62,6 @@ namespace SistemaAgenda.Datos
             }
             return lista;
         }
-
         public async Task<bool> ActualizarAsync(Estilista e)
         {
             try
@@ -93,7 +91,6 @@ namespace SistemaAgenda.Datos
                 throw new Exception("Error al actualizar estilista: " + ex.Message);
             }
         }
-
         public async Task<bool> EliminarAsync(int id)
         {
             try
@@ -106,8 +103,7 @@ namespace SistemaAgenda.Datos
                     return await cmd.ExecuteNonQueryAsync() > 0;
                 }
             }
-            //Error 547 = violación de llave foránea: la estilista tiene citas
-            //en su historial, o tiene un horario laboral asociado
+            //TODO ERROR 547 = violación de llave foránea: la estilista tiene citas en su historial o tiene un horario laboral asociado.
             catch (SqlException ex) when (ex.Number == 547)
             {
                 throw new Exception("No se puede eliminar la estilista: tiene citas u horario laboral registrados.");
