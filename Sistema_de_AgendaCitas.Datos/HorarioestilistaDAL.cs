@@ -2,13 +2,13 @@
 
 namespace SistemaAgenda.Datos
 {
-    public class HorarioEstilistaDAL
+    public class HorarioEstilistaDAL : IHorarioEstilistaDAL
     {
-        public bool Insertar(HorarioEstilista h)
+        public async Task<bool> InsertarAsync(HorarioEstilista h)
         {
             try
             {
-                using (var con = ConexionDB.ObtenerConexion())
+                using (var con = await ConexionDB.ObtenerConexionAsync())
                 using (var cmd = new SqlCommand(@"
                 INSERT INTO HorarioEstilista (id_Estilista, DiaSemana, HoraInicio, HoraFin)
                 VALUES (@IdEstilista, @DiaSemana, @HoraInicio, @HoraFin)", con))
@@ -18,7 +18,7 @@ namespace SistemaAgenda.Datos
                     cmd.Parameters.AddWithValue("@HoraInicio", h.HoraInicio);
                     cmd.Parameters.AddWithValue("@HoraFin", h.HoraFin);
 
-                    int filas = cmd.ExecuteNonQuery();
+                    int filas = await cmd.ExecuteNonQueryAsync();
                     return filas > 0;
                 }
             }
@@ -33,17 +33,18 @@ namespace SistemaAgenda.Datos
                 throw new Exception("Error al insertar horario: " + ex.Message);
             }
         }
-        public List<HorarioEstilista> ObtenerTodos()
+
+        public async Task<List<HorarioEstilista>> ObtenerTodosAsync()
         {
             var lista = new List<HorarioEstilista>();
             try
             {
-                using (var con = ConexionDB.ObtenerConexion())
+                using (var con = await ConexionDB.ObtenerConexionAsync())
                 using (var cmd = new SqlCommand(
                     "SELECT id, id_Estilista, DiaSemana, HoraInicio, HoraFin FROM HorarioEstilista", con))
-                using (var reader = cmd.ExecuteReader())
+                using (var reader = await cmd.ExecuteReaderAsync())
                 {
-                    while (reader.Read())
+                    while (await reader.ReadAsync())
                     {
                         lista.Add(new HorarioEstilista
                         {
@@ -62,11 +63,48 @@ namespace SistemaAgenda.Datos
             }
             return lista;
         }
-        public bool Actualizar(HorarioEstilista h)
+
+        // Trae solo los bloques de horario de una estilista específica.
+        // Se usa para validar el día/hora de una cita nueva.
+        public async Task<List<HorarioEstilista>> ObtenerPorEstilistaAsync(int idEstilista)
+        {
+            var lista = new List<HorarioEstilista>();
+            try
+            {
+                using (var con = await ConexionDB.ObtenerConexionAsync())
+                using (var cmd = new SqlCommand(
+                    "SELECT id, id_Estilista, DiaSemana, HoraInicio, HoraFin FROM HorarioEstilista WHERE id_Estilista = @IdEstilista", con))
+                {
+                    cmd.Parameters.AddWithValue("@IdEstilista", idEstilista);
+                    //lee los registros uno por uno
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            lista.Add(new HorarioEstilista
+                            {
+                                Id = reader.GetInt32(0),
+                                IdEstilista = reader.GetInt32(1),
+                                DiaSemana = reader.GetByte(2),
+                                HoraInicio = reader.GetTimeSpan(3),
+                                HoraFin = reader.GetTimeSpan(4)
+                            });
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener horario de la estilista: " + ex.Message);
+            }
+            return lista;
+        }
+
+        public async Task<bool> ActualizarAsync(HorarioEstilista h)
         {
             try
             {
-                using (var con = ConexionDB.ObtenerConexion())
+                using (var con = await ConexionDB.ObtenerConexionAsync())
                 using (var cmd = new SqlCommand(@"
                 UPDATE HorarioEstilista SET id_Estilista=@IdEstilista, DiaSemana=@DiaSemana,
                 HoraInicio=@HoraInicio, HoraFin=@HoraFin WHERE id=@Id", con))
@@ -77,7 +115,7 @@ namespace SistemaAgenda.Datos
                     cmd.Parameters.AddWithValue("@HoraFin", h.HoraFin);
                     cmd.Parameters.AddWithValue("@Id", h.Id);
 
-                    int filas = cmd.ExecuteNonQuery();
+                    int filas = await cmd.ExecuteNonQueryAsync();
                     return filas > 0;
                 }
             }
@@ -92,17 +130,17 @@ namespace SistemaAgenda.Datos
                 throw new Exception("Error al actualizar horario: " + ex.Message);
             }
         }
-        // TODO Borra un bloque específico de horario laboral por su id
-        public bool Eliminar(int id)
+
+        public async Task<bool> EliminarAsync(int id)
         {
             try
             {
-                using (var con = ConexionDB.ObtenerConexion())
+                using (var con = await ConexionDB.ObtenerConexionAsync())
                 using (var cmd = new SqlCommand(
                     "DELETE FROM HorarioEstilista WHERE id=@Id", con))
                 {
                     cmd.Parameters.AddWithValue("@Id", id);
-                    int filas = cmd.ExecuteNonQuery();
+                    int filas = await cmd.ExecuteNonQueryAsync();
                     return filas > 0;
                 }
             }
@@ -147,19 +185,18 @@ namespace SistemaAgenda.Datos
             }
             return lista;
         }
-        // TODO NUEVO METODO: EliminarPorEstilista
-        // Borra todos los bloques de horario de una estilista especifica
-        // Usado antes de guardar uno nuevo
-        public bool EliminarPorEstilista(int idEstilista)
+
+        // Borra todos los bloques de horario de una estilista (se usa antes de reinsertar su horario completo)
+        public async Task<bool> EliminarPorEstilistaAsync(int idEstilista)
         {
             try
             {
-                using (var con = ConexionDB.ObtenerConexion())
+                using (var con = await ConexionDB.ObtenerConexionAsync())
                 using (var cmd = new SqlCommand(
                     "DELETE FROM HorarioEstilista WHERE id_Estilista=@IdEstilista", con))
                 {
                     cmd.Parameters.AddWithValue("@IdEstilista", idEstilista);
-                    cmd.ExecuteNonQuery();
+                    await cmd.ExecuteNonQueryAsync();
                     return true;
                 }
             }

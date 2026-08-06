@@ -4,9 +4,16 @@ namespace SistemaAgenda.Negocios
 {
     public class HorarioEstilistaBLL
     {
-        private readonly HorarioEstilistaDAL _dal = new HorarioEstilistaDAL();
+        private readonly IHorarioEstilistaDAL _dal;
 
-        public string Registrar(HorarioEstilista h)
+        public HorarioEstilistaBLL() : this(new HorarioEstilistaDAL()) { }
+
+        public HorarioEstilistaBLL(IHorarioEstilistaDAL dal)
+        {
+            _dal = dal;
+        }
+
+        public async Task<string> RegistrarAsync(HorarioEstilista h)
         {
             try
             {
@@ -19,7 +26,7 @@ namespace SistemaAgenda.Negocios
                 if (h.HoraInicio >= h.HoraFin)
                     return "ERROR: La hora de inicio debe ser antes que la hora fin.";
 
-                bool ok = _dal.Insertar(h);
+                bool ok = await _dal.InsertarAsync(h);
                 return ok
                     ? "OK: Horario registrado exitosamente."
                     : "ERROR: No se pudo guardar en la base de datos.";
@@ -29,16 +36,17 @@ namespace SistemaAgenda.Negocios
                 return "ERROR: " + ex.Message;
             }
         }
-        public string GuardarHorarioCompleto(int idEstilista, List<HorarioEstilista> nuevoHorario)
+
+        public async Task<string> GuardarHorarioCompletoAsync(int idEstilista, List<HorarioEstilista> nuevoHorario)
         {
             try
             {
-                _dal.EliminarPorEstilista(idEstilista);
+                await _dal.EliminarPorEstilistaAsync(idEstilista);
 
                 foreach (var h in nuevoHorario)
                 {
                     h.IdEstilista = idEstilista;
-                    bool ok = _dal.Insertar(h);
+                    bool ok = await _dal.InsertarAsync(h);
                     if (!ok)
                         return "ERROR: No se pudo guardar uno de los horarios.";
                 }
@@ -50,11 +58,12 @@ namespace SistemaAgenda.Negocios
                 return "ERROR: " + ex.Message;
             }
         }
-        public List<HorarioEstilista> ObtenerTodos()
+
+        public async Task<List<HorarioEstilista>> ObtenerTodosAsync()
         {
             try
             {
-                return _dal.ObtenerTodos();
+                return await _dal.ObtenerTodosAsync();
             }
             catch (Exception ex)
             {
@@ -62,11 +71,11 @@ namespace SistemaAgenda.Negocios
             }
         }
 
-        public List<HorarioEstilista> ObtenerPorEstilista(int idEstilista)
+        public async Task<List<HorarioEstilista>> ObtenerPorEstilistaAsync(int idEstilista)
         {
             try
             {
-                return _dal.ObtenerPorEstilista(idEstilista);
+                return await _dal.ObtenerPorEstilistaAsync(idEstilista);
             }
             catch (Exception ex)
             {
@@ -74,7 +83,7 @@ namespace SistemaAgenda.Negocios
             }
         }
 
-        public string Actualizar(HorarioEstilista h)
+        public async Task<string> ActualizarAsync(HorarioEstilista h)
         {
             try
             {
@@ -87,7 +96,7 @@ namespace SistemaAgenda.Negocios
                 if (h.HoraInicio >= h.HoraFin)
                     return "ERROR: La hora de inicio debe ser antes que la hora fin.";
 
-                bool ok = _dal.Actualizar(h);
+                bool ok = await _dal.ActualizarAsync(h);
                 return ok
                     ? "OK: Horario actualizado exitosamente."
                     : "ERROR: No se pudo actualizar en la base de datos.";
@@ -98,11 +107,11 @@ namespace SistemaAgenda.Negocios
             }
         }
 
-        public string Eliminar(int id)
+        public async Task<string> EliminarAsync(int id)
         {
             try
             {
-                bool ok = _dal.Eliminar(id);
+                bool ok = await _dal.EliminarAsync(id);
                 return ok
                     ? "OK: Horario eliminado exitosamente."
                     : "ERROR: No se pudo eliminar.";

@@ -20,14 +20,14 @@ namespace SistemaAgenda.UI
             InitializeComponent();
         }
 
-        private void frmConsultarEstilistas_Load(object sender, EventArgs e)
+        private async void frmConsultarEstilistas_Load(object sender, EventArgs e)
         {
-            CargarEstilistas();
+            await CargarEstilistasAsync();
         }
 
-        private void CargarEstilistas()
+        private async Task CargarEstilistasAsync()
         {
-            listaEstilistas = estilistaBLL.ObtenerTodos();
+            listaEstilistas = await estilistaBLL.ObtenerTodosAsync();
 
             dgvEstilistas.DataSource = null;
             dgvEstilistas.DataSource = listaEstilistas;
@@ -63,17 +63,18 @@ namespace SistemaAgenda.UI
                 MessageBox.Show($"No se encontró ningún estilista que coincida con \"{txtBuscar.Text}\".",
                     "Sin resultados", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-        private void dgvEstilistas_CellClick(object sender, DataGridViewCellEventArgs e)
+
+        private async void dgvEstilistas_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
 
             Estilista estilistaSeleccionado = (Estilista)dgvEstilistas.CurrentRow.DataBoundItem;
-            MostrarHorario(estilistaSeleccionado.Id);
+            await MostrarHorarioAsync(estilistaSeleccionado.Id);
         }
 
-        private void MostrarHorario(int idEstilista)
+        private async Task MostrarHorarioAsync(int idEstilista)
         {
-            var horarios = horarioBLL.ObtenerPorEstilista(idEstilista);
+            var horarios = await horarioBLL.ObtenerPorEstilistaAsync(idEstilista);
 
             if (horarios.Count == 0)
             {
@@ -96,7 +97,7 @@ namespace SistemaAgenda.UI
         }
 
         // Abre frmRegistrarEstilistas en modo edicion con el estilista seleccionado.
-        private void btnEditar_Click(object sender, EventArgs e)
+        private async void btnEditar_Click(object sender, EventArgs e)
         {
             if (dgvEstilistas.CurrentRow == null)
             {
@@ -113,10 +114,10 @@ namespace SistemaAgenda.UI
             }
             this.Show();
 
-            CargarEstilistas();
+            await CargarEstilistasAsync();
         }
 
-        private void btnEliminar_Click(object sender, EventArgs e)
+        private async void btnEliminar_Click(object sender, EventArgs e)
         {
             if (dgvEstilistas.CurrentRow == null)
             {
@@ -134,9 +135,9 @@ namespace SistemaAgenda.UI
                 return;
 
             int id = Convert.ToInt32(dgvEstilistas.CurrentRow.Cells["Id"].Value);
-            MessageBox.Show(estilistaBLL.Eliminar(id));
+            MessageBox.Show(await estilistaBLL.EliminarAsync(id));
 
-            CargarEstilistas();
+            await CargarEstilistasAsync();
         }
 
         private void btnCerrar_Click(object sender, EventArgs e)

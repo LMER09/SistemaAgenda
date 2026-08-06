@@ -2,13 +2,13 @@
 
 namespace SistemaAgenda.Datos
 {
-    public class EstilistaDAL
+    public class EstilistaDAL : IEstilistaDAL
     {
-        public bool Insertar(Estilista e)
+        public async Task<bool> InsertarAsync(Estilista e)
         {
             try
             {
-                using (var con = ConexionDB.ObtenerConexion())
+                using (var con = await ConexionDB.ObtenerConexionAsync())
                 using (var cmd = new SqlCommand(@"
                     INSERT INTO Estilista (Nombre, Apellido, Telefono, Correo, Especialidad, Cedula)
                     VALUES (@Nombre, @Apellido, @Telefono, @Correo, @Especialidad, @Cedula)", con))
@@ -19,7 +19,7 @@ namespace SistemaAgenda.Datos
                     cmd.Parameters.AddWithValue("@Correo", e.Correo);
                     cmd.Parameters.AddWithValue("@Especialidad", e.Especialidad);
                     cmd.Parameters.AddWithValue("@Cedula", e.Cedula);
-                    return cmd.ExecuteNonQuery() > 0;
+                    return await cmd.ExecuteNonQueryAsync() > 0;
                 }
             }
             catch (SqlException ex) when (ex.Number == 2627)
@@ -32,17 +32,17 @@ namespace SistemaAgenda.Datos
             }
         }
 
-        public List<Estilista> ObtenerTodos()
+        public async Task<List<Estilista>> ObtenerTodosAsync()
         {
             var lista = new List<Estilista>();
             try
             {
-                using (var con = ConexionDB.ObtenerConexion())
+                using (var con = await ConexionDB.ObtenerConexionAsync())
                 using (var cmd = new SqlCommand(
                     "SELECT id, Nombre, Apellido, Telefono, Correo, Especialidad, Cedula FROM Estilista", con))
-                using (var reader = cmd.ExecuteReader())
+                using (var reader = await cmd.ExecuteReaderAsync())
                 {
-                    while (reader.Read())
+                    while (await reader.ReadAsync())
                     {
                         lista.Add(new Estilista
                         {
@@ -64,11 +64,11 @@ namespace SistemaAgenda.Datos
             return lista;
         }
 
-        public bool Actualizar(Estilista e)
+        public async Task<bool> ActualizarAsync(Estilista e)
         {
             try
             {
-                using (var con = ConexionDB.ObtenerConexion())
+                using (var con = await ConexionDB.ObtenerConexionAsync())
                 using (var cmd = new SqlCommand(@"
                     UPDATE Estilista SET Nombre=@Nombre, Apellido=@Apellido,
                     Telefono=@Telefono, Correo=@Correo, Especialidad=@Especialidad, Cedula=@Cedula
@@ -81,7 +81,7 @@ namespace SistemaAgenda.Datos
                     cmd.Parameters.AddWithValue("@Especialidad", e.Especialidad);
                     cmd.Parameters.AddWithValue("@Cedula", e.Cedula);
                     cmd.Parameters.AddWithValue("@Id", e.Id);
-                    return cmd.ExecuteNonQuery() > 0;
+                    return await cmd.ExecuteNonQueryAsync() > 0;
                 }
             }
             catch (SqlException ex) when (ex.Number == 2627)
@@ -94,19 +94,20 @@ namespace SistemaAgenda.Datos
             }
         }
 
-        public bool Eliminar(int id)
+        public async Task<bool> EliminarAsync(int id)
         {
             try
             {
-                using (var con = ConexionDB.ObtenerConexion())
+                using (var con = await ConexionDB.ObtenerConexionAsync())
                 using (var cmd = new SqlCommand(
                     "DELETE FROM Estilista WHERE id=@Id", con))
                 {
                     cmd.Parameters.AddWithValue("@Id", id);
-                    return cmd.ExecuteNonQuery() > 0;
+                    return await cmd.ExecuteNonQueryAsync() > 0;
                 }
             }
-            //TODO ERROR 547 = violación de llave foránea: la estilista tiene citas en su historial o tiene un horario laboral.
+            //Error 547 = violación de llave foránea: la estilista tiene citas
+            //en su historial, o tiene un horario laboral asociado
             catch (SqlException ex) when (ex.Number == 547)
             {
                 throw new Exception("No se puede eliminar la estilista: tiene citas u horario laboral registrados.");

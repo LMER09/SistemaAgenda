@@ -2,13 +2,13 @@
 
 namespace SistemaAgenda.Datos
 {
-    public class ServiciosDAL
+    public class ServiciosDAL : IServiciosDAL
     {
-        public bool Insertar(Servicios s)
+        public async Task<bool> InsertarAsync(Servicios s)
         {
             try
             {
-                using (var con = ConexionDB.ObtenerConexion())
+                using (var con = await ConexionDB.ObtenerConexionAsync())
                 using (var cmd = new SqlCommand(@"
                     INSERT INTO Servicios (Tipo_DeServicio,Subtipo_DeServicio, Precio, DuracionMinutos)
                     VALUES (@Tipo, @Subtipo, @Precio, @Duracion)", con))
@@ -18,7 +18,7 @@ namespace SistemaAgenda.Datos
                     cmd.Parameters.AddWithValue("@Precio", s.Precio);
                     cmd.Parameters.AddWithValue("@Duracion", s.DuracionMinutos);
 
-                    return cmd.ExecuteNonQuery() > 0;
+                    return await cmd.ExecuteNonQueryAsync() > 0;
                 }
             }
             catch (Exception ex)
@@ -26,30 +26,31 @@ namespace SistemaAgenda.Datos
                 throw new Exception("Error al insertar servicio: " + ex.Message);
             }
         }
-        public List<Servicios> ObtenerTodos()
+
+        public async Task<List<Servicios>> ObtenerTodosAsync()
         {
             var lista = new List<Servicios>();
 
             try
             {
-                using (var con = ConexionDB.ObtenerConexion())
+                using (var con = await ConexionDB.ObtenerConexionAsync())
                 using (var cmd = new SqlCommand(
                     "SELECT Id, Tipo_DeServicio, Subtipo_DeServicio, Precio, DuracionMinutos FROM Servicios", con))
-                using (var reader = cmd.ExecuteReader())
+                using (var reader = await cmd.ExecuteReaderAsync())
                 {
-                    while (reader.Read())
+                    while (await reader.ReadAsync())
                     {
                         lista.Add(new Servicios
                         {
                             Id = reader.GetInt32(0),
 
-                            Tipo_DeServicio = reader.IsDBNull(1) ? "": reader.GetString(1),
+                            Tipo_DeServicio = reader.IsDBNull(1) ? "" : reader.GetString(1),
 
-                            Subtipo_DeServicio = reader.IsDBNull(2) ? "": reader.GetString(2),
+                            Subtipo_DeServicio = reader.IsDBNull(2) ? "" : reader.GetString(2),
 
                             Precio = reader.IsDBNull(3) ? 0 : reader.GetDecimal(3),
 
-                            DuracionMinutos = reader.IsDBNull(4) ? 0: reader.GetInt32(4)
+                            DuracionMinutos = reader.IsDBNull(4) ? 0 : reader.GetInt32(4)
                         });
                     }
                 }
@@ -61,11 +62,12 @@ namespace SistemaAgenda.Datos
 
             return lista;
         }
-        public bool Actualizar(Servicios s)
+
+        public async Task<bool> ActualizarAsync(Servicios s)
         {
             try
             {
-                using (var con = ConexionDB.ObtenerConexion())
+                using (var con = await ConexionDB.ObtenerConexionAsync())
                 using (var cmd = new SqlCommand(@"
                     UPDATE Servicios SET Tipo_DeServicio=@Tipo, Subtipo_DeServicio=@Subtipo,
                     Precio=@Precio, DuracionMinutos=@Duracion
@@ -76,7 +78,7 @@ namespace SistemaAgenda.Datos
                     cmd.Parameters.AddWithValue("@Precio", s.Precio);
                     cmd.Parameters.AddWithValue("@Duracion", s.DuracionMinutos);
                     cmd.Parameters.AddWithValue("@Id", s.Id);
-                    return cmd.ExecuteNonQuery() > 0;
+                    return await cmd.ExecuteNonQueryAsync() > 0;
                 }
             }
             catch (Exception ex)
@@ -84,16 +86,17 @@ namespace SistemaAgenda.Datos
                 throw new Exception("Error al actualizar servicio: " + ex.Message);
             }
         }
-        public bool Eliminar(int id)
+
+        public async Task<bool> EliminarAsync(int id)
         {
             try
             {
-                using (var con = ConexionDB.ObtenerConexion())
+                using (var con = await ConexionDB.ObtenerConexionAsync())
                 using (var cmd = new SqlCommand(
                     "DELETE FROM Servicios WHERE id=@Id", con))
                 {
                     cmd.Parameters.AddWithValue("@Id", id);
-                    return cmd.ExecuteNonQuery() > 0;
+                    return await cmd.ExecuteNonQueryAsync() > 0;
                 }
             }
             // TODO ERROR 547 = violación de llave foránea: el servicio tiene citas en su historial

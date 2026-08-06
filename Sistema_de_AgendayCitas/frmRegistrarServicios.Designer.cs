@@ -114,9 +114,9 @@
             btnHabilitar.BackColor = Color.DeepPink;
             btnHabilitar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnHabilitar.ForeColor = Color.White;
-            btnHabilitar.Location = new Point(40, 235);
+            btnHabilitar.Location = new Point(40, 260);
             btnHabilitar.Name = "btnHabilitar";
-            btnHabilitar.Size = new Size(180, 43);
+            btnHabilitar.Size = new Size(200, 43);
             btnHabilitar.TabIndex = 8;
             btnHabilitar.Text = "🔓 Habilitar campos";
             btnHabilitar.UseVisualStyleBackColor = false;
@@ -127,9 +127,9 @@
             btnAgregar.BackColor = Color.DeepPink;
             btnAgregar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnAgregar.ForeColor = Color.White;
-            btnAgregar.Location = new Point(226, 235);
+            btnAgregar.Location = new Point(246, 260);
             btnAgregar.Name = "btnAgregar";
-            btnAgregar.Size = new Size(150, 43);
+            btnAgregar.Size = new Size(188, 43);
             btnAgregar.TabIndex = 9;
             btnAgregar.Text = "➕ Agregar";
             btnAgregar.UseVisualStyleBackColor = false;
@@ -140,9 +140,9 @@
             btnCalcular.BackColor = Color.DeepPink;
             btnCalcular.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnCalcular.ForeColor = Color.White;
-            btnCalcular.Location = new Point(382, 235);
+            btnCalcular.Location = new Point(440, 260);
             btnCalcular.Name = "btnCalcular";
-            btnCalcular.Size = new Size(150, 43);
+            btnCalcular.Size = new Size(139, 43);
             btnCalcular.TabIndex = 10;
             btnCalcular.Text = "💲 Calcular";
             btnCalcular.UseVisualStyleBackColor = false;
@@ -153,9 +153,9 @@
             btnCerrar.BackColor = Color.Gray;
             btnCerrar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnCerrar.ForeColor = Color.White;
-            btnCerrar.Location = new Point(538, 235);
+            btnCerrar.Location = new Point(585, 260);
             btnCerrar.Name = "btnCerrar";
-            btnCerrar.Size = new Size(150, 43);
+            btnCerrar.Size = new Size(135, 43);
             btnCerrar.TabIndex = 11;
             btnCerrar.Text = "❌ Cerrar";
             btnCerrar.UseVisualStyleBackColor = false;
@@ -176,7 +176,7 @@
             lblResultado.AutoSize = true;
             lblResultado.Font = new Font("Segoe UI", 9.5F, FontStyle.Italic, GraphicsUnit.Point, 0);
             lblResultado.ForeColor = Color.DimGray;
-            lblResultado.Location = new Point(40, 301);
+            lblResultado.Location = new Point(40, 326);
             lblResultado.MaximumSize = new Size(650, 0);
             lblResultado.Name = "lblResultado";
             lblResultado.Size = new Size(607, 42);
@@ -199,7 +199,7 @@
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLightLight;
-            ClientSize = new Size(720, 383);
+            ClientSize = new Size(760, 408);
             Controls.Add(picLogo);
             Controls.Add(lblResultado);
             Controls.Add(lblIngrese);

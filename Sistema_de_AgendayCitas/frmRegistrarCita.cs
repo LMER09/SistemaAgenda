@@ -16,9 +16,6 @@ namespace SistemaAgenda.UI
         private List<Estilista> _listaEstilistas = new List<Estilista>();
 
         private bool habilitado = false;
-
-        // Si no es null, el formulario esta editando/reprogramando esta cita
-        // en vez de agendar una nueva.
         private Citas? _citaEditando = null;
         private bool ModoEdicion => _citaEditando != null;
 
@@ -42,9 +39,9 @@ namespace SistemaAgenda.UI
             habilitado = habilitar;
 
             // En modo edicion se habilita todo, igual que al agendar una nueva.
-            cmbClientes.Enabled = habilitar;
-            cmbServicios.Enabled = habilitar;
-            cmbEstilistas.Enabled = habilitar;
+            cmbClientes.Enabled = habilitar && !ModoEdicion;
+            cmbServicios.Enabled = habilitar && !ModoEdicion;
+            cmbEstilistas.Enabled = habilitar && !ModoEdicion;
             dtpFecha.Enabled = habilitar;
             dtpHora.Enabled = habilitar;
             btnAgregar.Enabled = habilitar;
@@ -86,13 +83,13 @@ namespace SistemaAgenda.UI
             lblDeposito.Text = "Depósito requerido: RD$0.00";
         }
 
-        private void frmRegistrarCita_Load(object sender, EventArgs e)
+        private async void frmRegistrarCita_Load(object sender, EventArgs e)
         {
-            CargarCombos();
+            await CargarCombosAsync();
 
             if (ModoEdicion)
             {
-                this.Text = "Editar / Reprogramar Cita";
+                this.Text = "Reprogramar Cita";
                 lblIngrese.Text = "Editando cita:";
                 btnAgregar.Text = "💾 Guardar cambios";
 
@@ -121,21 +118,21 @@ namespace SistemaAgenda.UI
                 combo.SelectedIndex = indice;
         }
 
-        private void CargarCombos()
+        private async Task CargarCombosAsync()
         {
-            _listaClientes = clientesBLL.ObtenerTodos();
+            _listaClientes = await clientesBLL.ObtenerTodosAsync();
             cmbClientes.Items.Clear();
             foreach (var c in _listaClientes)
                 cmbClientes.Items.Add($"{c.Nombre} {c.Apellido}");
 
             // Muestra "Tipo - Subtipo" para poder distinguir servicios del mismo
             // tipo pero con precio distinto (ej. "Cabello - Corte" vs "Cabello - Tinte").
-            _listaServicios = serviciosBLL.ObtenerTodos();
+            _listaServicios = await serviciosBLL.ObtenerTodosAsync();
             cmbServicios.Items.Clear();
             foreach (var s in _listaServicios)
                 cmbServicios.Items.Add($"{s.Tipo_DeServicio} - {s.Subtipo_DeServicio}");
 
-            _listaEstilistas = estilistaBLL.ObtenerTodos();
+            _listaEstilistas = await estilistaBLL.ObtenerTodosAsync();
             cmbEstilistas.Items.Clear();
             foreach (var es in _listaEstilistas)
                 cmbEstilistas.Items.Add($"{es.Nombre} {es.Apellido}");
@@ -183,7 +180,7 @@ namespace SistemaAgenda.UI
             return true;
         }
 
-        private void btnAgregar_Click(object sender, EventArgs e)
+        private async void btnAgregar_Click(object sender, EventArgs e)
         {
             if (!ValidarSelecciones())
                 return;
@@ -192,47 +189,46 @@ namespace SistemaAgenda.UI
             Servicios servicio = _listaServicios[cmbServicios.SelectedIndex];
             Estilista estilista = _listaEstilistas[cmbEstilistas.SelectedIndex];
 
-            if (ModoEdicion)
+            btnAgregar.Enabled = false;
+            try
             {
-                Citas citaEditada = new Citas
+                if (ModoEdicion)
                 {
-                    Id = _citaEditando!.Id,
-                    Id_Clientes = cliente.Id,
-                    Id_Servicios = servicio.Id,
-                    Id_Estilista = estilista.Id,
-                    Fecha = ObtenerFechaHoraSeleccionada()
-                };
+                    string resultadoEdicion = await citasBLL.ReprogramarCitaAsync(_citaEditando!.Id, ObtenerFechaHoraSeleccionada());
+                    bool exitoEdicion = resultadoEdicion.StartsWith("OK");
 
-                string resultadoEdicion = citasBLL.EditarCita(citaEditada);
-                bool exitoEdicion = resultadoEdicion.StartsWith("OK");
+                    if (exitoEdicion)
+                    {
+                        MessageBox.Show("Cita reprogramada exitosamente.");
+                        Close();
+                    }
+                    else
+                    {
+                        lblResultado.Text = resultadoEdicion;
+                        lblResultado.ForeColor = Color.Firebrick;
+                    }
+                    return;
+                }
 
-                if (exitoEdicion)
+                Citas nuevaCita = new Citas(cliente, servicio, ObtenerFechaHoraSeleccionada());
+                nuevaCita.Id_Estilista = estilista.Id;
+                nuevaCita.Deposito = new Gestion_DeServicios(servicio).CalcularDeposito();
+
+                string resultado = await citasBLL.AgendarCitaAsync(nuevaCita);
+                bool exito = resultado.StartsWith("OK");
+
+                lblResultado.Text = exito ? "Cita agendada exitosamente." : resultado;
+                lblResultado.ForeColor = exito ? Color.DarkGreen : Color.Firebrick;
+
+                if (exito)
                 {
-                    MessageBox.Show("Cita actualizada exitosamente.");
-                    Close();
+                    Limpiar();
+                    cmbClientes.Focus();
                 }
-                else
-                {
-                    lblResultado.Text = resultadoEdicion;
-                    lblResultado.ForeColor = Color.Firebrick;
-                }
-                return;
             }
-
-            Citas nuevaCita = new Citas(cliente, servicio, ObtenerFechaHoraSeleccionada());
-            nuevaCita.Id_Estilista = estilista.Id;
-            nuevaCita.Deposito = new Gestion_DeServicios(servicio).CalcularDeposito();
-
-            string resultado = citasBLL.AgendarCita(nuevaCita);
-            bool exito = resultado.StartsWith("OK");
-
-            lblResultado.Text = exito ? "Cita agendada exitosamente." : resultado;
-            lblResultado.ForeColor = exito ? Color.DarkGreen : Color.Firebrick;
-
-            if (exito)
+            finally
             {
-                Limpiar();
-                cmbClientes.Focus();
+                btnAgregar.Enabled = true;
             }
         }
     }

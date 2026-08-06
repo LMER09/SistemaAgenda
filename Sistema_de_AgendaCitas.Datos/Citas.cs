@@ -28,8 +28,6 @@ namespace SistemaAgenda.Datos
             Estado = "Pendiente";
             Deposito = 0; // se asignará desde el formulario
         }
-
     }
-
 }
 

@@ -14,14 +14,14 @@ namespace SistemaAgenda.UI
             InitializeComponent();
         }
 
-        private void frmConsultarServicios_Load(object sender, EventArgs e)
+        private async void frmConsultarServicios_Load(object sender, EventArgs e)
         {
-            CargarServicios();
+            await CargarServiciosAsync();
         }
 
-        private void CargarServicios()
+        private async Task CargarServiciosAsync()
         {
-            listaServicios = serviciosBLL.ObtenerTodos();
+            listaServicios = await serviciosBLL.ObtenerTodosAsync();
 
             dgvServicios.DataSource = null;
             dgvServicios.DataSource = listaServicios;
@@ -55,7 +55,7 @@ namespace SistemaAgenda.UI
         }
 
         // Abre frmRegistrarServicios en modo edicion con el servicio seleccionado.
-        private void btnEditar_Click(object sender, EventArgs e)
+        private async void btnEditar_Click(object sender, EventArgs e)
         {
             if (dgvServicios.CurrentRow == null)
             {
@@ -72,10 +72,10 @@ namespace SistemaAgenda.UI
             }
             this.Show();
 
-            CargarServicios();
+            await CargarServiciosAsync();
         }
 
-        private void btnEliminar_Click(object sender, EventArgs e)
+        private async void btnEliminar_Click(object sender, EventArgs e)
         {
             if (dgvServicios.CurrentRow == null)
             {
@@ -93,9 +93,9 @@ namespace SistemaAgenda.UI
                 return;
 
             int id = Convert.ToInt32(dgvServicios.CurrentRow.Cells["Id"].Value);
-            MessageBox.Show(serviciosBLL.Eliminar(id));
+            MessageBox.Show(await serviciosBLL.EliminarAsync(id));
 
-            CargarServicios();
+            await CargarServiciosAsync();
         }
 
         private void btnCerrar_Click(object sender, EventArgs e)

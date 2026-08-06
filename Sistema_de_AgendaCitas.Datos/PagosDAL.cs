@@ -2,13 +2,13 @@
 
 namespace SistemaAgenda.Datos
 {
-    public class PagosDAL
+    public class PagosDAL : IPagosDAL
     {
-        public bool Insertar(Pagos p)
+        public async Task<bool> InsertarAsync(Pagos p)
         {
             try
             {
-                using (var con = ConexionDB.ObtenerConexion())
+                using (var con = await ConexionDB.ObtenerConexionAsync())
                 using (var cmd = new SqlCommand(@"
                     INSERT INTO Pagos (id_Citas, Monto, Metodo_DePago)
                     VALUES (@IdCita, @Monto, @Metodo)", con))
@@ -16,7 +16,7 @@ namespace SistemaAgenda.Datos
                     cmd.Parameters.AddWithValue("@IdCita", p.Id_Citas);
                     cmd.Parameters.AddWithValue("@Monto", p.Monto);
                     cmd.Parameters.AddWithValue("@Metodo", p.Metodo_DePago);
-                    return cmd.ExecuteNonQuery() > 0;
+                    return await cmd.ExecuteNonQueryAsync() > 0;
                 }
             }
             catch (Exception ex)
@@ -24,17 +24,18 @@ namespace SistemaAgenda.Datos
                 throw new Exception("Error al insertar pago: " + ex.Message);
             }
         }
-        public List<Pagos> ObtenerTodos()
+
+        public async Task<List<Pagos>> ObtenerTodosAsync()
         {
             var lista = new List<Pagos>();
             try
             {
-                using (var con = ConexionDB.ObtenerConexion())
+                using (var con = await ConexionDB.ObtenerConexionAsync())
                 using (var cmd = new SqlCommand(
                     "SELECT id, id_Citas, Monto, Metodo_DePago, FechaPago FROM Pagos", con))
-                using (var reader = cmd.ExecuteReader())
+                using (var reader = await cmd.ExecuteReaderAsync())
                 {
-                    while (reader.Read())
+                    while (await reader.ReadAsync())
                     {
                         lista.Add(new Pagos
                         {
@@ -53,11 +54,12 @@ namespace SistemaAgenda.Datos
             }
             return lista;
         }
-        public bool Actualizar(Pagos p)
+
+        public async Task<bool> ActualizarAsync(Pagos p)
         {
             try
             {
-                using (var con = ConexionDB.ObtenerConexion())
+                using (var con = await ConexionDB.ObtenerConexionAsync())
                 using (var cmd = new SqlCommand(@"
                     UPDATE Pagos SET id_Citas=@IdCita, Monto=@Monto,
                     Metodo_DePago=@Metodo WHERE id=@Id", con))
@@ -66,7 +68,7 @@ namespace SistemaAgenda.Datos
                     cmd.Parameters.AddWithValue("@Monto", p.Monto);
                     cmd.Parameters.AddWithValue("@Metodo", p.Metodo_DePago);
                     cmd.Parameters.AddWithValue("@Id", p.Id);
-                    return cmd.ExecuteNonQuery() > 0;
+                    return await cmd.ExecuteNonQueryAsync() > 0;
                 }
             }
             catch (Exception ex)
@@ -74,16 +76,17 @@ namespace SistemaAgenda.Datos
                 throw new Exception("Error al actualizar pago: " + ex.Message);
             }
         }
-        public bool Eliminar(int id)
+
+        public async Task<bool> EliminarAsync(int id)
         {
             try
             {
-                using (var con = ConexionDB.ObtenerConexion())
+                using (var con = await ConexionDB.ObtenerConexionAsync())
                 using (var cmd = new SqlCommand(
                     "DELETE FROM Pagos WHERE id=@Id", con))
                 {
                     cmd.Parameters.AddWithValue("@Id", id);
-                    return cmd.ExecuteNonQuery() > 0;
+                    return await cmd.ExecuteNonQueryAsync() > 0;
                 }
             }
             catch (Exception ex)

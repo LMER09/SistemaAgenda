@@ -14,14 +14,14 @@ namespace SistemaAgenda.UI
             InitializeComponent();
         }
 
-        private void frmConsultarUsuarios_Load(object sender, EventArgs e)
+        private async void frmConsultarUsuarios_Load(object sender, EventArgs e)
         {
-            CargarUsuarios();
+            await CargarUsuariosAsync();
         }
 
-        private void CargarUsuarios()
+        private async Task CargarUsuariosAsync()
         {
-            listaUsuarios = usuariosBLL.ObtenerTodos();
+            listaUsuarios = await usuariosBLL.ObtenerTodosAsync();
 
             dgvUsuarios.DataSource = null;
             dgvUsuarios.DataSource = listaUsuarios;
@@ -60,7 +60,7 @@ namespace SistemaAgenda.UI
         // Abre frmRegistrarUsuarios en modo edicion. La contraseña actual
         // no se le pasa visible al formulario de edicion en ningun campo;
         // solo se usa por dentro si el usuario decide dejarla sin cambios.
-        private void btnEditar_Click(object sender, EventArgs e)
+        private async void btnEditar_Click(object sender, EventArgs e)
         {
             if (dgvUsuarios.CurrentRow == null)
             {
@@ -77,10 +77,10 @@ namespace SistemaAgenda.UI
             }
             this.Show();
 
-            CargarUsuarios();
+            await CargarUsuariosAsync();
         }
 
-        private void btnEliminar_Click(object sender, EventArgs e)
+        private async void btnEliminar_Click(object sender, EventArgs e)
         {
             if (dgvUsuarios.CurrentRow == null)
             {
@@ -98,10 +98,10 @@ namespace SistemaAgenda.UI
                 return;
 
             int id = Convert.ToInt32(dgvUsuarios.CurrentRow.Cells["Id"].Value);
-            // UsuariosBLL.Eliminar bloquea el borrado si es el ultimo usuario
+            // UsuariosBLL.EliminarAsync bloquea el borrado si es el ultimo usuario
             // del sistema, y devuelve el mensaje de error correspondiente.
-            MessageBox.Show(usuariosBLL.Eliminar(id));
-            CargarUsuarios();
+            MessageBox.Show(await usuariosBLL.EliminarAsync(id));
+            await CargarUsuariosAsync();
         }
 
         private void btnCerrar_Click(object sender, EventArgs e)

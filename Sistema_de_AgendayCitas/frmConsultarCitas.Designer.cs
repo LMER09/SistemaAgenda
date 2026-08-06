@@ -15,6 +15,7 @@
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmConsultarCitas));
             lblBuscar = new Label();
             txtBuscar = new TextBox();
             btnBuscar = new Button();
@@ -24,7 +25,9 @@
             dgvCitas = new DataGridView();
             btnCancelar = new Button();
             btnReprogramar = new Button();
+            picLogo = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)dgvCitas).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)picLogo).BeginInit();
             SuspendLayout();
             // 
             // lblBuscar
@@ -105,7 +108,7 @@
             btnCancelar.BackColor = Color.DeepPink;
             btnCancelar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnCancelar.ForeColor = Color.White;
-            btnCancelar.Location = new Point(646, 390);
+            btnCancelar.Location = new Point(662, 401);
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size(207, 43);
             btnCancelar.TabIndex = 7;
@@ -118,20 +121,32 @@
             btnReprogramar.BackColor = Color.DeepPink;
             btnReprogramar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnReprogramar.ForeColor = Color.White;
-            btnReprogramar.Location = new Point(420, 390);
+            btnReprogramar.Location = new Point(416, 401);
             btnReprogramar.Name = "btnReprogramar";
             btnReprogramar.Size = new Size(207, 43);
             btnReprogramar.TabIndex = 8;
-            btnReprogramar.Text = "🔁 Reprogramar / Editar";
+            btnReprogramar.Text = "🔁 Reprogramar";
             btnReprogramar.UseVisualStyleBackColor = false;
             btnReprogramar.Click += btnReprogramar_Click;
+            // 
+            // picLogo
+            // 
+            picLogo.BackColor = Color.Transparent;
+            picLogo.Image = (Image)resources.GetObject("picLogo.Image");
+            picLogo.Location = new Point(48, 283);
+            picLogo.Name = "picLogo";
+            picLogo.Size = new Size(220, 173);
+            picLogo.SizeMode = PictureBoxSizeMode.Zoom;
+            picLogo.TabIndex = 15;
+            picLogo.TabStop = false;
             // 
             // frmConsultarCitas
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLightLight;
-            ClientSize = new Size(1008, 445);
+            ClientSize = new Size(1008, 468);
+            Controls.Add(picLogo);
             Controls.Add(btnReprogramar);
             Controls.Add(btnCancelar);
             Controls.Add(dgvCitas);
@@ -143,10 +158,12 @@
             Controls.Add(lblBuscar);
             Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            MinimizeBox = false;
             Name = "frmConsultarCitas";
             Text = "Consulta de Citas";
             Load += frmConsultarCitas_Load;
             ((System.ComponentModel.ISupportInitialize)dgvCitas).EndInit();
+            ((System.ComponentModel.ISupportInitialize)picLogo).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -159,5 +176,6 @@
         private DataGridView dgvCitas;
         private Button btnCancelar;
         private Button btnReprogramar;
+        private PictureBox picLogo;
     }
 }

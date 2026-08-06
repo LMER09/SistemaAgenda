@@ -16,5 +16,11 @@ namespace SistemaAgenda.Datos
             conexion.Open();
             return conexion;
         }
+        public static async Task<SqlConnection> ObtenerConexionAsync()
+        {
+            var conexion = new SqlConnection(_cadena);
+            await conexion.OpenAsync();
+            return conexion;
+        }
     }
 }

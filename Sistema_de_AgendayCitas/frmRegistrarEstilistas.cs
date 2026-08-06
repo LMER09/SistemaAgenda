@@ -89,11 +89,11 @@ namespace SistemaAgenda.UI
             chkJueves.Checked = false;
             chkViernes.Checked = false;
             chkSabado.Checked = false;
-            dtpHoraInicio.Value = DateTime.Today.AddHours(9);   // por defecto
-            dtpHoraFin.Value = DateTime.Today.AddHours(17);     // por defecto
+            dtpHoraInicio.Value = DateTime.Today.AddHours(9);
+            dtpHoraFin.Value = DateTime.Today.AddHours(17);
         }
 
-        private void FrmRegistrarEstilistas_Load(object sender, EventArgs e)
+        private async void FrmRegistrarEstilistas_Load(object sender, EventArgs e)
         {
             if (ModoEdicion)
             {
@@ -108,7 +108,7 @@ namespace SistemaAgenda.UI
                 txtCedula.Text = _estilistaEditando.Cedula;
                 txtEspecialidad.Text = _estilistaEditando.Especialidad;
 
-                CargarHorarioExistente(_estilistaEditando.Id);
+                await CargarHorarioExistenteAsync(_estilistaEditando.Id);
 
                 HabilitarControles(true);
             }
@@ -117,9 +117,10 @@ namespace SistemaAgenda.UI
                 HabilitarControles(false);
             }
         }
-        private void CargarHorarioExistente(int idEstilista)
+
+        private async Task CargarHorarioExistenteAsync(int idEstilista)
         {
-            var horarios = horarioBLL.ObtenerPorEstilista(idEstilista);
+            var horarios = await horarioBLL.ObtenerPorEstilistaAsync(idEstilista);
             if (horarios.Count == 0) return;
 
             foreach (var h in horarios)
@@ -141,7 +142,6 @@ namespace SistemaAgenda.UI
             dtpHoraFin.Value = DateTime.Today.Add(primero.HoraFin);
         }
 
-        // Arma la lista de HorarioEstilista segun los checkboxes marcados y las dos horas elegidas.
         private List<HorarioEstilista> ArmarHorarioDesdeFormulario()
         {
             var dias = new List<(byte numero, CheckBox chk)>
@@ -229,7 +229,7 @@ namespace SistemaAgenda.UI
             lblResultado.ForeColor = esExito ? Color.DarkGreen : Color.Firebrick;
         }
 
-        private void btnAgregar_Click(object sender, EventArgs e)
+        private async void btnAgregar_Click(object sender, EventArgs e)
         {
             if (!ValidarDatos())
                 return;
@@ -247,7 +247,7 @@ namespace SistemaAgenda.UI
                     Especialidad = txtEspecialidad.Text
                 };
 
-                string resultadoEdicion = estilistaBLL.Actualizar(estilista);
+                string resultadoEdicion = await estilistaBLL.ActualizarAsync(estilista);
                 bool exitoEdicion = resultadoEdicion.StartsWith("OK");
 
                 if (!exitoEdicion)
@@ -256,8 +256,7 @@ namespace SistemaAgenda.UI
                     return;
                 }
 
-                // Reemplaza el horario completo con lo que este marcado ahora en pantalla
-                string resultadoHorario = horarioBLL.GuardarHorarioCompleto(estilista.Id, ArmarHorarioDesdeFormulario());
+                string resultadoHorario = await horarioBLL.GuardarHorarioCompletoAsync(estilista.Id, ArmarHorarioDesdeFormulario());
                 if (!resultadoHorario.StartsWith("OK"))
                 {
                     MostrarResultado("Estilista actualizada, pero hubo un problema con el horario: " + resultadoHorario, esExito: false);
@@ -279,7 +278,7 @@ namespace SistemaAgenda.UI
                 Especialidad = txtEspecialidad.Text
             };
 
-            string resultado = estilistaBLL.Registrar(nuevoEstilista);
+            string resultado = await estilistaBLL.RegistrarAsync(nuevoEstilista);
             bool exito = resultado.StartsWith("OK");
 
             if (!exito)
@@ -288,9 +287,8 @@ namespace SistemaAgenda.UI
                 return;
             }
 
-            // El Insertar no devuelve el Id nuevo, asi que lo buscamos por el correo, que ya es unico en la base de datos.
-            var estilistaCreada = estilistaBLL.ObtenerTodos()
-                .FirstOrDefault(es => es.Correo == nuevoEstilista.Correo);
+            var listaEstilistas = await estilistaBLL.ObtenerTodosAsync();
+            var estilistaCreada = listaEstilistas.FirstOrDefault(es => es.Correo == nuevoEstilista.Correo);
 
             if (estilistaCreada == null)
             {
@@ -299,7 +297,7 @@ namespace SistemaAgenda.UI
                 return;
             }
 
-            string resultadoHorarioNuevo = horarioBLL.GuardarHorarioCompleto(estilistaCreada.Id, ArmarHorarioDesdeFormulario());
+            string resultadoHorarioNuevo = await horarioBLL.GuardarHorarioCompletoAsync(estilistaCreada.Id, ArmarHorarioDesdeFormulario());
             bool exitoHorario = resultadoHorarioNuevo.StartsWith("OK");
 
             MostrarResultado(exitoHorario
@@ -314,7 +312,6 @@ namespace SistemaAgenda.UI
             }
         }
 
-        //Evita números en nombre/apellido
         private void txtNombre_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsLetter(e.KeyChar) && e.KeyChar != ' ' && e.KeyChar != (char)Keys.Back)
@@ -326,7 +323,6 @@ namespace SistemaAgenda.UI
                 e.Handled = true;
         }
 
-        // Da formato automáticamente al teléfono: 000-000-0000
         private void txtTelefono_TextChanged(object sender, EventArgs e)
         {
             string texto = txtTelefono.Text.Replace("-", "");
@@ -349,7 +345,6 @@ namespace SistemaAgenda.UI
                 e.Handled = true;
         }
 
-        // Formato automático de cédula: 000-0000000-0
         private void txtCedula_TextChanged(object sender, EventArgs e)
         {
             string texto = txtCedula.Text.Replace("-", "");

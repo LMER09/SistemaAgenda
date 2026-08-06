@@ -4,10 +4,19 @@ namespace SistemaAgenda.Negocios
 {
     public class PagosBLL
     {
-        private readonly PagosDAL _dal = new PagosDAL();
+        private readonly IPagosDAL _dal;
+        private readonly ICitasDAL _citasDal;
+
+        public PagosBLL() : this(new PagosDAL(), new CitasDAL()) { }
+
+        public PagosBLL(IPagosDAL dal, ICitasDAL citasDal)
+        {
+            _dal = dal;
+            _citasDal = citasDal;
+        }
 
         // ── REGISTRAR ────────────────────────────────────────────────
-        public string Registrar(Pagos p)
+        public async Task<string> RegistrarAsync(Pagos p)
         {
             try
             {
@@ -20,8 +29,7 @@ namespace SistemaAgenda.Negocios
                 if (string.IsNullOrWhiteSpace(p.Metodo_DePago))
                     return "ERROR: El método de pago es obligatorio.";
 
-                CitasDAL citasDAL = new CitasDAL();
-                var citas = citasDAL.ObtenerTodos();
+                var citas = await _citasDal.ObtenerTodosAsync();
                 Citas cita = null;
 
                 for (int i = 0; i < citas.Count; i++)
@@ -40,13 +48,13 @@ namespace SistemaAgenda.Negocios
                 if (cita.Estado == "Completada")
                     return "ERROR: Cita completada y pagada.";
 
-                bool ok = _dal.Insertar(p);
+                bool ok = await _dal.InsertarAsync(p);
 
                 if (ok)
                 {
                     // Al registrar el pago, la cita pasa a Completada.
                     cita.Estado = "Completada";
-                    citasDAL.Actualizar(cita);
+                    await _citasDal.ActualizarAsync(cita);
 
                     return "OK: Pago registrado. Cita completada exitosamente.";
                 }
@@ -60,7 +68,7 @@ namespace SistemaAgenda.Negocios
         }
 
         // ── ACTUALIZAR ───────────────────────────────────────────────
-        public string Actualizar(Pagos p)
+        public async Task<string> ActualizarAsync(Pagos p)
         {
             try
             {
@@ -73,7 +81,7 @@ namespace SistemaAgenda.Negocios
                 if (string.IsNullOrWhiteSpace(p.Metodo_DePago))
                     return "ERROR: El método de pago es obligatorio.";
 
-                bool ok = _dal.Actualizar(p);
+                bool ok = await _dal.ActualizarAsync(p);
                 return ok
                     ? "OK: Pago actualizado exitosamente."
                     : "ERROR: No se pudo actualizar en la base de datos.";
@@ -85,11 +93,11 @@ namespace SistemaAgenda.Negocios
         }
 
         // ── ELIMINAR ─────────────────────────────────────────────────
-        public string Eliminar(int id)
+        public async Task<string> EliminarAsync(int id)
         {
             try
             {
-                bool ok = _dal.Eliminar(id);
+                bool ok = await _dal.EliminarAsync(id);
                 return ok
                     ? "OK: Pago eliminado exitosamente."
                     : "ERROR: No se pudo eliminar.";
@@ -101,11 +109,11 @@ namespace SistemaAgenda.Negocios
         }
 
         // ── OBTENER TODOS ────────────────────────────────────────────
-        public List<Pagos> ObtenerTodos()
+        public async Task<List<Pagos>> ObtenerTodosAsync()
         {
             try
             {
-                return _dal.ObtenerTodos();
+                return await _dal.ObtenerTodosAsync();
             }
             catch (Exception ex)
             {
@@ -116,9 +124,9 @@ namespace SistemaAgenda.Negocios
         // ── REPORTES ─────────────────────────────────────────────────
 
         // Trae solo los pagos de una fecha especifica, para no mezclar dias en el reporte/corte del dia.
-        public List<Pagos> ObtenerPorFecha(DateTime fecha)
+        public async Task<List<Pagos>> ObtenerPorFechaAsync(DateTime fecha)
         {
-            var todos = ObtenerTodos();
+            var todos = await ObtenerTodosAsync();
             var resultado = new List<Pagos>();
 
             for (int i = 0; i < todos.Count; i++)
@@ -130,7 +138,7 @@ namespace SistemaAgenda.Negocios
             return resultado;
         }
 
-        // Suma el monto de una lista de pagos
+        // Suma el monto de una lista de pagos (cálculo en memoria, no toca la BD, se queda síncrono)
         public decimal ObtenerTotal(List<Pagos> pagos)
         {
             decimal total = 0;
@@ -141,16 +149,16 @@ namespace SistemaAgenda.Negocios
             return total;
         }
 
-        public List<PagoVista> ObtenerVista()
+        public async Task<List<PagoVista>> ObtenerVistaAsync()
         {
-            var pagos = ObtenerTodos();
+            var pagos = await ObtenerTodosAsync();
             var citasBLL = new CitasBLL();
             var clientesBLL = new ClientesBLL();
             var serviciosBLL = new ServiciosBLL();
 
-            var citas = citasBLL.ObtenerTodos();
-            var clientes = clientesBLL.ObtenerTodos();
-            var servicios = serviciosBLL.ObtenerTodos();
+            var citas = await citasBLL.ObtenerTodosAsync();
+            var clientes = await clientesBLL.ObtenerTodosAsync();
+            var servicios = await serviciosBLL.ObtenerTodosAsync();
 
             var resultado = new List<PagoVista>();
 
@@ -202,8 +210,36 @@ namespace SistemaAgenda.Negocios
                 });
             }
             return resultado;
+        }
 
-          
+        public async Task<List<PagoVista>> ObtenerReporteAsync(DateTime desde, DateTime hasta)
+        {
+            List<PagoVista> todos = await ObtenerVistaAsync();
+            List<PagoVista> reporte = new List<PagoVista>();
+
+            for (int i = 0; i < todos.Count; i++)
+            {
+                if (todos[i].FechaPago.Date >= desde.Date &&
+                    todos[i].FechaPago.Date <= hasta.Date)
+                {
+                    reporte.Add(todos[i]);
+                }
+            }
+
+            return reporte;
+        }
+
+        // Suma en memoria, no toca la BD, se queda síncrono
+        public decimal ObtenerTotalReporte(List<PagoVista> reporte)
+        {
+            decimal total = 0;
+
+            for (int i = 0; i < reporte.Count; i++)
+            {
+                total += reporte[i].Monto;
+            }
+
+            return total;
         }
     }
 }
