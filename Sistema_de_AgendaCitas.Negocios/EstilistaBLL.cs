@@ -5,14 +5,11 @@ namespace SistemaAgenda.Negocios
     public class EstilistaBLL
     {
         private readonly IEstilistaDAL _dal;
-
         public EstilistaBLL() : this(new EstilistaDAL()) { }
-
         public EstilistaBLL(IEstilistaDAL dal)
         {
             _dal = dal;
         }
-
         public async Task<string> RegistrarAsync(Estilista e)
         {
             try
@@ -38,7 +35,6 @@ namespace SistemaAgenda.Negocios
                 return "ERROR: " + ex.Message;
             }
         }
-
         public async Task<List<Estilista>> ObtenerTodosAsync()
         {
             try
@@ -50,7 +46,6 @@ namespace SistemaAgenda.Negocios
                 throw new Exception("Error al obtener estilistas: " + ex.Message);
             }
         }
-
         public async Task<string> ActualizarAsync(Estilista e)
         {
             try
@@ -73,7 +68,6 @@ namespace SistemaAgenda.Negocios
                 return "ERROR: " + ex.Message;
             }
         }
-
         public async Task<string> EliminarAsync(int id)
         {
             try

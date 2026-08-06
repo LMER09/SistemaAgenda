@@ -23,16 +23,17 @@ namespace SistemaAgenda.Negocios
             _servicio = servicio;
         }
 
-        // ─TODO MÉTODOS ABSTRACTOS ────────────────────────────────────────
+        // ─TODO METODOS ABSTRACTOS ────────────────────────────────────────
         public abstract decimal ServicioCabello();
         public abstract decimal ServicioUnas();
         public abstract decimal ServicioSpa();
 
-        // TODO MÉTODOS VIRTUALES ─────────────────────────────────────────
-        //Tienen implementación base pero pueden sobreescribirse
+        // TODO METODOS VIRTUALES ─────────────────────────────────────────
+        //Tienen implementacion base pero pueden sobreescribirse
         public virtual decimal CalcularPrecio()=> _servicio.Precio;
         public virtual int CalcularDuracion() => _servicio.DuracionMinutos;
-        //Nuevo metodo
+
+        // Calcula el deposito requerido: 20% del precio ya calculado
         public virtual decimal CalcularDeposito() => CalcularPrecio() * 0.20m;
 
     }
@@ -43,9 +44,10 @@ namespace SistemaAgenda.Negocios
         public Gestion_DeServicios() { }
         public Gestion_DeServicios(Servicios s) : base(s) { }
 
-        //TODO Implementación de los métodos abstractos
+        //TODO Implementación de los metodos abstractos
         //TODO Cada subtipo dentro del tipo tiene su propio multiplicador sobre el precio base,
 
+        //Calcula el precio segun el subtipo de un servicio de Cabello
         public override decimal ServicioCabello()
         {
             switch (_servicio.Subtipo_DeServicio)
@@ -56,6 +58,7 @@ namespace SistemaAgenda.Negocios
                 default: return _servicio.Precio * 1.10m; // valor anterior, por si el subtipo viniera vacío
             }
         }
+        // Calcula el precio segun el subtipo de un servicio de Uñas
         public override decimal ServicioUnas()
         {
             switch (_servicio.Subtipo_DeServicio)
@@ -66,6 +69,7 @@ namespace SistemaAgenda.Negocios
                 default: return _servicio.Precio;
             }
         }
+        // Calcula el precio segun el subtipo de un servicio de Spa
         public override decimal ServicioSpa()
         {
             switch (_servicio.Subtipo_DeServicio)
@@ -77,7 +81,7 @@ namespace SistemaAgenda.Negocios
             }
         }
 
-        // Sobreescritura: calcula precio final según tipo de servicio
+        // Sobreescritura: calcula precio final segun tipo de servicio
         public override decimal CalcularPrecio()
         {
             switch (_servicio.Tipo_DeServicio)
@@ -92,7 +96,7 @@ namespace SistemaAgenda.Negocios
             }
         }
 
-        // Sobreescritura: añade tiempo extra según el tipo de servicio
+        // Sobreescritura: añade tiempo extra segun el tipo de servicio
         public override int CalcularDuracion()
         {
             switch (_servicio.Tipo_DeServicio)

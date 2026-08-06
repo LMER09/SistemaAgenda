@@ -2,7 +2,8 @@
 
 namespace SistemaAgenda.Negocios
 {
-    // Representa una notificacion ya disparada (recordatorio de cita proxima)
+    // TODO CLASE NUEVA: otificacionItem
+    // Representa una notificacion ya disparada - Recordatorio.
     public class NotificacionItem
     {
         public DateTime Fecha { get; set; }

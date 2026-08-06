@@ -5,14 +5,11 @@ namespace SistemaAgenda.Negocios
     public class ServiciosBLL
     {
         private readonly IServiciosDAL _dal;
-
         public ServiciosBLL() : this(new ServiciosDAL()) { }
-
         public ServiciosBLL(IServiciosDAL dal)
         {
             _dal = dal;
         }
-
         public async Task<string> RegistrarAsync(Servicios s)
         {
             try
@@ -39,7 +36,6 @@ namespace SistemaAgenda.Negocios
                 return "ERROR: " + ex.Message;
             }
         }
-
         public async Task<List<Servicios>> ObtenerTodosAsync()
         {
             try
@@ -51,7 +47,6 @@ namespace SistemaAgenda.Negocios
                 throw new Exception("Error al obtener servicios: " + ex.Message);
             }
         }
-
         public async Task<string> ActualizarAsync(Servicios s)
         {
             try
@@ -78,7 +73,6 @@ namespace SistemaAgenda.Negocios
                 return "ERROR: " + ex.Message;
             }
         }
-
         public async Task<string> EliminarAsync(int id)
         {
             try
