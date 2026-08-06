@@ -10,7 +10,7 @@ namespace SistemaAgenda.UI
 {
     public partial class frmReportes : Form
     {
-        private PagosBLL pagosBLL = new PagosBLL();
+        private readonly PagosBLL pagosBLL = new PagosBLL();
         private readonly BaseColor Rosa = new BaseColor(233, 30, 99);
         private readonly BaseColor Gris = new BaseColor(240, 240, 240);
 
@@ -19,9 +19,9 @@ namespace SistemaAgenda.UI
             InitializeComponent();
         }
 
-        private void CargarPagos()
+        private async Task CargarPagosAsync()
         {
-            var reporte = pagosBLL.ObtenerReporte(
+            var reporte = await pagosBLL.ObtenerReporteAsync(
                 dtpDesde.Value.Date,
                 dtpHasta.Value.Date);
 
@@ -34,8 +34,8 @@ namespace SistemaAgenda.UI
 
             lblTotal.Text = $"RD$ {total:N2}";
         }
-        private readonly PagosBLL _pagosBLL = new PagosBLL();
-        private void FrmReportes_Load(object sender, EventArgs e)
+
+        private async void FrmReportes_Load(object sender, EventArgs e)
         {
             dtpDesde.MaxDate = DateTime.Today;
             dtpHasta.MaxDate = DateTime.Today;
@@ -43,8 +43,10 @@ namespace SistemaAgenda.UI
             dtpDesde.Value = DateTime.Today;
             dtpHasta.Value = DateTime.Today;
 
-            CargarPagos();
+            await CargarPagosAsync();
         }
+
+        // No toca base de datos: exporta lo que ya esta en el grid
         private void btnExcel_Click(object sender, EventArgs e)
         {
             SaveFileDialog guardar = new SaveFileDialog();
@@ -59,7 +61,6 @@ namespace SistemaAgenda.UI
             {
                 var hoja = libro.Worksheets.Add("Reporte");
 
-                // ===== TÍTULO =====
                 hoja.Cell(1, 1).Value = "REPORTE DE INGRESOS";
                 hoja.Range(1, 1, 1, dgvPagos.Columns.Count).Merge();
                 hoja.Cell(1, 1).Style.Font.Bold = true;
@@ -67,7 +68,6 @@ namespace SistemaAgenda.UI
                 hoja.Cell(1, 1).Style.Alignment.Horizontal =
                     XLAlignmentHorizontalValues.Center;
 
-                // ===== INFORMACIÓN DEL REPORTE =====
                 hoja.Cell(3, 1).Value = "Desde:";
                 hoja.Cell(3, 2).Value = dtpDesde.Value.ToShortDateString();
 
@@ -80,7 +80,6 @@ namespace SistemaAgenda.UI
                 hoja.Cell(6, 1).Value = "Cantidad de citas:";
                 hoja.Cell(6, 2).Value = lblCantidadCitas.Text;
 
-                // ===== ENCABEZADOS =====
                 int filaInicio = 8;
 
                 for (int i = 0; i < dgvPagos.Columns.Count; i++)
@@ -96,7 +95,6 @@ namespace SistemaAgenda.UI
                         XLAlignmentHorizontalValues.Center;
                 }
 
-                // ===== DATOS =====
                 int fila = filaInicio + 1;
 
                 foreach (DataGridViewRow row in dgvPagos.Rows)
@@ -113,7 +111,6 @@ namespace SistemaAgenda.UI
                     fila++;
                 }
 
-                // ===== BORDES =====
                 var rango = hoja.Range(
                     filaInicio,
                     1,
@@ -123,10 +120,8 @@ namespace SistemaAgenda.UI
                 rango.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                 rango.Style.Border.InsideBorder = XLBorderStyleValues.Thin;
 
-                // ===== AJUSTAR COLUMNAS =====
                 hoja.Columns().AdjustToContents();
 
-                // ===== GUARDAR =====
                 libro.SaveAs(guardar.FileName);
             }
 
@@ -137,7 +132,7 @@ namespace SistemaAgenda.UI
                 MessageBoxIcon.Information);
         }
 
-        private void btnCorteDia_Click(object sender, EventArgs e)
+        private async void btnCorteDia_Click(object sender, EventArgs e)
         {
             if (dtpDesde.Value.Date > dtpHasta.Value.Date)
             {
@@ -150,7 +145,7 @@ namespace SistemaAgenda.UI
                 return;
             }
 
-            var reporte = _pagosBLL.ObtenerReporte(
+            var reporte = await pagosBLL.ObtenerReporteAsync(
                 dtpDesde.Value.Date,
                 dtpHasta.Value.Date);
 
@@ -159,30 +154,17 @@ namespace SistemaAgenda.UI
 
             lblCantidadCitas.Text = reporte.Count.ToString();
 
-            decimal total = _pagosBLL.ObtenerTotalReporte(reporte);
+            decimal total = pagosBLL.ObtenerTotalReporte(reporte);
 
             lblTotal.Text = "RD$ " + total.ToString("N2");
         }
-        private void lblTotal_Click(object sender, EventArgs e)
-        {
 
-        }
+        private void lblTotal_Click(object sender, EventArgs e) { }
+        private void lblDesde_Click(object sender, EventArgs e) { }
+        private void lblHasta_Click(object sender, EventArgs e) { }
+        private void dtpFechaReporte_ValueChanged(object sender, EventArgs e) { }
 
-        private void lblDesde_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lblHasta_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void dtpFechaReporte_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
+        // No toca base de datos: exporta lo que ya esta en el grid
         private void btnPDF_Click(object sender, EventArgs e)
         {
             SaveFileDialog guardar = new SaveFileDialog();
@@ -202,10 +184,6 @@ namespace SistemaAgenda.UI
                     new FileStream(guardar.FileName, FileMode.Create));
 
                 documento.Open();
-
-                //==========================
-                // FUENTES
-                //==========================
 
                 var fuenteTitulo = iTextSharp.text.FontFactory.GetFont(
                     iTextSharp.text.FontFactory.HELVETICA_BOLD, 20);
@@ -228,10 +206,6 @@ namespace SistemaAgenda.UI
 
                 fuenteCabecera.Color = iTextSharp.text.BaseColor.WHITE;
 
-                //==========================
-                // TITULO
-                //==========================
-
                 iTextSharp.text.Paragraph titulo =
                     new iTextSharp.text.Paragraph("SALÓN BELLEZA", fuenteTitulo);
 
@@ -252,10 +226,6 @@ namespace SistemaAgenda.UI
                 reporte.SpacingAfter = 20;
                 documento.Add(reporte);
 
-                //==========================
-                // DATOS
-                //==========================
-
                 documento.Add(new iTextSharp.text.Paragraph(
                     $"Desde: {dtpDesde.Value:dd/MM/yyyy}", fuenteNormal));
 
@@ -274,10 +244,6 @@ namespace SistemaAgenda.UI
                     $"Cantidad de citas: {lblCantidadCitas.Text}", fuenteNegrita));
 
                 documento.Add(new iTextSharp.text.Paragraph(" "));
-
-                //==========================
-                // TABLA
-                //==========================
 
                 iTextSharp.text.pdf.PdfPTable tabla =
                     new iTextSharp.text.pdf.PdfPTable(dgvPagos.Columns.Count);
@@ -311,10 +277,6 @@ namespace SistemaAgenda.UI
                 documento.Add(tabla);
 
                 documento.Add(new iTextSharp.text.Paragraph(" "));
-
-                //==========================
-                // PIE
-                //==========================
 
                 iTextSharp.text.Paragraph pie =
                     new iTextSharp.text.Paragraph(

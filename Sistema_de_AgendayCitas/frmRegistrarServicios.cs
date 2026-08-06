@@ -77,7 +77,6 @@ namespace SistemaAgenda.UI
                 btnAgregar.Text = "💾 Guardar cambios";
 
                 cmbTipo.Text = _servicioEditando!.Tipo_DeServicio;
-                // Dispara el llenado de cmbSubtipo con las opciones correctas antes de intentar seleccionar el valor guardado.
                 cmbTipo_SelectedIndexChanged(sender, e);
                 if (cmbSubtipo.Items.Contains(_servicioEditando.Subtipo_DeServicio))
                     cmbSubtipo.Text = _servicioEditando.Subtipo_DeServicio;
@@ -93,7 +92,6 @@ namespace SistemaAgenda.UI
             }
         }
 
-        // Llena cmbSubtipo segun el tipo elegido en cmbTipo.
         private void cmbTipo_SelectedIndexChanged(object sender, EventArgs e)
         {
             cmbSubtipo.Items.Clear();
@@ -131,7 +129,7 @@ namespace SistemaAgenda.UI
             lblResultado.ForeColor = esExito ? Color.DarkGreen : Color.Firebrick;
         }
 
-        private void btnAgregar_Click(object sender, EventArgs e)
+        private async void btnAgregar_Click(object sender, EventArgs e)
         {
             if (!ValidarDatos())
                 return;
@@ -147,7 +145,7 @@ namespace SistemaAgenda.UI
                     DuracionMinutos = Convert.ToInt32(txtDuracion.Text)
                 };
 
-                string resultadoEdicion = serviciosBLL.Actualizar(servicio);
+                string resultadoEdicion = await serviciosBLL.ActualizarAsync(servicio);
                 bool exitoEdicion = resultadoEdicion.StartsWith("OK");
 
                 if (exitoEdicion)
@@ -170,7 +168,7 @@ namespace SistemaAgenda.UI
                 DuracionMinutos = Convert.ToInt32(txtDuracion.Text)
             };
 
-            string resultado = serviciosBLL.Registrar(nuevoServicio);
+            string resultado = await serviciosBLL.RegistrarAsync(nuevoServicio);
             bool exito = resultado.StartsWith("OK");
 
             MostrarResultado(exito ? "Servicio registrado exitosamente." : resultado, exito);
@@ -200,7 +198,6 @@ namespace SistemaAgenda.UI
             MostrarResultado($"Precio final: RD${s.CalcularPrecio():F2}  |  Duración: {s.CalcularDuracion()} min", esExito: true);
         }
 
-        //Evita entrar letras en precio y duracion
         private void txtPrecio_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsDigit(e.KeyChar) && e.KeyChar != '.' && e.KeyChar != (char)Keys.Back)

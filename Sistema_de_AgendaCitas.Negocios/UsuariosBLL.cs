@@ -17,11 +17,9 @@ namespace SistemaAgenda.Negocios
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(u.Usuario))
-                    return "ERROR: El usuario es obligatorio.";
-
-                if (string.IsNullOrWhiteSpace(u.Contrasena))
-                    return "ERROR: La contraseña es obligatoria.";
+                if (string.IsNullOrWhiteSpace(u.Usuario) ||
+                    string.IsNullOrWhiteSpace(u.Contrasena))
+                    return "ERROR: Todos los campos son obligatorios.";
 
                 bool ok = await _dal.InsertarAsync(u);
                 return ok
@@ -31,19 +29,6 @@ namespace SistemaAgenda.Negocios
             catch (Exception ex)
             {
                 return "ERROR: " + ex.Message;
-            }
-        }
-
-        // Se usa en el login para validar usuario/contraseña
-        public async Task<Usuarios?> ObtenerPorUsuarioAsync(string usuario)
-        {
-            try
-            {
-                return await _dal.ObtenerPorUsuarioAsync(usuario);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error al buscar usuario: " + ex.Message);
             }
         }
 
@@ -63,11 +48,9 @@ namespace SistemaAgenda.Negocios
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(u.Usuario))
-                    return "ERROR: El usuario es obligatorio.";
-
-                if (string.IsNullOrWhiteSpace(u.Contrasena))
-                    return "ERROR: La contraseña es obligatoria.";
+                if (string.IsNullOrWhiteSpace(u.Usuario) ||
+                    string.IsNullOrWhiteSpace(u.Contrasena))
+                    return "ERROR: Todos los campos son obligatorios.";
 
                 bool ok = await _dal.ActualizarAsync(u);
                 return ok
@@ -84,6 +67,12 @@ namespace SistemaAgenda.Negocios
         {
             try
             {
+                var todos = await _dal.ObtenerTodosAsync();
+                int totalUsuarios = todos.Count;
+
+                if (totalUsuarios <= 1)
+                    return "ERROR: No se puede eliminar el último usuario del sistema.";
+
                 bool ok = await _dal.EliminarAsync(id);
                 return ok
                     ? "OK: Usuario eliminado exitosamente."
@@ -92,6 +81,23 @@ namespace SistemaAgenda.Negocios
             catch (Exception ex)
             {
                 return "ERROR: " + ex.Message;
+            }
+        }
+
+        // Valida usuario/contraseña
+        public async Task<bool> ValidarCredencialesAsync(string usuario, string contrasena)
+        {
+            try
+            {
+                Usuarios? u = await _dal.ObtenerPorUsuarioAsync(usuario);
+                if (u == null)
+                    return false;
+
+                return u.Contrasena == contrasena;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al validar credenciales: " + ex.Message);
             }
         }
     }

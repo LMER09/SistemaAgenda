@@ -76,7 +76,6 @@ namespace SistemaAgenda.UI
 
                 txtUsuario.Text = _usuarioEditando!.Usuario;
 
-                // La contraseña actual solo se pide si se va a cambiar la contraseña
                 lblContrasenaActual.Visible = true;
                 txtContrasenaActual.Visible = true;
                 lblAyudaContrasena.Visible = true;
@@ -100,14 +99,12 @@ namespace SistemaAgenda.UI
                 return false;
             }
 
-            // Al crear un usuario nuevo, la contraseña es obligatoria.
             if (!ModoEdicion && string.IsNullOrWhiteSpace(txtContrasena.Text))
             {
                 MostrarResultado("Debe ingresar una contraseña.", esExito: false);
                 return false;
             }
 
-            // Si escribio algo en contraseña (nuevo usuario, o editando y decidio cambiarla), debe coincidir con la confirmacion.
             if (!string.IsNullOrEmpty(txtContrasena.Text) || !string.IsNullOrEmpty(txtConfirmarContrasena.Text))
             {
                 if (txtContrasena.Text != txtConfirmarContrasena.Text)
@@ -117,7 +114,6 @@ namespace SistemaAgenda.UI
                     return false;
                 }
 
-                // Si esta editando y quiere cambiar la contraseña, primero debe confirmar la contraseña actual correctamente.
                 if (ModoEdicion)
                 {
                     if (txtContrasenaActual.Text != _usuarioEditando!.Contrasena)
@@ -138,7 +134,7 @@ namespace SistemaAgenda.UI
             lblResultado.ForeColor = esExito ? Color.DarkGreen : Color.Firebrick;
         }
 
-        private void btnAgregar_Click(object sender, EventArgs e)
+        private async void btnAgregar_Click(object sender, EventArgs e)
         {
             if (!ValidarDatos())
                 return;
@@ -149,14 +145,12 @@ namespace SistemaAgenda.UI
                 {
                     Id = _usuarioEditando!.Id,
                     Usuario = txtUsuario.Text,
-                    // Si dejo la contraseña en blanco, se manda la misma que ya tenia
-                    // Si escribio una nueva, ya se confirmo, la contraseña actual en ValidarDatos antes de llegar aqui.
                     Contrasena = string.IsNullOrEmpty(txtContrasena.Text)
                         ? _usuarioEditando.Contrasena
                         : txtContrasena.Text
                 };
 
-                string resultadoEdicion = usuariosBLL.Actualizar(usuario);
+                string resultadoEdicion = await usuariosBLL.ActualizarAsync(usuario);
                 bool exitoEdicion = resultadoEdicion.StartsWith("OK");
 
                 if (exitoEdicion)
@@ -177,7 +171,7 @@ namespace SistemaAgenda.UI
                 Contrasena = txtContrasena.Text
             };
 
-            string resultado = usuariosBLL.Registrar(nuevoUsuario);
+            string resultado = await usuariosBLL.RegistrarAsync(nuevoUsuario);
             bool exito = resultado.StartsWith("OK");
 
             MostrarResultado(exito ? "Usuario registrado exitosamente." : resultado, exito);

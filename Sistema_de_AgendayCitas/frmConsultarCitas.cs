@@ -16,14 +16,14 @@ namespace SistemaAgenda.UI
             InitializeComponent();
 
             // Conecta el evento del recordatorio para enviar el correo al cliente cuando una cita esta proxima
-            recordatorio.RecordatorioDisparado += (cita, mensaje) =>
+            recordatorio.RecordatorioDisparado += async (cita, mensaje) =>
             {
                 if (cita == null) return;
 
                 // Guarda la notificacion en el historial
                 HistorialNotificaciones.Agregar(mensaje);
 
-                var clientes = clientesBLL.ObtenerTodos();
+                var clientes = await clientesBLL.ObtenerTodosAsync();
                 var cliente = clientes.FirstOrDefault(c => c.Id == cita.Id_Clientes);
 
                 if (cliente != null)
@@ -40,16 +40,16 @@ namespace SistemaAgenda.UI
             };
         }
 
-        private void frmConsultarCitas_Load(object sender, EventArgs e)
+        private async void frmConsultarCitas_Load(object sender, EventArgs e)
         {
-            CargarCitas();
+            await CargarCitasAsync();
             // Revisa aqui las citas proximas
-            recordatorio.RevisarCitasProximas(citasBLL.ObtenerTodos());
+            recordatorio.RevisarCitasProximas(await citasBLL.ObtenerTodosAsync());
         }
 
-        private void CargarCitas()
+        private async Task CargarCitasAsync()
         {
-            _listaCitas = citasBLL.ObtenerVista();
+            _listaCitas = await citasBLL.ObtenerVistaAsync();
 
             MostrarEnTabla(_listaCitas);
             CargarCalendario();
@@ -158,7 +158,7 @@ namespace SistemaAgenda.UI
             return _listaCitas.FirstOrDefault(cv => cv.Id == id);
         }
 
-        private void btnCancelar_Click(object sender, EventArgs e)
+        private async void btnCancelar_Click(object sender, EventArgs e)
         {
             var citaSeleccionada = ObtenerCitaSeleccionada();
             if (citaSeleccionada == null)
@@ -187,12 +187,12 @@ namespace SistemaAgenda.UI
             if (respuesta == DialogResult.No)
                 return;
 
-            MessageBox.Show(citasBLL.CancelarCita(citaSeleccionada.Id));
-            CargarCitas();
+            MessageBox.Show(await citasBLL.CancelarCitaAsync(citaSeleccionada.Id));
+            await CargarCitasAsync();
         }
 
         // Abre frmRegistrarCita en modo reprogramar/editar con la cita seleccionada
-        private void btnReprogramar_Click(object sender, EventArgs e)
+        private async void btnReprogramar_Click(object sender, EventArgs e)
         {
             var citaSeleccionada = ObtenerCitaSeleccionada();
             if (citaSeleccionada == null)
@@ -219,7 +219,7 @@ namespace SistemaAgenda.UI
             }
             this.Show();
 
-            CargarCitas();
+            await CargarCitasAsync();
         }
 
         private void btnCerrar_Click(object sender, EventArgs e)

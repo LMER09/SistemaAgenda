@@ -20,7 +20,7 @@ namespace SistemaAgenda.UI
         {
             InitializeComponent();
         }
-        private void button1_Click(object sender, EventArgs e)
+        private async void button1_Click(object sender, EventArgs e)
         {
             lblAdvertencia.Visible = false;
 
@@ -35,7 +35,9 @@ namespace SistemaAgenda.UI
 
             try
             {
-                bool credencialesValidas = UsuariosBLL.ValidarCredenciales(usuario, contrasena);
+                button1.Enabled = false; // evita doble-click mientras se valida contra la BD
+
+                bool credencialesValidas = await UsuariosBLL.ValidarCredencialesAsync(usuario, contrasena);
 
                 if (credencialesValidas)
                 {
@@ -50,6 +52,10 @@ namespace SistemaAgenda.UI
             catch (Exception ex)
             {
                 MostrarError("Error al validar: " + ex.Message);
+            }
+            finally
+            {
+                button1.Enabled = true;
             }
         }
 
@@ -86,7 +92,4 @@ namespace SistemaAgenda.UI
 
         }
     }
-
 }
-  
-

@@ -11,7 +11,6 @@ namespace SistemaAgenda.UI
         private readonly ClientesBLL clientesBLL = new ClientesBLL();
         private readonly ServiciosBLL serviciosBLL = new ServiciosBLL();
 
-        // Solo las citas que todavia pueden recibir un pago
         private List<Citas> _citasPendientes = new List<Citas>();
         private List<Clientes> _listaClientes = new List<Clientes>();
         private List<Servicios> _listaServicios = new List<Servicios>();
@@ -23,20 +22,19 @@ namespace SistemaAgenda.UI
             HabilitarControles(false);
         }
 
-        private void FrmRegistrarPago_Load(object sender, EventArgs e)
+        private async void FrmRegistrarPago_Load(object sender, EventArgs e)
         {
-            CargarCitasPendientes();
+            await CargarCitasPendientesAsync();
             HabilitarControles(false);
         }
 
-        // Arma el combo con texto legible: "Cliente - Servicio - Fecha",
-        // en vez de solo el numero de la cita, para que el usuario sepa cual esta eligiendo.
-        private void CargarCitasPendientes()
+        private async Task CargarCitasPendientesAsync()
         {
-            _listaClientes = clientesBLL.ObtenerTodos();
-            _listaServicios = serviciosBLL.ObtenerTodos();
+            _listaClientes = await clientesBLL.ObtenerTodosAsync();
+            _listaServicios = await serviciosBLL.ObtenerTodosAsync();
 
-            _citasPendientes = citasBLL.ObtenerTodos()
+            var todasLasCitas = await citasBLL.ObtenerTodosAsync();
+            _citasPendientes = todasLasCitas
                 .Where(c => c.Estado != "Cancelada" && c.Estado != "Completada")
                 .OrderBy(c => c.Fecha)
                 .ToList();
@@ -80,10 +78,10 @@ namespace SistemaAgenda.UI
             }
         }
 
-        private void btnHabilitar_Click(object sender, EventArgs e)
+        private async void btnHabilitar_Click(object sender, EventArgs e)
         {
             if (!habilitado)
-                CargarCitasPendientes();
+                await CargarCitasPendientesAsync();
 
             HabilitarControles(!habilitado);
         }
@@ -106,7 +104,7 @@ namespace SistemaAgenda.UI
             lblResultado.ForeColor = esExito ? Color.DarkGreen : Color.Firebrick;
         }
 
-        private void btnRegistrar_Click(object sender, EventArgs e)
+        private async void btnRegistrar_Click(object sender, EventArgs e)
         {
             if (cmbCita.SelectedIndex == -1)
             {
@@ -133,7 +131,7 @@ namespace SistemaAgenda.UI
                 Metodo_DePago = cmbMetodoPago.Text
             };
 
-            string resultado = pagosBLL.Registrar(pago);
+            string resultado = await pagosBLL.RegistrarAsync(pago);
             bool exito = resultado.StartsWith("OK");
 
             MostrarResultado(exito ? "Pago registrado exitosamente. La cita quedó como Completada." : resultado, exito);
@@ -141,11 +139,10 @@ namespace SistemaAgenda.UI
             if (exito)
             {
                 Limpiar();
-                CargarCitasPendientes();
+                await CargarCitasPendientesAsync();
             }
         }
 
-        // Permite escribir solo numeros y un punto decimal
         private void txtMonto_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsDigit(e.KeyChar) && e.KeyChar != '.' && e.KeyChar != (char)Keys.Back)
@@ -154,8 +151,6 @@ namespace SistemaAgenda.UI
                 e.Handled = true;
         }
 
-        // Al elegir la cita, se sugiere automaticamente el saldo pendiente:
-        // precio del servicio MENOS el deposito que ya se cobro al agendar.
         private void cmbCita_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cmbCita.SelectedIndex == -1) return;

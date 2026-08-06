@@ -11,12 +11,13 @@ namespace SistemaAgenda.UI
         {
             InitializeComponent();
         }
-        private void AbrirFormulario(Form formulario)
+
+        private async void AbrirFormulario(Form formulario)
         {
             this.Hide();
             formulario.ShowDialog();
             this.Show();
-            CargarResumen();
+            await CargarResumenAsync();
         }
 
         private void frmPrincipal_Load(object sender, EventArgs e)
@@ -27,7 +28,7 @@ namespace SistemaAgenda.UI
                 if (login.ShowDialog() == DialogResult.OK)
                 {
                     this.Show();
-                    CargarResumen();
+                    _ = CargarResumenAsync();
                 }
                 else
                 {
@@ -37,16 +38,18 @@ namespace SistemaAgenda.UI
         }
 
         // Calcula y muestra el resumen del dia
-        private void CargarResumen()
+        private async Task CargarResumenAsync()
         {
             var citasBLL = new CitasBLL();
             var pagosBLL = new PagosBLL();
 
-            var citasHoy = citasBLL.ObtenerTodos()
+            var todasLasCitas = await citasBLL.ObtenerTodosAsync();
+            var citasHoy = todasLasCitas
                 .Where(c => c.Fecha.Date == DateTime.Today && c.Estado != "Cancelada")
                 .ToList();
 
-            var pagosHoy = pagosBLL.ObtenerTodos()
+            var todosLosPagos = await pagosBLL.ObtenerTodosAsync();
+            var pagosHoy = todosLosPagos
                 .Where(p => p.FechaPago.Date == DateTime.Today)
                 .ToList();
 

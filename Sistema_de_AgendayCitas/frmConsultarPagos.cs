@@ -13,15 +13,15 @@ namespace SistemaAgenda.UI
             InitializeComponent();
         }
 
-        private void frmConsultarPagos_Load(object sender, EventArgs e)
+        private async void frmConsultarPagos_Load(object sender, EventArgs e)
         {
-            CargarPagos();
+            await CargarPagosAsync();
         }
 
-        private void CargarPagos()
+        private async Task CargarPagosAsync()
         {
-            
-            _listaPagos = pagosBLL.ObtenerVista();
+
+            _listaPagos = await pagosBLL.ObtenerVistaAsync();
 
             dgvPagos.DataSource = null;
             dgvPagos.DataSource = _listaPagos;
@@ -56,7 +56,7 @@ namespace SistemaAgenda.UI
                     "Sin resultados", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private void btnEliminar_Click(object sender, EventArgs e)
+        private async void btnEliminar_Click(object sender, EventArgs e)
         {
             if (dgvPagos.CurrentRow == null)
             {
@@ -74,9 +74,9 @@ namespace SistemaAgenda.UI
                 return;
 
             int id = Convert.ToInt32(dgvPagos.CurrentRow.Cells["Id"].Value);
-            MessageBox.Show(pagosBLL.Eliminar(id));
+            MessageBox.Show(await pagosBLL.EliminarAsync(id));
 
-            CargarPagos();
+            await CargarPagosAsync();
         }
 
         private void btnCerrar_Click(object sender, EventArgs e)

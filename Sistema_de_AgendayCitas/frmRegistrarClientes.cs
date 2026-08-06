@@ -134,16 +134,43 @@ namespace SistemaAgenda.UI
             lblResultado.ForeColor = esExito ? Color.DarkGreen : Color.Firebrick;
         }
 
-        private void btnAgregar_Click(object sender, EventArgs e)
+        private async void btnAgregar_Click(object sender, EventArgs e)
         {
             if (!ValidarDatos())
                 return;
 
-            if (ModoEdicion)
+            btnAgregar.Enabled = false;
+            try
             {
-                Clientes cliente = new Clientes
+                if (ModoEdicion)
                 {
-                    Id = _clienteEditando!.Id,
+                    Clientes cliente = new Clientes
+                    {
+                        Id = _clienteEditando!.Id,
+                        Nombre = txtNombre.Text,
+                        Apellido = txtApellido.Text,
+                        Telefono = txtTelefono.Text,
+                        Correo = txtCorreo.Text,
+                        Cedula = txtCedula.Text
+                    };
+
+                    string resultadoEdicion = await clientesBLL.ActualizarAsync(cliente);
+                    bool exitoEdicion = resultadoEdicion.StartsWith("OK");
+
+                    if (exitoEdicion)
+                    {
+                        MessageBox.Show("Cliente actualizado exitosamente.");
+                        Close();
+                    }
+                    else
+                    {
+                        MostrarResultado(resultadoEdicion, esExito: false);
+                    }
+                    return;
+                }
+
+                Clientes nuevoCliente = new Clientes
+                {
                     Nombre = txtNombre.Text,
                     Apellido = txtApellido.Text,
                     Telefono = txtTelefono.Text,
@@ -151,39 +178,20 @@ namespace SistemaAgenda.UI
                     Cedula = txtCedula.Text
                 };
 
-                string resultadoEdicion = clientesBLL.Actualizar(cliente);
-                bool exitoEdicion = resultadoEdicion.StartsWith("OK");
+                string resultado = await clientesBLL.RegistrarAsync(nuevoCliente);
+                bool exito = resultado.StartsWith("OK");
 
-                if (exitoEdicion)
+                MostrarResultado(exito ? "Cliente registrado exitosamente." : resultado, exito);
+
+                if (exito)
                 {
-                    MessageBox.Show("Cliente actualizado exitosamente.");
-                    Close();
+                    Limpiar();
+                    txtNombre.Focus();
                 }
-                else
-                {
-                    MostrarResultado(resultadoEdicion, esExito: false);
-                }
-                return;
             }
-
-            Clientes nuevoCliente = new Clientes
+            finally
             {
-                Nombre = txtNombre.Text,
-                Apellido = txtApellido.Text,
-                Telefono = txtTelefono.Text,
-                Correo = txtCorreo.Text,
-                Cedula = txtCedula.Text
-            };
-
-            string resultado = clientesBLL.Registrar(nuevoCliente);
-            bool exito = resultado.StartsWith("OK");
-
-            MostrarResultado(exito ? "Cliente registrado exitosamente." : resultado, exito);
-
-            if (exito)
-            {
-                Limpiar();
-                txtNombre.Focus();
+                btnAgregar.Enabled = true;
             }
         }
 

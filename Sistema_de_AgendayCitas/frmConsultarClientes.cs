@@ -14,14 +14,14 @@ namespace SistemaAgenda.UI
             InitializeComponent();
         }
 
-        private void frmConsultarClientes_Load(object sender, EventArgs e)
+        private async void frmConsultarClientes_Load(object sender, EventArgs e)
         {
-            CargarClientes();
+            await CargarClientesAsync();
         }
 
-        private void CargarClientes()
+        private async Task CargarClientesAsync()
         {
-            listaClientes = clientesBLL.ObtenerTodos();
+            listaClientes = await clientesBLL.ObtenerTodosAsync();
 
             dgvClientes.DataSource = null;
             dgvClientes.DataSource = listaClientes;
@@ -54,7 +54,8 @@ namespace SistemaAgenda.UI
                 MessageBox.Show($"No se encontró ningún cliente que coincida con \"{txtBuscar.Text}\".",
                     "Sin resultados", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-        private void btnEditar_Click(object sender, EventArgs e)
+
+        private async void btnEditar_Click(object sender, EventArgs e)
         {
             if (dgvClientes.CurrentRow == null)
             {
@@ -71,10 +72,10 @@ namespace SistemaAgenda.UI
             }
             this.Show();
 
-            CargarClientes();
+            await CargarClientesAsync();
         }
 
-        private void btnEliminar_Click(object sender, EventArgs e)
+        private async void btnEliminar_Click(object sender, EventArgs e)
         {
             if (dgvClientes.CurrentRow == null)
             {
@@ -92,9 +93,9 @@ namespace SistemaAgenda.UI
                 return;
 
             int id = Convert.ToInt32(dgvClientes.CurrentRow.Cells["Id"].Value);
-            MessageBox.Show(clientesBLL.Eliminar(id));
+            MessageBox.Show(await clientesBLL.EliminarAsync(id));
 
-            CargarClientes();
+            await CargarClientesAsync();
         }
 
         private void btnCerrar_Click(object sender, EventArgs e)
