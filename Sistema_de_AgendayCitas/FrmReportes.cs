@@ -304,5 +304,9 @@ namespace SistemaAgenda.UI
                     MessageBoxIcon.Error);
             }
         }
+        private void btnCerrar_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
     }
 }

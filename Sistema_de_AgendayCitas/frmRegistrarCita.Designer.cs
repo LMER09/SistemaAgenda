@@ -226,7 +226,7 @@
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ControlLightLight;
-            ClientSize = new Size(721, 433);
+            ClientSize = new Size(721, 469);
             Controls.Add(picLogo);
             Controls.Add(lblResultado);
             Controls.Add(lblIngrese);

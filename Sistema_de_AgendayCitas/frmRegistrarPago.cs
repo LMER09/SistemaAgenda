@@ -15,19 +15,16 @@ namespace SistemaAgenda.UI
         private List<Clientes> _listaClientes = new List<Clientes>();
         private List<Servicios> _listaServicios = new List<Servicios>();
         private bool habilitado = false;
-
         public frmRegistrarPago()
         {
             InitializeComponent();
             HabilitarControles(false);
         }
-
         private async void FrmRegistrarPago_Load(object sender, EventArgs e)
         {
             await CargarCitasPendientesAsync();
             HabilitarControles(false);
         }
-
         private async Task CargarCitasPendientesAsync()
         {
             _listaClientes = await clientesBLL.ObtenerTodosAsync();
@@ -38,9 +35,9 @@ namespace SistemaAgenda.UI
                 .Where(c => c.Estado != "Cancelada" && c.Estado != "Completada")
                 .OrderBy(c => c.Fecha)
                 .ToList();
-
             cmbCita.Items.Clear();
 
+            //TODO cambiar esto por un for
             foreach (var cita in _citasPendientes)
             {
                 var cliente = _listaClientes.FirstOrDefault(c => c.Id == cita.Id_Clientes);
@@ -52,11 +49,9 @@ namespace SistemaAgenda.UI
                 cmbCita.Items.Add($"{nombreCliente} - {nombreServicio} - {cita.Fecha:dd/MM/yyyy hh:mm tt} (Cita #{cita.Id})");
             }
         }
-
         private void HabilitarControles(bool habilitar)
         {
             habilitado = habilitar;
-
             cmbCita.Enabled = habilitar;
             txtMonto.Enabled = habilitar;
             cmbMetodoPago.Enabled = habilitar;
@@ -77,27 +72,22 @@ namespace SistemaAgenda.UI
                 lblResultado.ForeColor = Color.DimGray;
             }
         }
-
         private async void btnHabilitar_Click(object sender, EventArgs e)
         {
             if (!habilitado)
                 await CargarCitasPendientesAsync();
-
             HabilitarControles(!habilitado);
         }
-
         private void btnCerrar_Click(object sender, EventArgs e)
         {
             Close();
         }
-
         private void Limpiar()
         {
             cmbCita.SelectedIndex = -1;
             txtMonto.Clear();
             cmbMetodoPago.SelectedIndex = -1;
         }
-
         private void MostrarResultado(string mensaje, bool esExito)
         {
             lblResultado.Text = mensaje;
@@ -121,9 +111,7 @@ namespace SistemaAgenda.UI
                 MostrarResultado("Debe ingresar el monto.", esExito: false);
                 return;
             }
-
             Citas citaSeleccionada = _citasPendientes[cmbCita.SelectedIndex];
-
             Pagos pago = new Pagos
             {
                 Id_Citas = citaSeleccionada.Id,
@@ -164,7 +152,6 @@ namespace SistemaAgenda.UI
                 decimal saldoPendiente = precioFinal - cita.Deposito;
 
                 txtMonto.Text = saldoPendiente.ToString("F2");
-
                 lblAyudaMonto.Text =
                     $"Precio del servicio: RD${precioFinal:F2}   |   " +
                     $"Depósito ya pagado: RD${cita.Deposito:F2}   |   " +

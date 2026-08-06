@@ -32,7 +32,6 @@ namespace SistemaAgenda.Datos
                 throw new Exception("Error al insertar cita: " + ex.Message);
             }
         }
-
         public async Task<List<Citas>> ObtenerTodosAsync()
         {
             var lista = new List<Citas>();
@@ -65,7 +64,6 @@ namespace SistemaAgenda.Datos
             }
             return lista;
         }
-
         // Trae las citas de un estilista en una fecha/hora exacta, sin decidir nada de negocio
         public async Task<List<Citas>> ObtenerPorEstilistaYFechaAsync(int idEstilista, DateTime fecha)
         {

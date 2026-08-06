@@ -17,7 +17,9 @@ namespace SistemaAgenda.Datos
                     cmd.Parameters.AddWithValue("@Apellido", c.Apellido);
                     cmd.Parameters.AddWithValue("@Telefono", c.Telefono);
                     cmd.Parameters.AddWithValue("@Correo", c.Correo);
-                    cmd.Parameters.AddWithValue("@Cedula", c.Cedula);
+                    // Si la cedula viene vacia, se guarda como NULL (no como texto vacio),
+                    // para que el indice unico de la base de datos no choque entre clientes sin cedula.
+                    cmd.Parameters.AddWithValue("@Cedula", string.IsNullOrWhiteSpace(c.Cedula) ? (object)DBNull.Value : c.Cedula);
                     return await cmd.ExecuteNonQueryAsync() > 0;
                 }
             }
@@ -75,7 +77,7 @@ namespace SistemaAgenda.Datos
                     cmd.Parameters.AddWithValue("@Apellido", c.Apellido);
                     cmd.Parameters.AddWithValue("@Telefono", c.Telefono);
                     cmd.Parameters.AddWithValue("@Correo", c.Correo);
-                    cmd.Parameters.AddWithValue("@Cedula", c.Cedula);
+                    cmd.Parameters.AddWithValue("@Cedula", string.IsNullOrWhiteSpace(c.Cedula) ? (object)DBNull.Value : c.Cedula);
                     cmd.Parameters.AddWithValue("@Id", c.Id);
                     return await cmd.ExecuteNonQueryAsync() > 0;
                 }
