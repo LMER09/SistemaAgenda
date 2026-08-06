@@ -16,9 +16,6 @@ namespace SistemaAgenda.UI
         private List<Estilista> _listaEstilistas = new List<Estilista>();
 
         private bool habilitado = false;
-
-        // Si no es null, el formulario esta editando/reprogramando esta cita
-        // en vez de agendar una nueva.
         private Citas? _citaEditando = null;
         private bool ModoEdicion => _citaEditando != null;
 
@@ -42,9 +39,9 @@ namespace SistemaAgenda.UI
             habilitado = habilitar;
 
             // En modo edicion se habilita todo, igual que al agendar una nueva.
-            cmbClientes.Enabled = habilitar;
-            cmbServicios.Enabled = habilitar;
-            cmbEstilistas.Enabled = habilitar;
+            cmbClientes.Enabled = habilitar && !ModoEdicion;
+            cmbServicios.Enabled = habilitar && !ModoEdicion;
+            cmbEstilistas.Enabled = habilitar && !ModoEdicion;
             dtpFecha.Enabled = habilitar;
             dtpHora.Enabled = habilitar;
             btnAgregar.Enabled = habilitar;
@@ -92,7 +89,7 @@ namespace SistemaAgenda.UI
 
             if (ModoEdicion)
             {
-                this.Text = "Editar / Reprogramar Cita";
+                this.Text = "Reprogramar Cita";
                 lblIngrese.Text = "Editando cita:";
                 btnAgregar.Text = "💾 Guardar cambios";
 
@@ -197,21 +194,12 @@ namespace SistemaAgenda.UI
             {
                 if (ModoEdicion)
                 {
-                    Citas citaEditada = new Citas
-                    {
-                        Id = _citaEditando!.Id,
-                        Id_Clientes = cliente.Id,
-                        Id_Servicios = servicio.Id,
-                        Id_Estilista = estilista.Id,
-                        Fecha = ObtenerFechaHoraSeleccionada()
-                    };
-
-                    string resultadoEdicion = await citasBLL.EditarCitaAsync(citaEditada);
+                    string resultadoEdicion = await citasBLL.ReprogramarCitaAsync(_citaEditando!.Id, ObtenerFechaHoraSeleccionada());
                     bool exitoEdicion = resultadoEdicion.StartsWith("OK");
 
                     if (exitoEdicion)
                     {
-                        MessageBox.Show("Cita actualizada exitosamente.");
+                        MessageBox.Show("Cita reprogramada exitosamente.");
                         Close();
                     }
                     else

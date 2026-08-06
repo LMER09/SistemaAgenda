@@ -21,8 +21,9 @@ namespace SistemaAgenda.Negocios
                     string.IsNullOrWhiteSpace(e.Apellido) ||
                     string.IsNullOrWhiteSpace(e.Telefono) ||
                     string.IsNullOrWhiteSpace(e.Correo) ||
-                    string.IsNullOrWhiteSpace(e.Especialidad))
-                    return "ERROR: Todos los campos son obligatorios, excepto la cedula.";
+                    string.IsNullOrWhiteSpace(e.Especialidad) ||
+                    string.IsNullOrWhiteSpace(e.Cedula))
+                    return "ERROR: Todos los campos son obligatorios.";
 
                 if (!e.Correo.Contains("@"))
                     return "ERROR: El correo no es válido.";
@@ -58,8 +59,9 @@ namespace SistemaAgenda.Negocios
                     string.IsNullOrWhiteSpace(e.Apellido) ||
                     string.IsNullOrWhiteSpace(e.Telefono) ||
                     string.IsNullOrWhiteSpace(e.Correo) ||
-                    string.IsNullOrWhiteSpace(e.Especialidad))
-                    return "ERROR: Todos los campos son obligatorios, excepto la cedula.";
+                    string.IsNullOrWhiteSpace(e.Especialidad) ||
+                    string.IsNullOrWhiteSpace(e.Cedula))
+                return "ERROR: Todos los campos son obligatorios.";
 
                 bool ok = await _dal.ActualizarAsync(e);
                 return ok

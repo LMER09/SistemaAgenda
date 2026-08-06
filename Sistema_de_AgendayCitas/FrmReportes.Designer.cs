@@ -26,6 +26,7 @@
             lblaFiltro = new Label();
             btnExcel = new Button();
             btnPDF = new Button();
+            btnCerrar = new Button();
             panelFiltros = new Panel();
             lblHasta = new Label();
             lblDesde = new Label();
@@ -124,7 +125,7 @@
             btnExcel.BackColor = Color.DeepPink;
             btnExcel.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnExcel.ForeColor = Color.White;
-            btnExcel.Location = new Point(513, 539);
+            btnExcel.Location = new Point(378, 539);
             btnExcel.Name = "btnExcel";
             btnExcel.Size = new Size(210, 46);
             btnExcel.TabIndex = 21;
@@ -137,13 +138,26 @@
             btnPDF.BackColor = Color.DeepPink;
             btnPDF.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnPDF.ForeColor = Color.White;
-            btnPDF.Location = new Point(235, 539);
+            btnPDF.Location = new Point(157, 539);
             btnPDF.Name = "btnPDF";
             btnPDF.Size = new Size(210, 46);
             btnPDF.TabIndex = 22;
             btnPDF.Text = "Exportar PDF";
             btnPDF.UseVisualStyleBackColor = false;
             btnPDF.Click += btnPDF_Click;
+            // 
+            // btnCerrar
+            // 
+            btnCerrar.BackColor = Color.Gray;
+            btnCerrar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnCerrar.ForeColor = Color.White;
+            btnCerrar.Location = new Point(594, 539);
+            btnCerrar.Name = "btnCerrar";
+            btnCerrar.Size = new Size(210, 46);
+            btnCerrar.TabIndex = 23;
+            btnCerrar.Text = "❌ Cerrar";
+            btnCerrar.UseVisualStyleBackColor = false;
+            btnCerrar.Click += btnCerrar_Click;
             // 
             // panelFiltros
             // 
@@ -204,7 +218,7 @@
             panelResumen.Controls.Add(lblTituloCantidad);
             panelResumen.Controls.Add(lblTituloTotal);
             panelResumen.Controls.Add(lblTotal);
-            panelResumen.Location = new Point(42, 277);
+            panelResumen.Location = new Point(42, 280);
             panelResumen.Name = "panelResumen";
             panelResumen.Size = new Size(617, 73);
             panelResumen.TabIndex = 24;
@@ -246,7 +260,7 @@
             lblHorarioDetalle.AutoSize = true;
             lblHorarioDetalle.Font = new Font("Segoe UI", 9.5F, FontStyle.Italic, GraphicsUnit.Point, 0);
             lblHorarioDetalle.ForeColor = Color.DimGray;
-            lblHorarioDetalle.Location = new Point(701, 245);
+            lblHorarioDetalle.Location = new Point(701, 234);
             lblHorarioDetalle.MaximumSize = new Size(629, 0);
             lblHorarioDetalle.Name = "lblHorarioDetalle";
             lblHorarioDetalle.Size = new Size(230, 21);
@@ -264,6 +278,7 @@
             Controls.Add(panelFiltros);
             Controls.Add(btnPDF);
             Controls.Add(btnExcel);
+            Controls.Add(btnCerrar);
             Controls.Add(picLogo);
             Controls.Add(dgvPagos);
             Controls.Add(lblTitulo);
@@ -292,6 +307,7 @@
         private Label lblaFiltro;
         private Button btnExcel;
         private Button btnPDF;
+        private Button btnCerrar;
         private Panel panelFiltros;
         private Label lblFecha;
         private Label lblHasta;

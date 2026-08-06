@@ -10,16 +10,15 @@ namespace SistemaAgenda.Negocios
     {
         private readonly ICitasDAL _dal;
         private readonly HorarioEstilistaBLL _horarioBLL;
+        private readonly ServiciosBLL _serviciosBLL;
 
-        public CitasBLL()
-            : this(new CitasDAL())
-        {
-        }
+        public CitasBLL() : this(new CitasDAL()) { }
 
         public CitasBLL(ICitasDAL dal)
         {
             _dal = dal;
             _horarioBLL = new HorarioEstilistaBLL();
+            _serviciosBLL = new ServiciosBLL();
         }
 
         public async Task<List<Citas>> ObtenerTodosAsync()
@@ -34,19 +33,49 @@ namespace SistemaAgenda.Negocios
             }
         }
 
-        // ── VALIDAR DISPONIBILIDAD DEL ESTILISTA ─────────────────────
-        private async Task<bool> EstilistaDisponibleAsync(int idEstilista, DateTime fecha)
+        // Duracion del servicio, ya ajustada por tipo.
+        private async Task<int> ObtenerDuracionServicioAsync(int idServicios)
         {
-            var citasEnEseHorario = await _dal.ObtenerPorEstilistaYFechaAsync(idEstilista, fecha);
+            var servicios = await _serviciosBLL.ObtenerTodosAsync();
+            var servicio = servicios.FirstOrDefault(s => s.Id == idServicios);
 
-            for (int i = 0; i < citasEnEseHorario.Count; i++)
+            if (servicio == null)
+                return 60;
+
+            return new Gestion_DeServicios(servicio).CalcularDuracion();
+        }
+
+        // Compara el rango (hora inicio -> hora inicio + duracion) de la
+        // cita nueva contra las citas activas de esa estilista.
+        // Devuelve null si esta disponible, o la hora en que queda libre.
+        private async Task<DateTime?> EstilistaDisponibleAsync(int idEstilista, DateTime fecha, int duracionMinutos, int idCitaAExcluir = 0)
+        {
+            var todasLasCitas = await _dal.ObtenerTodosAsync();
+
+            DateTime inicioNueva = fecha;
+            DateTime finNueva = fecha.AddMinutes(duracionMinutos);
+
+            for (int i = 0; i < todasLasCitas.Count; i++)
             {
-                Citas cita = citasEnEseHorario[i];
-                if (cita.Estado != "Cancelada" && cita.Estado != "Completada")
-                    return false;
+                Citas existente = todasLasCitas[i];
+
+                if (existente.Id == idCitaAExcluir)
+                    continue;
+                if (existente.Id_Estilista != idEstilista)
+                    continue;
+                if (existente.Estado == "Cancelada" || existente.Estado == "Completada")
+                    continue;
+
+                int duracionExistente = await ObtenerDuracionServicioAsync(existente.Id_Servicios);
+                DateTime finExistente = existente.Fecha.AddMinutes(duracionExistente);
+
+                bool seSolapan = inicioNueva < finExistente && existente.Fecha < finNueva;
+
+                if (seSolapan)
+                    return finExistente;
             }
 
-            return true;
+            return null;
         }
 
         // ── VALIDAR HORARIO LABORAL ──────────────────────────────────
@@ -57,7 +86,7 @@ namespace SistemaAgenda.Negocios
             if (horarios.Count == 0)
                 return "ERROR: La estilista no tiene un horario laboral registrado.";
 
-            byte diaSemana = (byte)fecha.DayOfWeek; //0=domingo...6=sábado, igual que DiaSemana
+            byte diaSemana = (byte)fecha.DayOfWeek;
             TimeSpan horaCita = fecha.TimeOfDay;
 
             bool dentroDeHorario = false;
@@ -121,11 +150,12 @@ namespace SistemaAgenda.Negocios
                 if (c.Fecha < DateTime.Now)
                     return "ERROR: La fecha no puede ser en el pasado.";
 
-                // Verificar disponibilidad del estilista
-                if (!await EstilistaDisponibleAsync(c.Id_Estilista, c.Fecha))
-                    return "ERROR: El estilista ya tiene una cita asignada para esa fecha y hora.";
+                int duracion = await ObtenerDuracionServicioAsync(c.Id_Servicios);
 
-                // Verificar que la fecha/hora caiga dentro del horario laboral de la estilista
+                DateTime? horaLibre = await EstilistaDisponibleAsync(c.Id_Estilista, c.Fecha, duracion);
+                if (horaLibre != null)
+                    return $"ERROR: El estilista ya tiene una cita en ese horario. Está disponible nuevamente a partir de las {horaLibre:hh:mm tt}.";
+
                 string? errorHorario = await ValidarHorarioLaboralAsync(c.Id_Estilista, c.Fecha);
                 if (errorHorario != null)
                     return errorHorario;
@@ -208,8 +238,11 @@ namespace SistemaAgenda.Negocios
                 if (cita.Estado == "Cancelada")
                     return "ERROR: No se puede reprogramar una cita cancelada.";
 
-                if (!await EstilistaDisponibleAsync(cita.Id_Estilista, nuevaFecha))
-                    return "ERROR: El estilista ya tiene una cita asignada para esa fecha y hora.";
+                int duracion = await ObtenerDuracionServicioAsync(cita.Id_Servicios);
+
+                DateTime? horaLibre = await EstilistaDisponibleAsync(cita.Id_Estilista, nuevaFecha, duracion, id);
+                if (horaLibre != null)
+                    return $"ERROR: El estilista ya tiene una cita en ese horario. Está disponible nuevamente a partir de las {horaLibre:hh:mm tt}.";
 
                 string? errorHorario = await ValidarHorarioLaboralAsync(cita.Id_Estilista, nuevaFecha);
                 if (errorHorario != null)
@@ -222,62 +255,6 @@ namespace SistemaAgenda.Negocios
                 return ok
                     ? "OK: Cita reprogramada exitosamente."
                     : "ERROR: No se pudo reprogramar la cita.";
-            }
-            catch (Exception ex)
-            {
-                return "ERROR: " + ex.Message;
-            }
-        }
-
-        public async Task<string> EditarCitaAsync(Citas citaEditada)
-        {
-            try
-            {
-                if (citaEditada.Id_Clientes <= 0)
-                    return "ERROR: Debe seleccionar un cliente.";
-
-                if (citaEditada.Id_Servicios <= 0)
-                    return "ERROR: Debe seleccionar un servicio.";
-
-                if (citaEditada.Id_Estilista <= 0)
-                    return "ERROR: Debe seleccionar una estilista.";
-
-                if (citaEditada.Fecha < DateTime.Now)
-                    return "ERROR: La fecha no puede ser en el pasado.";
-
-                var lista = await _dal.ObtenerTodosAsync();
-                Citas citaOriginal = lista.FirstOrDefault(c => c.Id == citaEditada.Id);
-
-                if (citaOriginal == null)
-                    return "ERROR: Cita no encontrada.";
-                if (citaOriginal.Estado == "Completada")
-                    return "ERROR: No se puede editar una cita que ya fue completada.";
-                if (citaOriginal.Estado == "Cancelada")
-                    return "ERROR: No se puede editar una cita cancelada.";
-
-                var citasEnEseHorario = await _dal.ObtenerPorEstilistaYFechaAsync(citaEditada.Id_Estilista, citaEditada.Fecha);
-                bool ocupado = citasEnEseHorario.Any(c =>
-                    c.Id != citaEditada.Id &&
-                    c.Estado != "Cancelada" &&
-                    c.Estado != "Completada");
-
-                if (ocupado)
-                    return "ERROR: El estilista ya tiene una cita asignada para esa fecha y hora.";
-
-                string? errorHorario = await ValidarHorarioLaboralAsync(citaEditada.Id_Estilista, citaEditada.Fecha);
-                if (errorHorario != null)
-                    return errorHorario;
-
-                citaOriginal.Id_Clientes = citaEditada.Id_Clientes;
-                citaOriginal.Id_Servicios = citaEditada.Id_Servicios;
-                citaOriginal.Id_Estilista = citaEditada.Id_Estilista;
-                citaOriginal.Fecha = citaEditada.Fecha;
-                citaOriginal.Estado = "Reprogramada";
-
-                bool ok = await _dal.ActualizarAsync(citaOriginal);
-                return ok
-                    ? "OK: Cita actualizada exitosamente."
-                    : "ERROR: No se pudo actualizar la cita.";
             }
             catch (Exception ex)
             {
