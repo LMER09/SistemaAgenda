@@ -98,11 +98,12 @@ namespace SistemaAgenda.Datos
                     return cmd.ExecuteNonQuery() > 0;
                 }
             }
-            //TODO Error 547 = violación de llave foránea: el cliente tiene citas
-            //TODO en su historial (ya no se borran en cascada, así se conserva el historial)
+            //TODO ERROR 547 = violación de llave foránea: el cliente tiene citas
+            //en su historial (ya no se borran, así se conserva el historial)
             catch (SqlException ex) when (ex.Number == 547)
             {
-                throw new Exception("No se puede eliminar el cliente: tiene citas registradas en su historial.");
+                throw new Exception("No se puede eliminar el cliente: " +
+                    "Tiene citas registradas en su historial.");
             }
             catch (Exception ex)
             {

@@ -1,5 +1,6 @@
 ﻿
     using Microsoft.Data.SqlClient;
+using System.Collections;
 
     namespace SistemaAgenda.Datos
     {
@@ -9,9 +10,7 @@
             {
                 try
                 {
-                    //Abre la conexion a SQL
                     using (var con = ConexionDB.ObtenerConexion())
-                    //Envia una consulta a SQL Server
                     using (var cmd = new SqlCommand(@"
                 INSERT INTO Usuarios (Usuario, Contrasena)
                 VALUES (@Usuario, @Contrasena)", con))
@@ -24,7 +23,7 @@
                         return filas > 0;
                     }
                 }
-                //TODO Error 2627 = violación de restricción UNIQUE: ese nombre de usuario ya existe
+                //TODO ERROR 2627 = violación de restricción UNIQUE:Ese nombre de usuario ya existe
                 catch (SqlException ex) when (ex.Number == 2627)
                 {
                     throw new Exception("Ese nombre de usuario ya existe, elige otro.");
@@ -34,8 +33,37 @@
                     throw new Exception("Error al insertar usuario: " + ex.Message);
                 }
             }
+            // TODO ObtenerTodos: Lee todas las filas, una por una hasta que no queden más
+            public List<Usuarios> ObtenerTodos()
+            {
+                var lista = new List<Usuarios>();
+                try
+                {
+                    using (var con = ConexionDB.ObtenerConexion())
+                    using (var cmd = new SqlCommand(
+                        "SELECT id, Usuario, Contrasena FROM Usuarios", con))
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            lista.Add(new Usuarios
+                            {
+                                Id = reader.GetInt32(0),
+                                Usuario = reader.GetString(1),
+                                Contrasena = reader.GetString(2)
+                            });
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("Error al obtener usuarios: " + ex.Message);
+                }
+                return lista;
+            }
 
-            //TODO el signo " ? " significa que puede devolver Null
+            //TODO METODO NUEVO: ObtenerPorUsuario: solo lee la PRIMERA fila que coincida.
+            //El "?" indica que el método puede devolver null si el usuario no existe en la BD.
             public Usuarios? ObtenerPorUsuario(string usuario)
             {
                 try
@@ -65,35 +93,6 @@
                     throw new Exception("Error al buscar usuario: " + ex.Message);
                 }
             }
-
-            public List<Usuarios> ObtenerTodos()
-            {
-                var lista = new List<Usuarios>();
-                try
-                {
-                    using (var con = ConexionDB.ObtenerConexion())
-                    using (var cmd = new SqlCommand(
-                        "SELECT id, Usuario, Contrasena FROM Usuarios", con))
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            lista.Add(new Usuarios
-                            {
-                                Id = reader.GetInt32(0),
-                                Usuario = reader.GetString(1),
-                                Contrasena = reader.GetString(2)
-                            });
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception("Error al obtener usuarios: " + ex.Message);
-                }
-                return lista;
-            }
-
             public bool Actualizar(Usuarios u)
             {
                 try
@@ -111,7 +110,7 @@
                         return filas > 0;
                     }
                 }
-                //Error 2627 = violación de restricción UNIQUE: ese nombre de usuario ya existe
+                //ERROR 2627 = violación de restricción UNIQUE: Ese nombre de usuario ya existe
                 catch (SqlException ex) when (ex.Number == 2627)
                 {
                     throw new Exception("Ese nombre de usuario ya existe, elige otro.");
@@ -121,7 +120,6 @@
                     throw new Exception("Error al actualizar usuario: " + ex.Message);
                 }
             }
-
             public bool Eliminar(int id)
             {
                 try

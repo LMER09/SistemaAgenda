@@ -26,7 +26,6 @@ namespace SistemaAgenda.Datos
                 throw new Exception("Error al insertar servicio: " + ex.Message);
             }
         }
-
         public List<Servicios> ObtenerTodos()
         {
             var lista = new List<Servicios>();
@@ -62,7 +61,6 @@ namespace SistemaAgenda.Datos
 
             return lista;
         }
-
         public bool Actualizar(Servicios s)
         {
             try
@@ -86,7 +84,6 @@ namespace SistemaAgenda.Datos
                 throw new Exception("Error al actualizar servicio: " + ex.Message);
             }
         }
-
         public bool Eliminar(int id)
         {
             try
@@ -99,8 +96,7 @@ namespace SistemaAgenda.Datos
                     return cmd.ExecuteNonQuery() > 0;
                 }
             }
-            //Error 547 = violación de llave foránea: el servicio tiene citas
-            //en su historial (ya no se borran en cascada, así se conserva el historial)
+            // TODO ERROR 547 = violación de llave foránea: el servicio tiene citas en su historial
             catch (SqlException ex) when (ex.Number == 547)
             {
                 throw new Exception("No se puede eliminar el servicio: tiene citas registradas en su historial.");

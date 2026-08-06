@@ -4,7 +4,6 @@ namespace SistemaAgenda.Datos
 {
     public class HorarioEstilistaDAL
     {
-
         public bool Insertar(HorarioEstilista h)
         {
             try
@@ -23,8 +22,8 @@ namespace SistemaAgenda.Datos
                     return filas > 0;
                 }
             }
-            //Error 547 = violación de CHECK (día fuera de 0-6) o de FK (estilista inexistente),
-            //o que HoraInicio no sea menor que HoraFin
+            //ERROR 547 = violación de CHECK (día fuera de 0-6) o de FK (estilista inexistente),
+            // o que HoraInicio no sea menor que HoraFin
             catch (SqlException ex) when (ex.Number == 547)
             {
                 throw new Exception("Verifica el horario: el día debe estar entre 0 y 6, la hora de inicio debe ser antes que la hora fin, y la estilista debe existir.");
@@ -34,7 +33,6 @@ namespace SistemaAgenda.Datos
                 throw new Exception("Error al insertar horario: " + ex.Message);
             }
         }
-
         public List<HorarioEstilista> ObtenerTodos()
         {
             var lista = new List<HorarioEstilista>();
@@ -64,9 +62,58 @@ namespace SistemaAgenda.Datos
             }
             return lista;
         }
+        public bool Actualizar(HorarioEstilista h)
+        {
+            try
+            {
+                using (var con = ConexionDB.ObtenerConexion())
+                using (var cmd = new SqlCommand(@"
+                UPDATE HorarioEstilista SET id_Estilista=@IdEstilista, DiaSemana=@DiaSemana,
+                HoraInicio=@HoraInicio, HoraFin=@HoraFin WHERE id=@Id", con))
+                {
+                    cmd.Parameters.AddWithValue("@IdEstilista", h.IdEstilista);
+                    cmd.Parameters.AddWithValue("@DiaSemana", h.DiaSemana);
+                    cmd.Parameters.AddWithValue("@HoraInicio", h.HoraInicio);
+                    cmd.Parameters.AddWithValue("@HoraFin", h.HoraFin);
+                    cmd.Parameters.AddWithValue("@Id", h.Id);
 
-        // TODO Trae solo los bloques de horario de una estilista específica.
-        // TODO Valida el día/hora de una cita nueva.
+                    int filas = cmd.ExecuteNonQuery();
+                    return filas > 0;
+                }
+            }
+            //ERROR 547 = violación de CHECK (día fuera de 0-6) o de FK (estilista inexistente),
+            //o que HoraInicio no sea menor que HoraFin
+            catch (SqlException ex) when (ex.Number == 547)
+            {
+                throw new Exception("Verifica el horario: el día debe estar entre 0 y 6, la hora de inicio debe ser antes que la hora fin, y la estilista debe existir.");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al actualizar horario: " + ex.Message);
+            }
+        }
+        // TODO Borra un bloque específico de horario laboral por su id
+        public bool Eliminar(int id)
+        {
+            try
+            {
+                using (var con = ConexionDB.ObtenerConexion())
+                using (var cmd = new SqlCommand(
+                    "DELETE FROM HorarioEstilista WHERE id=@Id", con))
+                {
+                    cmd.Parameters.AddWithValue("@Id", id);
+                    int filas = cmd.ExecuteNonQuery();
+                    return filas > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al eliminar horario: " + ex.Message);
+            }
+        }
+        // TODO NUEVO METODO: ObtenerPorEstilista
+        // Trae solo los bloques de horario de una estilista específica.
+        // Valida el día/hora de una cita nueva.
         public List<HorarioEstilista> ObtenerPorEstilista(int idEstilista)
         {
             var lista = new List<HorarioEstilista>();
@@ -100,57 +147,9 @@ namespace SistemaAgenda.Datos
             }
             return lista;
         }
-
-        public bool Actualizar(HorarioEstilista h)
-        {
-            try
-            {
-                using (var con = ConexionDB.ObtenerConexion())
-                using (var cmd = new SqlCommand(@"
-                UPDATE HorarioEstilista SET id_Estilista=@IdEstilista, DiaSemana=@DiaSemana,
-                HoraInicio=@HoraInicio, HoraFin=@HoraFin WHERE id=@Id", con))
-                {
-                    cmd.Parameters.AddWithValue("@IdEstilista", h.IdEstilista);
-                    cmd.Parameters.AddWithValue("@DiaSemana", h.DiaSemana);
-                    cmd.Parameters.AddWithValue("@HoraInicio", h.HoraInicio);
-                    cmd.Parameters.AddWithValue("@HoraFin", h.HoraFin);
-                    cmd.Parameters.AddWithValue("@Id", h.Id);
-
-                    int filas = cmd.ExecuteNonQuery();
-                    return filas > 0;
-                }
-            }
-            //Error 547 = violación de CHECK (día fuera de 0-6) o de FK (estilista inexistente),
-            //o que HoraInicio no sea menor que HoraFin
-            catch (SqlException ex) when (ex.Number == 547)
-            {
-                throw new Exception("Verifica el horario: el día debe estar entre 0 y 6, la hora de inicio debe ser antes que la hora fin, y la estilista debe existir.");
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error al actualizar horario: " + ex.Message);
-            }
-        }
-
-        public bool Eliminar(int id)
-        {
-            try
-            {
-                using (var con = ConexionDB.ObtenerConexion())
-                using (var cmd = new SqlCommand(
-                    "DELETE FROM HorarioEstilista WHERE id=@Id", con))
-                {
-                    cmd.Parameters.AddWithValue("@Id", id);
-                    int filas = cmd.ExecuteNonQuery();
-                    return filas > 0;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error al eliminar horario: " + ex.Message);
-            }
-        }
-        // Borra todos los bloques de horario
+        // TODO NUEVO METODO: EliminarPorEstilista
+        // Borra todos los bloques de horario de una estilista especifica
+        // Usado antes de guardar uno nuevo
         public bool EliminarPorEstilista(int idEstilista)
         {
             try

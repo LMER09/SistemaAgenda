@@ -8,10 +8,9 @@ namespace SistemaAgenda.Datos
 {
     public class Usuarios
     {
-        public int Id { get; set; }
+        public int Id { get; set;}
         public string Usuario { get; set; } = string.Empty;
         public string Contrasena { get; set; } = string.Empty;
-
         public Usuarios() { }
         public Usuarios(int Id, string Usuario, string Contrasena)
         {

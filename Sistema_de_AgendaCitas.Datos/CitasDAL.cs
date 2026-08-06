@@ -32,7 +32,6 @@ namespace SistemaAgenda.Datos
                 throw new Exception("Error al insertar cita: " + ex.Message);
             }
         }
-
         public List<Citas> ObtenerTodos()
         {
             var lista = new List<Citas>();
@@ -65,7 +64,53 @@ namespace SistemaAgenda.Datos
             }
             return lista;
         }
-        // TODO Verifica si el estilista ya tiene una cita en la fecha y hora indicada
+        public bool Actualizar(Citas c)
+        {
+            try
+            {
+                using (var con = ConexionDB.ObtenerConexion())
+                using (var cmd = new SqlCommand(@"
+                UPDATE Citas SET id_Clientes=@IdCliente, id_Servicios=@IdServicio,
+                id_Estilista=@IdEstilista, Fecha=@Fecha, Estado=@Estado, Deposito=@Deposito
+                WHERE id=@Id", con))
+                //Solo actualiza, solo cita que seleccionamos WHERE id=@Id
+                {
+                    cmd.Parameters.AddWithValue("@IdCliente", c.Id_Clientes);
+                    cmd.Parameters.AddWithValue("@IdServicio", c.Id_Servicios);
+                    cmd.Parameters.AddWithValue("@IdEstilista", c.Id_Estilista);
+                    cmd.Parameters.AddWithValue("@Fecha", c.Fecha);
+                    cmd.Parameters.AddWithValue("@Estado", c.Estado);
+                    cmd.Parameters.AddWithValue("@Deposito", c.Deposito);
+                    cmd.Parameters.AddWithValue("@Id", c.Id);
+
+                    int filas = cmd.ExecuteNonQuery();
+                    return filas > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al actualizar cita: " + ex.Message);
+            }
+        }
+        public bool Eliminar(int id)
+        {
+            try
+            {
+                using (var con = ConexionDB.ObtenerConexion())
+                using (var cmd = new SqlCommand(
+                    "DELETE FROM Citas WHERE id=@Id", con))
+                {
+                    cmd.Parameters.AddWithValue("@Id", id);
+                    int filas = cmd.ExecuteNonQuery();
+                    return filas > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al eliminar cita: " + ex.Message);
+            }
+        }
+        // TODO METODO NUEVO: ObtenerPorEstilistaYFecha para verificar si el estilista ya tiene una cita
         // TODO Trae las citas de un estilista en una fecha/hora exacta, sin decidir nada de negocio
         public List<Citas> ObtenerPorEstilistaYFecha(int idEstilista, DateTime fecha)
         {
@@ -103,53 +148,6 @@ namespace SistemaAgenda.Datos
                 throw new Exception("Error al obtener citas del estilista: " + ex.Message);
             }
             return lista;
-        }
-        public bool Actualizar(Citas c)
-        {
-            try
-            {
-                using (var con = ConexionDB.ObtenerConexion())
-                using (var cmd = new SqlCommand(@"
-                UPDATE Citas SET id_Clientes=@IdCliente, id_Servicios=@IdServicio,
-                id_Estilista=@IdEstilista, Fecha=@Fecha, Estado=@Estado, Deposito=@Deposito
-                WHERE id=@Id", con))
-                //Solo actualiza, solo cita que seleccionamos WHERE id=@Id
-                {
-                    cmd.Parameters.AddWithValue("@IdCliente", c.Id_Clientes);
-                    cmd.Parameters.AddWithValue("@IdServicio", c.Id_Servicios);
-                    cmd.Parameters.AddWithValue("@IdEstilista", c.Id_Estilista);
-                    cmd.Parameters.AddWithValue("@Fecha", c.Fecha);
-                    cmd.Parameters.AddWithValue("@Estado", c.Estado);
-                    cmd.Parameters.AddWithValue("@Deposito", c.Deposito);
-                    cmd.Parameters.AddWithValue("@Id", c.Id);
-
-                    int filas = cmd.ExecuteNonQuery();
-                    return filas > 0;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error al actualizar cita: " + ex.Message);
-            }
-        }
-
-        public bool Eliminar(int id)
-        {
-            try
-            {
-                using (var con = ConexionDB.ObtenerConexion())
-                using (var cmd = new SqlCommand(
-                    "DELETE FROM Citas WHERE id=@Id", con))
-                {
-                    cmd.Parameters.AddWithValue("@Id", id);
-                    int filas = cmd.ExecuteNonQuery();
-                    return filas > 0;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error al eliminar cita: " + ex.Message);
-            }
         }
     }
 }

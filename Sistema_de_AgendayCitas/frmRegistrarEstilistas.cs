@@ -177,7 +177,8 @@ namespace SistemaAgenda.UI
                 string.IsNullOrWhiteSpace(txtApellido.Text) ||
                 string.IsNullOrWhiteSpace(txtTelefono.Text) ||
                 string.IsNullOrWhiteSpace(txtCorreo.Text) ||
-                string.IsNullOrWhiteSpace(txtEspecialidad.Text))
+                string.IsNullOrWhiteSpace(txtEspecialidad.Text) ||
+                string.IsNullOrWhiteSpace(txtCedula.Text))
             {
                 MostrarResultado("Debe completar todos los campos.", esExito: false);
                 return false;

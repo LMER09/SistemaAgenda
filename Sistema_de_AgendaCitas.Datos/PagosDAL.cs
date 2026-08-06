@@ -24,7 +24,6 @@ namespace SistemaAgenda.Datos
                 throw new Exception("Error al insertar pago: " + ex.Message);
             }
         }
-
         public List<Pagos> ObtenerTodos()
         {
             var lista = new List<Pagos>();
@@ -54,7 +53,6 @@ namespace SistemaAgenda.Datos
             }
             return lista;
         }
-
         public bool Actualizar(Pagos p)
         {
             try
@@ -76,7 +74,6 @@ namespace SistemaAgenda.Datos
                 throw new Exception("Error al actualizar pago: " + ex.Message);
             }
         }
-
         public bool Eliminar(int id)
         {
             try

@@ -8,7 +8,7 @@ namespace SistemaAgenda.Datos
         public int Id_Citas { get; set; }
         public decimal Monto { get; set; }
         public string Metodo_DePago { get; set; }=string.Empty;
-        public DateTime FechaPago {  get; set; }
+        public DateTime FechaPago { get; set; }
 
         public Pagos() {}
 

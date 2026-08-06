@@ -8,12 +8,14 @@ using System;
 
 namespace SistemaAgenda.Datos
 {
-    //TODO Horario laboral para una estilista
+    //TODO NUEVA TABLA CREADA: Horario laboral para una estilista
     public class HorarioEstilista
     {
         public int Id { get; set; }
         public int IdEstilista { get; set; }
         public byte DiaSemana { get; set; }
+
+        //TODO TimeSpan extrae solo la hora.
         public TimeSpan HoraInicio { get; set; }
         public TimeSpan HoraFin { get; set; }
 
