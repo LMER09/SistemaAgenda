@@ -49,6 +49,7 @@
             verUsuariosToolStripMenuItem = new ToolStripMenuItem();
             sistemaToolStripMenuItem = new ToolStripMenuItem();
             acercaDeToolStripMenuItem = new ToolStripMenuItem();
+            notificacionesToolStripMenuItem = new ToolStripMenuItem();
             salirToolStripMenuItem = new ToolStripMenuItem();
             lblElija = new Label();
             panel1 = new Panel();
@@ -206,7 +207,7 @@
             // 
             // sistemaToolStripMenuItem
             // 
-            sistemaToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { acercaDeToolStripMenuItem, salirToolStripMenuItem });
+            sistemaToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { acercaDeToolStripMenuItem, notificacionesToolStripMenuItem, salirToolStripMenuItem });
             sistemaToolStripMenuItem.Margin = new Padding(0, 0, 30, 0);
             sistemaToolStripMenuItem.Name = "sistemaToolStripMenuItem";
             sistemaToolStripMenuItem.Size = new Size(94, 32);
@@ -218,6 +219,13 @@
             acercaDeToolStripMenuItem.Size = new Size(224, 32);
             acercaDeToolStripMenuItem.Text = "⚙️ Sistema";
             acercaDeToolStripMenuItem.Click += acercaDeToolStripMenuItem_Click;
+            // 
+            // notificacionesToolStripMenuItem
+            // 
+            notificacionesToolStripMenuItem.Name = "notificacionesToolStripMenuItem";
+            notificacionesToolStripMenuItem.Size = new Size(224, 32);
+            notificacionesToolStripMenuItem.Text = "🔔 Notificaciones";
+            notificacionesToolStripMenuItem.Click += notificacionesToolStripMenuItem_Click;
             // 
             // salirToolStripMenuItem
             // 
@@ -340,6 +348,7 @@
         private ToolStripMenuItem verPagosToolStripMenuItem;
         private ToolStripMenuItem verUsuariosToolStripMenuItem;
         private ToolStripMenuItem acercaDeToolStripMenuItem;
+        private ToolStripMenuItem notificacionesToolStripMenuItem;
         private ToolStripMenuItem salirToolStripMenuItem;
         private Label lblElija;
         private ToolStripMenuItem reportesToolStripMenuItem1;
