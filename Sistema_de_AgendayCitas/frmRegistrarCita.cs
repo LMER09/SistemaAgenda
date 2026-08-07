@@ -18,15 +18,18 @@ namespace SistemaAgenda.UI
         private bool habilitado = false;
         private Citas? _citaEditando = null;
         private bool ModoEdicion => _citaEditando != null;
+
         public frmRegistrarCita()
         {
             InitializeComponent();
             HabilitarControles(false);
         }
+
         public frmRegistrarCita(Citas cita) : this()
         {
             _citaEditando = cita;
         }
+
         private void HabilitarControles(bool habilitar)
         {
             habilitado = habilitar;
@@ -54,6 +57,7 @@ namespace SistemaAgenda.UI
                 lblResultado.ForeColor = Color.DimGray;
             }
         }
+
         private void btnHabilitar_Click(object sender, EventArgs e)
         {
             HabilitarControles(!habilitado);
@@ -112,7 +116,6 @@ namespace SistemaAgenda.UI
             foreach (var c in _listaClientes)
                 cmbClientes.Items.Add($"{c.Nombre} {c.Apellido}");
 
-            // Muestra "Tipo - Subtipo" para poder distinguir servicios del mismo tipo pero con precio distinto
             _listaServicios = await serviciosBLL.ObtenerTodosAsync();
             cmbServicios.Items.Clear();
             foreach (var s in _listaServicios)
@@ -185,6 +188,11 @@ namespace SistemaAgenda.UI
 
                     if (exitoEdicion)
                     {
+                        // AGREGADO AQUÍ: Dispara revisión de correo tras reprogramar
+                        var listaCitasRepo = await citasBLL.ObtenerTodosAsync();
+                        var recordatorioRepo = new RecordatorioCitas();
+                        await recordatorioRepo.RevisarCitasProximasAsync(listaCitasRepo);
+
                         MessageBox.Show("Cita reprogramada exitosamente.");
                         Close();
                     }
@@ -208,6 +216,11 @@ namespace SistemaAgenda.UI
 
                 if (exito)
                 {
+                    // AGREGADO AQUÍ: Obtiene la lista y envía el correo si la cita cae en la próxima hora
+                    var listaCitas = await citasBLL.ObtenerTodosAsync();
+                    var recordatorio = new RecordatorioCitas();
+                    await recordatorio.RevisarCitasProximasAsync(listaCitas);
+
                     Limpiar();
                     cmbClientes.Focus();
                 }
