@@ -1,27 +1,27 @@
-﻿using System.Net.Mail;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
+using System.Net.Mail;
+using System.Threading.Tasks;
 using SistemaAgenda.Datos;
+
 namespace SistemaAgenda.Negocios
 {
-    //TODO Delegate: define la firma del método que manejará los recordatorios automáticos
-    public delegate void RecordatorioDelegate(Citas cita, string mensaje);
+    public delegate void RecordatorioDelegate(Citas? cita, string mensaje);
 
-    // Revisa citas próximas, avisa por evento y envía el recordatorio por correo.
     public class RecordatorioCitas
     {
-        // Credenciales del correo que envía los recordatorios
         private const string CorreoOrigen = "salonglowstyle@gmail.com";
         private const string ClaveApp = "zlbf qtjj hszq zkoc";
 
-        //Evento basado en el delegate: se dispara cuando hay citas próximas
         public event RecordatorioDelegate? RecordatorioDisparado;
 
-        //Método que invoca el evento enviando el mensaje al usuario
-        public void EnviarRecordatorio(Citas citas, string mensaje)
+        public void EnviarRecordatorio(Citas? citas, string mensaje)
         {
             RecordatorioDisparado?.Invoke(citas, mensaje);
         }
-        // Envía el correo de recordatorio al cliente
+
         public void EnviarCorreo(string correoDestino, string nombreCliente, DateTime fechaCita)
         {
             try
@@ -45,9 +45,8 @@ namespace SistemaAgenda.Negocios
             }
         }
 
-
-        // Revisa las citas pendientes y reprogramadas en la próxima hora y dispara un recordatorio por cada una
-        public void RevisarCitasProximas(List<Citas> citas)
+        // Método convertido a Asíncrono para poder consultar los Clientes por BLL
+        public async Task RevisarCitasProximasAsync(List<Citas> citas)
         {
             var proximas = new List<Citas>();
 
@@ -69,12 +68,28 @@ namespace SistemaAgenda.Negocios
                 return;
             }
 
+            // Obtenemos los clientes para buscar su correo y nombre
+            var clientesBLL = new ClientesBLL();
+            var clientes = await clientesBLL.ObtenerTodosAsync();
+
             for (int i = 0; i < proximas.Count; i++)
             {
                 Citas cita = proximas[i];
+                
+                // Notifica por evento
                 EnviarRecordatorio(cita, "Recordatorio: cita #" + cita.Id + " a las " + cita.Fecha.ToString("HH:mm"));
+
+                // Busca el cliente correspondiente a la cita
+                var cliente = clientes.FirstOrDefault(c => c.Id == cita.Id_Clientes);
+
+                if (cliente != null && !string.IsNullOrEmpty(cliente.Correo))
+                {
+                    string nombreCompleto = $"{cliente.Nombre} {cliente.Apellido}";
+                    
+                    // Envía el correo con los datos reales del cliente
+                    EnviarCorreo(cliente.Correo, nombreCompleto, cita.Fecha);
+                }
             }
         }
-
     }
 }

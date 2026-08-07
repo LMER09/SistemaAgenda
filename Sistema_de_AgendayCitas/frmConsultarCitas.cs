@@ -45,7 +45,7 @@ namespace SistemaAgenda.UI
         private async void frmConsultarCitas_Load(object sender, EventArgs e)
         {
             await CargarCitasAsync();
-            recordatorio.RevisarCitasProximas(await citasBLL.ObtenerTodosAsync());
+            await recordatorio.RevisarCitasProximasAsync(await citasBLL.ObtenerTodosAsync());
         }
 
         // Trae la lista de citas (con nombres, no IDs) y actualiza tabla y calendario
@@ -63,9 +63,12 @@ namespace SistemaAgenda.UI
             dgvCitas.DataSource = null;
             dgvCitas.DataSource = lista.Select(cv => new
             {
-                cv.Id,  cv.Cliente,
-                cv.Servicio, cv.Estilista,
-                cv.Fecha, cv.Estado,
+                cv.Id,
+                cv.Cliente,
+                cv.Servicio,
+                cv.Estilista,
+                cv.Fecha,
+                cv.Estado,
                 cv.Deposito
             }).ToList();
 
