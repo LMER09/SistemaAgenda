@@ -153,6 +153,12 @@ namespace SistemaAgenda.UI
      MessageBoxButtons.OK,
      MessageBoxIcon.Information);
         }
+
+        private void notificacionesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AbrirFormulario(new frmNotificaciones());
+        }
+
         private void salirToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DialogResult respuesta = MessageBox.Show(

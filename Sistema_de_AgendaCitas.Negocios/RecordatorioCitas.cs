@@ -13,7 +13,7 @@ namespace SistemaAgenda.Negocios
     public class RecordatorioCitas
     {
         private const string CorreoOrigen = "salonglowstyle@gmail.com";
-        private const string ClaveApp = "zlbf qtjj hszq zkoc";
+        private const string ClaveApp = "wizm rzad ggts kpaz";
 
         public event RecordatorioDelegate? RecordatorioDisparado;
 
