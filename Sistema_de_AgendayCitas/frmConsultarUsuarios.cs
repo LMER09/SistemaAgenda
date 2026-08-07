@@ -8,17 +8,14 @@ namespace SistemaAgenda.UI
     {
         private UsuariosBLL usuariosBLL = new UsuariosBLL();
         private List<Usuarios> listaUsuarios = new List<Usuarios>();
-
         public frmConsultarUsuarios()
         {
             InitializeComponent();
         }
-
         private async void frmConsultarUsuarios_Load(object sender, EventArgs e)
         {
             await CargarUsuariosAsync();
         }
-
         private async Task CargarUsuariosAsync()
         {
             listaUsuarios = await usuariosBLL.ObtenerTodosAsync();
@@ -29,11 +26,10 @@ namespace SistemaAgenda.UI
             dgvUsuarios.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvUsuarios.Columns["Id"].Visible = false;
 
-            // La contraseña NUNCA se muestra en la tabla
+            // La contraseña nunca se muestra en la tabla
             if (dgvUsuarios.Columns["Contrasena"] != null)
                 dgvUsuarios.Columns["Contrasena"].Visible = false;
         }
-
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             string texto = txtBuscar.Text.Trim().ToLower();
@@ -57,9 +53,7 @@ namespace SistemaAgenda.UI
                     "Sin resultados", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        // Abre frmRegistrarUsuarios en modo edicion. La contraseña actual
-        // no se le pasa visible al formulario de edicion en ningun campo;
-        // solo se usa por dentro si el usuario decide dejarla sin cambios.
+        // Abre frmRegistrarUsuarios en modo edicion
         private async void btnEditar_Click(object sender, EventArgs e)
         {
             if (dgvUsuarios.CurrentRow == null)
@@ -103,7 +97,6 @@ namespace SistemaAgenda.UI
             MessageBox.Show(await usuariosBLL.EliminarAsync(id));
             await CargarUsuariosAsync();
         }
-
         private void btnCerrar_Click(object sender, EventArgs e)
         {
             Close();

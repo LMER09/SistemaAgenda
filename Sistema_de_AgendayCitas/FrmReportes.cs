@@ -4,7 +4,6 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.IO;
 using ClosedXML.Excel;
-using System.IO;
 
 namespace SistemaAgenda.UI
 {
@@ -19,6 +18,7 @@ namespace SistemaAgenda.UI
             InitializeComponent();
         }
 
+        // Trae el reporte entre las fechas elegidas y lo muestra en la tabla, con el total y la cantidad
         private async Task CargarPagosAsync()
         {
             var reporte = await pagosBLL.ObtenerReporteAsync(
@@ -35,6 +35,7 @@ namespace SistemaAgenda.UI
             lblTotal.Text = $"RD$ {total:N2}";
         }
 
+        // Al abrir, deja las fechas en hoy y carga el reporte del dia
         private async void FrmReportes_Load(object sender, EventArgs e)
         {
             dtpDesde.MaxDate = DateTime.Today;
@@ -46,7 +47,7 @@ namespace SistemaAgenda.UI
             await CargarPagosAsync();
         }
 
-        // No toca base de datos: exporta lo que ya esta en el grid
+        // No toca base de datos: exporta a Excel lo que ya esta en el grid
         private void btnExcel_Click(object sender, EventArgs e)
         {
             SaveFileDialog guardar = new SaveFileDialog();
@@ -132,6 +133,7 @@ namespace SistemaAgenda.UI
                 MessageBoxIcon.Information);
         }
 
+        // Vuelve a filtrar el reporte segun las fechas elegidas
         private async void btnCorteDia_Click(object sender, EventArgs e)
         {
             if (dtpDesde.Value.Date > dtpHasta.Value.Date)
@@ -164,7 +166,7 @@ namespace SistemaAgenda.UI
         private void lblHasta_Click(object sender, EventArgs e) { }
         private void dtpFechaReporte_ValueChanged(object sender, EventArgs e) { }
 
-        // No toca base de datos: exporta lo que ya esta en el grid
+        // No toca base de datos: exporta a PDF lo que ya esta en el grid
         private void btnPDF_Click(object sender, EventArgs e)
         {
             SaveFileDialog guardar = new SaveFileDialog();

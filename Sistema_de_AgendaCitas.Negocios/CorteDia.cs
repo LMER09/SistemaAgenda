@@ -5,19 +5,18 @@ using SistemaAgenda.Datos;
 
 namespace SistemaAgenda.Negocios
 {
-    // Genera el resumen de ingresos de UN dia especifico en un archivo de texto.
-    // Recibe la lista de pagos ya filtrada por fecha (PagosBLL.ObtenerPorFecha) asi que nunca mezcla pagos de dias distintos.
+    // TODO CorteDia
+    // Genera el resumen de ingresos de un día en un archivo de texto.
+    // Recibe los pagos ya filtrados por fecha, para no mezclar dias.
     public class CorteDia
     {
         private readonly DateTime _fecha;
         private readonly List<Pagos> _pagosDelDia;
-
         public CorteDia(DateTime fecha, List<Pagos> pagosDelDia)
         {
             _fecha = fecha.Date;
             _pagosDelDia = pagosDelDia;
         }
-
         public decimal TotalDelDia
         {
             get
@@ -33,8 +32,8 @@ namespace SistemaAgenda.Negocios
 
         public int CantidadDePagos => _pagosDelDia.Count;
 
-        // Genera el resumen del dia en un archivo con la fecha en el nombre,
-        // dentro de una carpeta fija "Reportes" (no en una ruta relativa suelta).
+        // Guarda el resumen en un archivo con la fecha en el nombre,
+        // dentro de una carpeta fija "Reportes".
         public void Cerrar()
         {
             string carpeta = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Reportes");

@@ -64,45 +64,6 @@ namespace SistemaAgenda.Datos
             }
             return lista;
         }
-        // Trae las citas de un estilista en una fecha/hora exacta, sin decidir nada de negocio
-        public async Task<List<Citas>> ObtenerPorEstilistaYFechaAsync(int idEstilista, DateTime fecha)
-        {
-            var lista = new List<Citas>();
-            try
-            {
-                using (var con = await ConexionDB.ObtenerConexionAsync())
-                using (var cmd = new SqlCommand(@"
-                    SELECT id, id_Clientes, id_Servicios, id_Estilista, Fecha, Estado, Deposito
-                    FROM Citas
-                    WHERE id_Estilista = @IdEstilista AND Fecha = @Fecha", con))
-                {
-                    cmd.Parameters.AddWithValue("@IdEstilista", idEstilista);
-                    cmd.Parameters.AddWithValue("@Fecha", fecha);
-                    using (var reader = await cmd.ExecuteReaderAsync())
-                    {
-                        while (await reader.ReadAsync())
-                        {
-                            lista.Add(new Citas
-                            {
-                                Id = reader.GetInt32(0),
-                                Id_Clientes = reader.GetInt32(1),
-                                Id_Servicios = reader.GetInt32(2),
-                                Id_Estilista = reader.GetInt32(3),
-                                Fecha = reader.GetDateTime(4),
-                                Estado = reader.GetString(5),
-                                Deposito = reader.GetDecimal(6)
-                            });
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error al obtener citas del estilista: " + ex.Message);
-            }
-            return lista;
-        }
-
         public async Task<bool> ActualizarAsync(Citas c)
         {
             try
@@ -131,7 +92,6 @@ namespace SistemaAgenda.Datos
                 throw new Exception("Error al actualizar cita: " + ex.Message);
             }
         }
-
         public async Task<bool> EliminarAsync(int id)
         {
             try
@@ -150,14 +110,14 @@ namespace SistemaAgenda.Datos
                 throw new Exception("Error al eliminar cita: " + ex.Message);
             }
         }
-        // TODO METODO NUEVO: ObtenerPorEstilistaYFecha para verificar si el estilista ya tiene una cita
-        // TODO Trae las citas de un estilista en una fecha/hora exacta, sin decidir nada de negocio
-        public List<Citas> ObtenerPorEstilistaYFecha(int idEstilista, DateTime fecha)
+        // TODO METODO NUEVO: ObtenerPorEstilistaYFechaAsyn
+        // Trae las citas de un estilista en una fecha/hora exacta.
+        public async Task<List<Citas>> ObtenerPorEstilistaYFechaAsync(int idEstilista, DateTime fecha)
         {
             var lista = new List<Citas>();
             try
             {
-                using (var con = ConexionDB.ObtenerConexion())
+                using (var con = await ConexionDB.ObtenerConexionAsync())
                 using (var cmd = new SqlCommand(@"
                     SELECT id, id_Clientes, id_Servicios, id_Estilista, Fecha, Estado, Deposito
                     FROM Citas
@@ -165,9 +125,9 @@ namespace SistemaAgenda.Datos
                 {
                     cmd.Parameters.AddWithValue("@IdEstilista", idEstilista);
                     cmd.Parameters.AddWithValue("@Fecha", fecha);
-                    using (var reader = cmd.ExecuteReader())
+                    using (var reader = await cmd.ExecuteReaderAsync())
                     {
-                        while (reader.Read())
+                        while (await reader.ReadAsync())
                         {
                             lista.Add(new Citas
                             {

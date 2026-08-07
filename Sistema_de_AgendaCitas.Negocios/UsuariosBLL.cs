@@ -12,7 +12,6 @@ namespace SistemaAgenda.Negocios
         {
             _dal = dal;
         }
-
         public async Task<string> RegistrarAsync(Usuarios u)
         {
             try
@@ -31,7 +30,6 @@ namespace SistemaAgenda.Negocios
                 return "ERROR: " + ex.Message;
             }
         }
-
         public async Task<List<Usuarios>> ObtenerTodosAsync()
         {
             try
@@ -43,7 +41,6 @@ namespace SistemaAgenda.Negocios
                 throw new Exception("Error al obtener usuarios: " + ex.Message);
             }
         }
-
         public async Task<string> ActualizarAsync(Usuarios u)
         {
             try
@@ -62,7 +59,6 @@ namespace SistemaAgenda.Negocios
                 return "ERROR: " + ex.Message;
             }
         }
-
         public async Task<string> EliminarAsync(int id)
         {
             try
@@ -83,8 +79,8 @@ namespace SistemaAgenda.Negocios
                 return "ERROR: " + ex.Message;
             }
         }
-
-        // Valida usuario/contraseña
+        //TODO METODO NUEVO: ValidarCredencialesAsync
+        // Valida usuario y contrasena
         public async Task<bool> ValidarCredencialesAsync(string usuario, string contrasena)
         {
             try

@@ -7,18 +7,25 @@ namespace SistemaAgenda.UI
     {
         private ServiciosBLL serviciosBLL = new ServiciosBLL();
         private bool habilitado = false;
+
+        // Si no es null, el formulario esta editando este servicio en vez de crear uno nuevo
         private Servicios? _servicioEditando = null;
         private bool ModoEdicion => _servicioEditando != null;
+
+        // Constructor normal: registrar un servicio nuevo
         public frmRegistrarServicios()
         {
             InitializeComponent();
             HabilitarControles(false);
         }
+
+        // Constructor de edicion: recibe el servicio ya existente
         public frmRegistrarServicios(Servicios servicio) : this()
         {
             _servicioEditando = servicio;
         }
 
+        // Habilita o deshabilita los campos y los botones de guardar/calcular
         private void HabilitarControles(bool habilitar)
         {
             habilitado = habilitar;
@@ -49,16 +56,19 @@ namespace SistemaAgenda.UI
             }
         }
 
+        // Alterna entre habilitado y deshabilitado
         private void btnHabilitar_Click(object sender, EventArgs e)
         {
             HabilitarControles(!habilitado);
         }
 
+        // Cierra el formulario
         private void btnCerrar_Click(object sender, EventArgs e)
         {
             Close();
         }
 
+        // Vacia los campos, para dejar el formulario listo para otro registro
         private void Limpiar()
         {
             cmbTipo.SelectedIndex = -1;
@@ -68,6 +78,7 @@ namespace SistemaAgenda.UI
             txtDuracion.Clear();
         }
 
+        // Si esta en modo edicion, precarga los datos del servicio
         private void frmRegistrarServicios_Load(object sender, EventArgs e)
         {
             if (ModoEdicion)
@@ -92,6 +103,7 @@ namespace SistemaAgenda.UI
             }
         }
 
+        // Llena el combo de subtipo segun el tipo elegido, para que coincida con el CHECK de la base de datos
         private void cmbTipo_SelectedIndexChanged(object sender, EventArgs e)
         {
             cmbSubtipo.Items.Clear();
@@ -112,6 +124,7 @@ namespace SistemaAgenda.UI
             cmbSubtipo.SelectedIndex = -1;
         }
 
+        // Valida que se hayan elegido tipo, subtipo, precio y duracion
         private bool ValidarDatos()
         {
             if (cmbTipo.SelectedIndex == -1 || cmbSubtipo.SelectedIndex == -1 ||
@@ -123,12 +136,14 @@ namespace SistemaAgenda.UI
             return true;
         }
 
+        // Muestra el mensaje de resultado, en verde si fue exito o rojo si fue error
         private void MostrarResultado(string mensaje, bool esExito)
         {
             lblResultado.Text = mensaje;
             lblResultado.ForeColor = esExito ? Color.DarkGreen : Color.Firebrick;
         }
 
+        // Registra un servicio nuevo o guarda los cambios si esta en modo edicion
         private async void btnAgregar_Click(object sender, EventArgs e)
         {
             if (!ValidarDatos())
@@ -180,6 +195,7 @@ namespace SistemaAgenda.UI
             }
         }
 
+        // Calcula y muestra el precio final y la duracion, sin guardar nada
         private void btnCalcular_Click(object sender, EventArgs e)
         {
             if (!ValidarDatos())
@@ -198,6 +214,7 @@ namespace SistemaAgenda.UI
             MostrarResultado($"Precio final: RD${s.CalcularPrecio():F2}  |  Duración: {s.CalcularDuracion()} min", esExito: true);
         }
 
+        // Solo permite numeros y un punto decimal en el precio
         private void txtPrecio_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsDigit(e.KeyChar) && e.KeyChar != '.' && e.KeyChar != (char)Keys.Back)
@@ -206,6 +223,8 @@ namespace SistemaAgenda.UI
             if (e.KeyChar == '.' && txtPrecio.Text.Contains('.'))
                 e.Handled = true;
         }
+
+        // Solo permite numeros en la duracion
         private void txtDuracion_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back)

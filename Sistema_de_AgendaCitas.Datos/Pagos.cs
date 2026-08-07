@@ -9,9 +9,7 @@ namespace SistemaAgenda.Datos
         public decimal Monto { get; set; }
         public string Metodo_DePago { get; set; }=string.Empty;
         public DateTime FechaPago { get; set; }
-
         public Pagos() {}
-
         public Pagos(int Id, int Id_Citas, decimal Monto, string Metodo_DePago, DateTime fechaPago)
         {
             this.Id= Id;

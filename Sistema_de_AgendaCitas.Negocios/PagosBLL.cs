@@ -1,4 +1,5 @@
 ﻿using SistemaAgenda.Datos;
+using System.Linq;
 
 namespace SistemaAgenda.Negocios
 {
@@ -7,15 +8,16 @@ namespace SistemaAgenda.Negocios
         private readonly IPagosDAL _dal;
         private readonly ICitasDAL _citasDal;
 
+        // Recibe las interfaces de Pagos y Citas por parametro
+        // para poder validar el estado de la cita antes de registrar un pago.
         public PagosBLL() : this(new PagosDAL(), new CitasDAL()) { }
-
         public PagosBLL(IPagosDAL dal, ICitasDAL citasDal)
         {
             _dal = dal;
             _citasDal = citasDal;
         }
 
-        // ── REGISTRAR ────────────────────────────────────────────────
+        // REGISTRAR ────────────────────────────────────────────────
         public async Task<string> RegistrarAsync(Pagos p)
         {
             try
@@ -66,8 +68,7 @@ namespace SistemaAgenda.Negocios
                 return "ERROR: " + ex.Message;
             }
         }
-
-        // ── ACTUALIZAR ───────────────────────────────────────────────
+        // ACTUALIZAR ───────────────────────────────────────────────
         public async Task<string> ActualizarAsync(Pagos p)
         {
             try
@@ -91,8 +92,7 @@ namespace SistemaAgenda.Negocios
                 return "ERROR: " + ex.Message;
             }
         }
-
-        // ── ELIMINAR ─────────────────────────────────────────────────
+        // ELIMINAR ─────────────────────────────────────────────────
         public async Task<string> EliminarAsync(int id)
         {
             try
@@ -107,8 +107,7 @@ namespace SistemaAgenda.Negocios
                 return "ERROR: " + ex.Message;
             }
         }
-
-        // ── OBTENER TODOS ────────────────────────────────────────────
+        // OBTENER TODOS ────────────────────────────────────────────
         public async Task<List<Pagos>> ObtenerTodosAsync()
         {
             try
@@ -121,9 +120,9 @@ namespace SistemaAgenda.Negocios
             }
         }
 
-        // ── REPORTES ─────────────────────────────────────────────────
+        // TODO METODOS NUEVOS ─────────────────────────────────────────────────
 
-        // Trae solo los pagos de una fecha especifica, para no mezclar dias en el reporte/corte del dia.
+        // Trae solo los pagos de una fecha especifica
         public async Task<List<Pagos>> ObtenerPorFechaAsync(DateTime fecha)
         {
             var todos = await ObtenerTodosAsync();
@@ -137,8 +136,7 @@ namespace SistemaAgenda.Negocios
 
             return resultado;
         }
-
-        // Suma el monto de una lista de pagos (cálculo en memoria, no toca la BD, se queda síncrono)
+        // Suma el monto de una lista de pagos.
         public decimal ObtenerTotal(List<Pagos> pagos)
         {
             decimal total = 0;
@@ -148,7 +146,7 @@ namespace SistemaAgenda.Negocios
             }
             return total;
         }
-
+        // Arma la lista de pagos con nombres de cliente y servicio, para mostrar en pantalla.
         public async Task<List<PagoVista>> ObtenerVistaAsync()
         {
             var pagos = await ObtenerTodosAsync();
@@ -160,45 +158,13 @@ namespace SistemaAgenda.Negocios
             var clientes = await clientesBLL.ObtenerTodosAsync();
             var servicios = await serviciosBLL.ObtenerTodosAsync();
 
-            var resultado = new List<PagoVista>();
-
-            for (int i = 0; i < pagos.Count; i++)
+            return pagos.Select(p =>
             {
-                Pagos p = pagos[i];
+                var cita = citas.FirstOrDefault(c => c.Id == p.Id_Citas);
+                var cliente = cita != null ? clientes.FirstOrDefault(c => c.Id == cita.Id_Clientes) : null;
+                var servicio = cita != null ? servicios.FirstOrDefault(s => s.Id == cita.Id_Servicios) : null;
 
-                Citas cita = null;
-                for (int j = 0; j < citas.Count; j++)
-                {
-                    if (citas[j].Id == p.Id_Citas)
-                    {
-                        cita = citas[j];
-                        break;
-                    }
-                }
-
-                Clientes cliente = null;
-                Servicios servicio = null;
-                if (cita != null)
-                {
-                    for (int j = 0; j < clientes.Count; j++)
-                    {
-                        if (clientes[j].Id == cita.Id_Clientes)
-                        {
-                            cliente = clientes[j];
-                            break;
-                        }
-                    }
-                    for (int j = 0; j < servicios.Count; j++)
-                    {
-                        if (servicios[j].Id == cita.Id_Servicios)
-                        {
-                            servicio = servicios[j];
-                            break;
-                        }
-                    }
-                }
-
-                resultado.Add(new PagoVista
+                return new PagoVista
                 {
                     Id = p.Id,
                     Cliente = cliente != null ? $"{cliente.Nombre} {cliente.Apellido}" : "Cliente desconocido",
@@ -207,11 +173,11 @@ namespace SistemaAgenda.Negocios
                     Monto = p.Monto,
                     MetodoDePago = p.Metodo_DePago,
                     FechaPago = p.FechaPago
-                });
-            }
-            return resultado;
+                };
+            }).ToList();
         }
-
+        // // Filtra los pagos entre dos fechas para el reporte,
+        // para el reporte que se exporta a Excel/PDF
         public async Task<List<PagoVista>> ObtenerReporteAsync(DateTime desde, DateTime hasta)
         {
             List<PagoVista> todos = await ObtenerVistaAsync();
@@ -228,8 +194,7 @@ namespace SistemaAgenda.Negocios
 
             return reporte;
         }
-
-        // Suma en memoria, no toca la BD, se queda síncrono
+        // Suma el monto total del reporte.
         public decimal ObtenerTotalReporte(List<PagoVista> reporte)
         {
             decimal total = 0;

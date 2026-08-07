@@ -26,7 +26,6 @@ namespace SistemaAgenda.Datos
                 throw new Exception("Error al insertar servicio: " + ex.Message);
             }
         }
-
         public async Task<List<Servicios>> ObtenerTodosAsync()
         {
             var lista = new List<Servicios>();
@@ -62,7 +61,6 @@ namespace SistemaAgenda.Datos
 
             return lista;
         }
-
         public async Task<bool> ActualizarAsync(Servicios s)
         {
             try
@@ -86,7 +84,6 @@ namespace SistemaAgenda.Datos
                 throw new Exception("Error al actualizar servicio: " + ex.Message);
             }
         }
-
         public async Task<bool> EliminarAsync(int id)
         {
             try

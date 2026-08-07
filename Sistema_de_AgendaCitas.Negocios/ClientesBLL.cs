@@ -6,16 +6,12 @@ namespace SistemaAgenda.Negocios
     {
         private readonly IClientesDAL _dal;
 
-        public ClientesBLL()
-            : this(new ClientesDAL())
-        {
-        }
+        public ClientesBLL(): this(new ClientesDAL()) { }
 
         public ClientesBLL(IClientesDAL dal)
         {
             _dal = dal;
         }
-
         public async Task<string> RegistrarAsync(Clientes c)
         {
             try
@@ -39,7 +35,6 @@ namespace SistemaAgenda.Negocios
                 return "ERROR: " + ex.Message;
             }
         }
-
         public async Task<List<Clientes>> ObtenerTodosAsync()
         {
             try
@@ -51,7 +46,6 @@ namespace SistemaAgenda.Negocios
                 throw new Exception("Error al obtener clientes: " + ex.Message);
             }
         }
-
         public async Task<string> ActualizarAsync(Clientes c)
         {
             try
@@ -72,7 +66,6 @@ namespace SistemaAgenda.Negocios
                 return "ERROR: " + ex.Message;
             }
         }
-
         public async Task<string> EliminarAsync(int id)
         {
             try

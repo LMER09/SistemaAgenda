@@ -14,6 +14,8 @@ namespace Sistema_de_AgendayCitas
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
 
+            // Manejador global de excepciones: evita que el programa se cierre de golpe
+            // si ocurre un error que nadie capturo con try-catch
             Application.ThreadException += (sender, e) =>
             {
                 MessageBox.Show("Ocurrió un error inesperado:\n" + e.Exception.Message,
