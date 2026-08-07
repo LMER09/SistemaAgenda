@@ -11,7 +11,6 @@ namespace SistemaAgenda.UI
         {
             InitializeComponent();
         }
-
         private async void AbrirFormulario(Form formulario)
         {
             this.Hide();
@@ -19,7 +18,6 @@ namespace SistemaAgenda.UI
             this.Show();
             await CargarResumenAsync();
         }
-
         private void frmPrincipal_Load(object sender, EventArgs e)
         {
             this.Hide();
@@ -66,9 +64,7 @@ namespace SistemaAgenda.UI
                 : "⏰ Próxima cita: ninguna";
         }
 
-        // ======================================
-        // ENTRADA
-        // ======================================
+        // ENTRADA ======================================
 
         private void btnAgenda_Click(object sender, EventArgs e)
         {
@@ -100,9 +96,7 @@ namespace SistemaAgenda.UI
             AbrirFormulario(new frmRegistrarUsuarios());
         }
 
-        // ======================================
-        // CONSULTA
-        // ======================================
+        // CONSULTA ======================================
 
         private void verClienteToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -139,9 +133,7 @@ namespace SistemaAgenda.UI
             AbrirFormulario(new frmConsultarUsuarios());
         }
 
-        // ======================================
-        // SISTEMA
-        // ======================================
+        // SISTEMA ======================================
 
         private void acercaDeToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -161,7 +153,6 @@ namespace SistemaAgenda.UI
      MessageBoxButtons.OK,
      MessageBoxIcon.Information);
         }
-
         private void salirToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DialogResult respuesta = MessageBox.Show(

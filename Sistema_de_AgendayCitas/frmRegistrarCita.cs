@@ -18,27 +18,18 @@ namespace SistemaAgenda.UI
         private bool habilitado = false;
         private Citas? _citaEditando = null;
         private bool ModoEdicion => _citaEditando != null;
-
-        // Constructor normal: agendar una cita nueva
         public frmRegistrarCita()
         {
             InitializeComponent();
             HabilitarControles(false);
         }
-
-        // Constructor de edicion: recibe la cita existente,
-        // desde frmConsultarCitas al presionar "Reprogramar / Editar".
-        // Permite cambiar cliente, servicio, estilista y fecha/hora, todo a la vez.
         public frmRegistrarCita(Citas cita) : this()
         {
             _citaEditando = cita;
         }
-
         private void HabilitarControles(bool habilitar)
         {
             habilitado = habilitar;
-
-            // En modo edicion se habilita todo, igual que al agendar una nueva.
             cmbClientes.Enabled = habilitar && !ModoEdicion;
             cmbServicios.Enabled = habilitar && !ModoEdicion;
             cmbEstilistas.Enabled = habilitar && !ModoEdicion;
@@ -63,7 +54,6 @@ namespace SistemaAgenda.UI
                 lblResultado.ForeColor = Color.DimGray;
             }
         }
-
         private void btnHabilitar_Click(object sender, EventArgs e)
         {
             HabilitarControles(!habilitado);
@@ -93,9 +83,6 @@ namespace SistemaAgenda.UI
                 lblIngrese.Text = "Editando cita:";
                 btnAgregar.Text = "💾 Guardar cambios";
 
-                // Selecciona en los combos los datos actuales de la cita.
-                // Quedan habilitados (a diferencia de antes): se puede
-                // cambiar cliente, servicio y estilista, no solo la fecha.
                 SeleccionarPorId(cmbClientes, _listaClientes.Select(c => c.Id).ToList(), _citaEditando!.Id_Clientes);
                 SeleccionarPorId(cmbServicios, _listaServicios.Select(s => s.Id).ToList(), _citaEditando.Id_Servicios);
                 SeleccionarPorId(cmbEstilistas, _listaEstilistas.Select(es => es.Id).ToList(), _citaEditando.Id_Estilista);
@@ -125,8 +112,7 @@ namespace SistemaAgenda.UI
             foreach (var c in _listaClientes)
                 cmbClientes.Items.Add($"{c.Nombre} {c.Apellido}");
 
-            // Muestra "Tipo - Subtipo" para poder distinguir servicios del mismo
-            // tipo pero con precio distinto (ej. "Cabello - Corte" vs "Cabello - Tinte").
+            // Muestra "Tipo - Subtipo" para poder distinguir servicios del mismo tipo pero con precio distinto
             _listaServicios = await serviciosBLL.ObtenerTodosAsync();
             cmbServicios.Items.Clear();
             foreach (var s in _listaServicios)

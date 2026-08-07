@@ -9,18 +9,25 @@ namespace SistemaAgenda.UI
         private EstilistaBLL estilistaBLL = new EstilistaBLL();
         private HorarioEstilistaBLL horarioBLL = new HorarioEstilistaBLL();
         private bool habilitado = false;
+
+        // Si no es null, el formulario esta editando este estilista en vez de crear uno nuevo
         private Estilista? _estilistaEditando = null;
         private bool ModoEdicion => _estilistaEditando != null;
+
+        // Constructor normal: registrar un estilista nuevo
         public frmRegistrarEstilistas()
         {
             InitializeComponent();
             HabilitarControles(false);
         }
+
+        // Constructor de edicion: recibe el estilista ya existente
         public frmRegistrarEstilistas(Estilista estilista) : this()
         {
             _estilistaEditando = estilista;
         }
 
+        // Habilita o deshabilita todos los campos y el boton de guardar
         private void HabilitarControles(bool habilitar)
         {
             habilitado = habilitar;
@@ -63,16 +70,17 @@ namespace SistemaAgenda.UI
             }
         }
 
+        // Alterna entre habilitado y deshabilitado
         private void btnHabilitar_Click(object sender, EventArgs e)
         {
             HabilitarControles(!habilitado);
         }
-
         private void btnCerrar_Click(object sender, EventArgs e)
         {
             Close();
         }
 
+        // Vacia todos los campos, para dejar el formulario listo para otro registro
         private void Limpiar()
         {
             txtNombre.Clear();
@@ -93,6 +101,7 @@ namespace SistemaAgenda.UI
             dtpHoraFin.Value = DateTime.Today.AddHours(17);
         }
 
+        // Si esta en modo edicion, precarga los datos y el horario de la estilista
         private async void FrmRegistrarEstilistas_Load(object sender, EventArgs e)
         {
             if (ModoEdicion)
@@ -118,6 +127,7 @@ namespace SistemaAgenda.UI
             }
         }
 
+        // Marca los checkboxes y pone la hora inicio y fin del horario que ya tenia guardado
         private async Task CargarHorarioExistenteAsync(int idEstilista)
         {
             var horarios = await horarioBLL.ObtenerPorEstilistaAsync(idEstilista);
@@ -142,6 +152,7 @@ namespace SistemaAgenda.UI
             dtpHoraFin.Value = DateTime.Today.Add(primero.HoraFin);
         }
 
+        // Arma la lista de HorarioEstilista segun los dias marcados en pantalla
         private List<HorarioEstilista> ArmarHorarioDesdeFormulario()
         {
             var dias = new List<(byte numero, CheckBox chk)>
@@ -171,6 +182,7 @@ namespace SistemaAgenda.UI
             return lista;
         }
 
+        // Valida los campos, el formato de telefono y cedula, y que haya al menos un dia marcado
         private bool ValidarDatos()
         {
             if (string.IsNullOrWhiteSpace(txtNombre.Text) ||
@@ -223,12 +235,14 @@ namespace SistemaAgenda.UI
             return true;
         }
 
+        // Muestra el mensaje de resultado en pantalla, en verde si fue exito o rojo si fue error
         private void MostrarResultado(string mensaje, bool esExito)
         {
             lblResultado.Text = mensaje;
             lblResultado.ForeColor = esExito ? Color.DarkGreen : Color.Firebrick;
         }
 
+        // Registra un estilista nueva o guarda los cambios si esta en modo edicion, junto con su horario
         private async void btnAgregar_Click(object sender, EventArgs e)
         {
             if (!ValidarDatos())
@@ -287,6 +301,7 @@ namespace SistemaAgenda.UI
                 return;
             }
 
+            // Insertar no devuelve el Id nuevo, asi que se busca por correo que es unico
             var listaEstilistas = await estilistaBLL.ObtenerTodosAsync();
             var estilistaCreada = listaEstilistas.FirstOrDefault(es => es.Correo == nuevoEstilista.Correo);
 
@@ -312,6 +327,7 @@ namespace SistemaAgenda.UI
             }
         }
 
+        // Evita numeros en nombre y apellido
         private void txtNombre_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsLetter(e.KeyChar) && e.KeyChar != ' ' && e.KeyChar != (char)Keys.Back)
@@ -323,6 +339,7 @@ namespace SistemaAgenda.UI
                 e.Handled = true;
         }
 
+        // Da formato automatico al telefono: 000-000-0000
         private void txtTelefono_TextChanged(object sender, EventArgs e)
         {
             string texto = txtTelefono.Text.Replace("-", "");
@@ -345,6 +362,7 @@ namespace SistemaAgenda.UI
                 e.Handled = true;
         }
 
+        // Da formato automatico a la cedula: 000-0000000-0
         private void txtCedula_TextChanged(object sender, EventArgs e)
         {
             string texto = txtCedula.Text.Replace("-", "");

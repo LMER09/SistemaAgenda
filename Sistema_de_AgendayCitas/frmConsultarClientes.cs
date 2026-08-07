@@ -8,7 +8,6 @@ namespace SistemaAgenda.UI
     {
         private ClientesBLL clientesBLL = new ClientesBLL();
         private List<Clientes> listaClientes = new List<Clientes>();
-
         public frmConsultarClientes()
         {
             InitializeComponent();
@@ -29,7 +28,6 @@ namespace SistemaAgenda.UI
             dgvClientes.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvClientes.Columns["Id"].Visible = false;
         }
-
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             string texto = txtBuscar.Text.Trim().ToLower();
@@ -54,7 +52,6 @@ namespace SistemaAgenda.UI
                 MessageBox.Show($"No se encontró ningún cliente que coincida con \"{txtBuscar.Text}\".",
                     "Sin resultados", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-
         private async void btnEditar_Click(object sender, EventArgs e)
         {
             if (dgvClientes.CurrentRow == null)
@@ -97,7 +94,6 @@ namespace SistemaAgenda.UI
 
             await CargarClientesAsync();
         }
-
         private void btnCerrar_Click(object sender, EventArgs e)
         {
             Close();

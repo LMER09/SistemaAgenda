@@ -15,7 +15,6 @@ namespace SistemaAgenda.UI
             InitializeComponent();
             HabilitarControles(false);
         }
-
         public frmRegistrarClientes(Clientes cliente) : this()
         {
             _clienteEditando = cliente;
@@ -24,7 +23,6 @@ namespace SistemaAgenda.UI
         private void HabilitarControles(bool habilitar)
         {
             habilitado = habilitar;
-
             txtNombre.Enabled = habilitar;
             txtApellido.Enabled = habilitar;
             txtTelefono.Enabled = habilitar;
@@ -195,7 +193,7 @@ namespace SistemaAgenda.UI
             }
         }
 
-        //Evita números en nombre/apellido
+        //Evita numeros en nombre/apellido
         private void txtNombre_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsLetter(e.KeyChar) && e.KeyChar != ' ' && e.KeyChar != (char)Keys.Back)
@@ -207,7 +205,7 @@ namespace SistemaAgenda.UI
                 e.Handled = true;
         }
 
-        // Da formato automáticamente al teléfono: 000-000-0000
+        // Da formato automaticamente al telefono: 000-000-0000
         private void txtTelefono_TextChanged(object sender, EventArgs e)
         {
             string texto = txtTelefono.Text.Replace("-", "");
@@ -230,7 +228,7 @@ namespace SistemaAgenda.UI
                 e.Handled = true;
         }
 
-        // Formato automático de cédula: 000-0000000-0
+        // Formato automatico de cedula: 000-0000000-0
         private void txtCedula_TextChanged(object sender, EventArgs e)
         {
             string texto = txtCedula.Text.Replace("-", "");

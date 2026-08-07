@@ -15,7 +15,8 @@ namespace SistemaAgenda.UI
         {
             InitializeComponent();
 
-            // Conecta el evento del recordatorio para enviar el correo al cliente cuando una cita esta proxima
+            // Conecta el evento del recordatorio para enviar el correo
+            // al cliente cuando una cita esta proxima
             recordatorio.RecordatorioDisparado += async (cita, mensaje) =>
             {
                 if (cita == null) return;
@@ -40,13 +41,14 @@ namespace SistemaAgenda.UI
             };
         }
 
+        // Carga la tabla y revisa citas proximas al abrir el formulario
         private async void frmConsultarCitas_Load(object sender, EventArgs e)
         {
             await CargarCitasAsync();
-            // Revisa aqui las citas proximas
             recordatorio.RevisarCitasProximas(await citasBLL.ObtenerTodosAsync());
         }
 
+        // Trae la lista de citas (con nombres, no IDs) y actualiza tabla y calendario
         private async Task CargarCitasAsync()
         {
             _listaCitas = await citasBLL.ObtenerVistaAsync();
@@ -55,25 +57,22 @@ namespace SistemaAgenda.UI
             CargarCalendario();
         }
 
+        // Muestra en el DataGridView la lista de citas utilizando la clase CitaVista
         private void MostrarEnTabla(List<CitaVista> lista)
         {
             dgvCitas.DataSource = null;
             dgvCitas.DataSource = lista.Select(cv => new
             {
-                cv.Id,
-                cv.Cliente,
-                cv.Servicio,
-                cv.Estilista,
-                cv.Fecha,
-                cv.Estado,
+                cv.Id,  cv.Cliente,
+                cv.Servicio, cv.Estilista,
+                cv.Fecha, cv.Estado,
                 cv.Deposito
             }).ToList();
 
             dgvCitas.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
-        // Marca en el calendario los dias que tienen al menos una cita activa
-        // (no canceladas), para que se vean de un vistazo.
+        // Marca en el calendario los dias que tienen al menos una cita activa.
         private void CargarCalendario()
         {
             var fechasConCita = new List<DateTime>();
@@ -94,19 +93,18 @@ namespace SistemaAgenda.UI
             calCitas.BoldedDates = fechasConCita.ToArray();
         }
 
-        // Al elegir un dia en el calendario, filtra la tabla para mostrar solo las citas de ese dia.
+        // Al elegir un dia en el calendario, filtra la tabla
+        // para mostrar solo las citas de ese dia.
         private void calCitas_DateChanged(object sender, DateRangeEventArgs e)
         {
             DateTime fechaSeleccionada = calCitas.SelectionStart.Date;
             var citasDelDia = _listaCitas.Where(cv => cv.Fecha.Date == fechaSeleccionada).ToList();
             MostrarEnTabla(citasDelDia);
         }
-
         private void btnVerTodas_Click(object sender, EventArgs e)
         {
             MostrarEnTabla(_listaCitas);
         }
-
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             string texto = txtBuscar.Text.Trim().ToLower();
@@ -151,13 +149,13 @@ namespace SistemaAgenda.UI
             dgvCitas.Rows[e.RowIndex].DefaultCellStyle.BackColor = color;
         }
 
+        // Busca en la lista cargada la cita que corresponde a la fila seleccionada
         private CitaVista? ObtenerCitaSeleccionada()
         {
             if (dgvCitas.CurrentRow == null) return null;
             int id = Convert.ToInt32(dgvCitas.CurrentRow.Cells["Id"].Value);
             return _listaCitas.FirstOrDefault(cv => cv.Id == id);
         }
-
         private async void btnCancelar_Click(object sender, EventArgs e)
         {
             var citaSeleccionada = ObtenerCitaSeleccionada();
@@ -191,7 +189,7 @@ namespace SistemaAgenda.UI
             await CargarCitasAsync();
         }
 
-        // Abre frmRegistrarCita en modo reprogramar/editar con la cita seleccionada
+        // Abre frmRegistrarCita en modo reprogramar con la cita seleccionada
         private async void btnReprogramar_Click(object sender, EventArgs e)
         {
             var citaSeleccionada = ObtenerCitaSeleccionada();

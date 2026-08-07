@@ -7,17 +7,14 @@ namespace SistemaAgenda.UI
     {
         private readonly PagosBLL pagosBLL = new PagosBLL();
         private List<PagoVista> _listaPagos = new List<PagoVista>();
-
         public frmConsultarPagos()
         {
             InitializeComponent();
         }
-
         private async void frmConsultarPagos_Load(object sender, EventArgs e)
         {
             await CargarPagosAsync();
         }
-
         private async Task CargarPagosAsync()
         {
 
@@ -30,7 +27,6 @@ namespace SistemaAgenda.UI
             if (dgvPagos.Columns["Id"] != null)
                 dgvPagos.Columns["Id"].Visible = false;
         }
-
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             string texto = txtBuscar.Text.Trim().ToLower();
@@ -55,7 +51,6 @@ namespace SistemaAgenda.UI
                 MessageBox.Show($"No se encontró ningún pago que coincida con \"{txtBuscar.Text}\".",
                     "Sin resultados", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-
         private async void btnEliminar_Click(object sender, EventArgs e)
         {
             if (dgvPagos.CurrentRow == null)
@@ -78,7 +73,6 @@ namespace SistemaAgenda.UI
 
             await CargarPagosAsync();
         }
-
         private void btnCerrar_Click(object sender, EventArgs e)
         {
             Close();

@@ -19,12 +19,11 @@ namespace SistemaAgenda.UI
         {
             InitializeComponent();
         }
-
         private async void frmConsultarEstilistas_Load(object sender, EventArgs e)
         {
             await CargarEstilistasAsync();
         }
-
+        // Trae todas las estilistas y las muestra en la tabla
         private async Task CargarEstilistasAsync()
         {
             listaEstilistas = await estilistaBLL.ObtenerTodosAsync();
@@ -64,6 +63,7 @@ namespace SistemaAgenda.UI
                     "Sin resultados", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
+        // Al seleccionar una fila, muestra el horario de esa estilista abajo
         private async void dgvEstilistas_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
@@ -116,7 +116,6 @@ namespace SistemaAgenda.UI
 
             await CargarEstilistasAsync();
         }
-
         private async void btnEliminar_Click(object sender, EventArgs e)
         {
             if (dgvEstilistas.CurrentRow == null)
@@ -139,7 +138,6 @@ namespace SistemaAgenda.UI
 
             await CargarEstilistasAsync();
         }
-
         private void btnCerrar_Click(object sender, EventArgs e)
         {
             Close();

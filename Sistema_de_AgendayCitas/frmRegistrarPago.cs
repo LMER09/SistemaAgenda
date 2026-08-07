@@ -15,16 +15,21 @@ namespace SistemaAgenda.UI
         private List<Clientes> _listaClientes = new List<Clientes>();
         private List<Servicios> _listaServicios = new List<Servicios>();
         private bool habilitado = false;
+
         public frmRegistrarPago()
         {
             InitializeComponent();
             HabilitarControles(false);
         }
+
+        // Carga las citas pendientes de pago al abrir el formulario
         private async void FrmRegistrarPago_Load(object sender, EventArgs e)
         {
             await CargarCitasPendientesAsync();
             HabilitarControles(false);
         }
+
+        // Trae las citas que aun no estan pagadas y arma el texto legible del combo
         private async Task CargarCitasPendientesAsync()
         {
             _listaClientes = await clientesBLL.ObtenerTodosAsync();
@@ -37,9 +42,9 @@ namespace SistemaAgenda.UI
                 .ToList();
             cmbCita.Items.Clear();
 
-            //TODO cambiar esto por un for
-            foreach (var cita in _citasPendientes)
+            for (int i = 0; i < _citasPendientes.Count; i++)
             {
+                var cita = _citasPendientes[i];
                 var cliente = _listaClientes.FirstOrDefault(c => c.Id == cita.Id_Clientes);
                 var servicio = _listaServicios.FirstOrDefault(s => s.Id == cita.Id_Servicios);
 
@@ -49,6 +54,8 @@ namespace SistemaAgenda.UI
                 cmbCita.Items.Add($"{nombreCliente} - {nombreServicio} - {cita.Fecha:dd/MM/yyyy hh:mm tt} (Cita #{cita.Id})");
             }
         }
+
+        // Habilita o deshabilita los campos y el boton de registrar
         private void HabilitarControles(bool habilitar)
         {
             habilitado = habilitar;
@@ -72,12 +79,16 @@ namespace SistemaAgenda.UI
                 lblResultado.ForeColor = Color.DimGray;
             }
         }
+
+        // Al habilitar, refresca las citas pendientes por si algo cambio mientras tanto
         private async void btnHabilitar_Click(object sender, EventArgs e)
         {
             if (!habilitado)
                 await CargarCitasPendientesAsync();
             HabilitarControles(!habilitado);
         }
+
+        // Cierra el formulario
         private void btnCerrar_Click(object sender, EventArgs e)
         {
             Close();
@@ -88,12 +99,15 @@ namespace SistemaAgenda.UI
             txtMonto.Clear();
             cmbMetodoPago.SelectedIndex = -1;
         }
+
+        // Muestra el mensaje de resultado, en verde si fue exito o rojo si fue error
         private void MostrarResultado(string mensaje, bool esExito)
         {
             lblResultado.Text = mensaje;
             lblResultado.ForeColor = esExito ? Color.DarkGreen : Color.Firebrick;
         }
 
+        // Valida los campos y registra el pago de la cita seleccionada
         private async void btnRegistrar_Click(object sender, EventArgs e)
         {
             if (cmbCita.SelectedIndex == -1)
@@ -131,6 +145,7 @@ namespace SistemaAgenda.UI
             }
         }
 
+        // Solo permite numeros y un punto decimal en el monto
         private void txtMonto_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsDigit(e.KeyChar) && e.KeyChar != '.' && e.KeyChar != (char)Keys.Back)
@@ -139,6 +154,7 @@ namespace SistemaAgenda.UI
                 e.Handled = true;
         }
 
+        // Al elegir la cita, sugiere el monto (precio del servicio menos el deposito ya pagado)
         private void cmbCita_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cmbCita.SelectedIndex == -1) return;

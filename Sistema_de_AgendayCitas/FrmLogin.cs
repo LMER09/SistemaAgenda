@@ -58,7 +58,6 @@ namespace SistemaAgenda.UI
                 button1.Enabled = true;
             }
         }
-
         private void MostrarError(string mensaje)
         {
             lblAdvertencia.Text = mensaje;

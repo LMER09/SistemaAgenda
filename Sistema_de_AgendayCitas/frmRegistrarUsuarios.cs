@@ -7,18 +7,25 @@ namespace SistemaAgenda.UI
     {
         private UsuariosBLL usuariosBLL = new UsuariosBLL();
         private bool habilitado = false;
+
+        // Si no es null, el formulario esta editando este usuario en vez de crear uno nuevo
         private Usuarios? _usuarioEditando = null;
         private bool ModoEdicion => _usuarioEditando != null;
+
+        // Constructor normal: registrar un usuario nuevo
         public frmRegistrarUsuarios()
         {
             InitializeComponent();
             HabilitarControles(false);
         }
+
+        // Constructor de edicion: recibe el usuario ya existente
         public frmRegistrarUsuarios(Usuarios usuario) : this()
         {
             _usuarioEditando = usuario;
         }
 
+        // Habilita o deshabilita los campos y el boton de guardar
         private void HabilitarControles(bool habilitar)
         {
             habilitado = habilitar;
@@ -47,17 +54,17 @@ namespace SistemaAgenda.UI
                 lblResultado.ForeColor = Color.DimGray;
             }
         }
-
+        // Alterna entre habilitado y deshabilitado
         private void btnHabilitar_Click(object sender, EventArgs e)
         {
             HabilitarControles(!habilitado);
         }
-
         private void btnCerrar_Click(object sender, EventArgs e)
         {
             Close();
         }
 
+        // Vacia todos los campos, para dejar el formulario listo para otro registro
         private void Limpiar()
         {
             txtUsuario.Clear();
@@ -66,6 +73,7 @@ namespace SistemaAgenda.UI
             txtConfirmarContrasena.Clear();
         }
 
+        // Si esta en modo edicion, precarga el usuario y muestra el campo de contraseña actual
         private void frmRegistrarUsuarios_Load(object sender, EventArgs e)
         {
             if (ModoEdicion)
@@ -91,6 +99,8 @@ namespace SistemaAgenda.UI
             }
         }
 
+        // Valida el usuario y, si se va a cambiar la contraseña, que coincida con la confirmacion
+        // y que la contraseña actual sea correcta (en modo edicion)
         private bool ValidarDatos()
         {
             if (string.IsNullOrWhiteSpace(txtUsuario.Text))
@@ -128,12 +138,14 @@ namespace SistemaAgenda.UI
             return true;
         }
 
+        // Muestra el mensaje de resultado, en verde si fue exito o rojo si fue error
         private void MostrarResultado(string mensaje, bool esExito)
         {
             lblResultado.Text = mensaje;
             lblResultado.ForeColor = esExito ? Color.DarkGreen : Color.Firebrick;
         }
 
+        // Registra un usuario nuevo o guarda los cambios si esta en modo edicion
         private async void btnAgregar_Click(object sender, EventArgs e)
         {
             if (!ValidarDatos())
@@ -145,6 +157,7 @@ namespace SistemaAgenda.UI
                 {
                     Id = _usuarioEditando!.Id,
                     Usuario = txtUsuario.Text,
+                    // Si dejo la contraseña en blanco, se manda la misma que ya tenia
                     Contrasena = string.IsNullOrEmpty(txtContrasena.Text)
                         ? _usuarioEditando.Contrasena
                         : txtContrasena.Text
