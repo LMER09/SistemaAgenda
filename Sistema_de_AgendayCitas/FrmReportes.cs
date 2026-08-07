@@ -159,6 +159,18 @@ namespace SistemaAgenda.UI
             decimal total = pagosBLL.ObtenerTotalReporte(reporte);
 
             lblTotal.Text = "RD$ " + total.ToString("N2");
+
+            // Genera el archivo de texto con el resumen del dia, usando CorteDia
+            var pagosDelDia = await pagosBLL.ObtenerPorFechaAsync(dtpDesde.Value.Date);
+            CorteDia corte = new CorteDia(dtpDesde.Value.Date, pagosDelDia);
+            corte.Cerrar();
+
+            MessageBox.Show(
+                $"Corte del día generado.\nTotal: RD$ {corte.TotalDelDia:F2}\nPagos: {corte.CantidadDePagos}",
+                "Corte del día",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+
         }
 
         private void lblTotal_Click(object sender, EventArgs e) { }
